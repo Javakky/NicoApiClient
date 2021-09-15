@@ -4,6 +4,8 @@ from typing import Dict, List, Any
 from nicovideo_api_client.nicovideo.constants import FieldType
 from nicovideo_api_client.nicovideo.api.v2.limit import SnapshotSearchAPIV2Limit
 
+import re
+
 
 class SnapshotSearchAPIV2SimpleFilter:
     def __init__(self, query: Dict[str, str]):
@@ -19,6 +21,8 @@ class SnapshotSearchAPIV2SimpleFilter:
             if isinstance(value, int):
                 v = f"sm{value}"
             elif isinstance(value, str):
+                if not re.compile(r"sm\d+").fullmatch(value):
+                    raise TypeError("FieldType.CONTENT_IDはsm(数字)の形で表されるべきです")
                 v = value
             else:
                 raise TypeError("FieldType.CONTENT_IDを指定した時の型は int または str であるべきです")
