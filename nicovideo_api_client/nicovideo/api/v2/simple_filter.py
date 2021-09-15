@@ -22,7 +22,7 @@ class SnapshotSearchAPIV2SimpleFilter:
                 v = f"sm{value}"
             elif isinstance(value, str):
                 if not re.compile(r"sm\d+").fullmatch(value):
-                    raise TypeError("FieldType.CONTENT_IDは/sm/d+/の形で表されるべきです")
+                    raise TypeError("FieldType.CONTENT_IDはsm(数字)の形で表されるべきです")
                 v = value
             else:
                 raise TypeError("FieldType.CONTENT_IDを指定した時の型は int または str であるべきです")
