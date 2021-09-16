@@ -3,17 +3,13 @@ import logging
 import os
 import posixpath
 import urllib.parse
+from typing import List
 
 from pip._vendor.packaging.utils import canonicalize_name
 
 from pip._internal.models.index import PyPI
 from pip._internal.utils.compat import has_tls
 from pip._internal.utils.misc import normalize_path, redact_auth_from_url
-from pip._internal.utils.typing import MYPY_CHECK_RUNNING
-
-if MYPY_CHECK_RUNNING:
-    from typing import List
-
 
 logger = logging.getLogger(__name__)
 
@@ -29,10 +25,9 @@ class SearchScope:
     @classmethod
     def create(
         cls,
-        find_links,  # type: List[str]
-        index_urls,  # type: List[str]
-    ):
-        # type: (...) -> SearchScope
+        find_links: List[str],
+        index_urls: List[str],
+    ) -> "SearchScope":
         """
         Create a SearchScope object after normalizing the `find_links`.
         """
@@ -41,7 +36,7 @@ class SearchScope:
         # it and if it exists, use the normalized version.
         # This is deliberately conservative - it might be fine just to
         # blindly normalize anything starting with a ~...
-        built_find_links = []  # type: List[str]
+        built_find_links: List[str] = []
         for link in find_links:
             if link.startswith('~'):
                 new_link = normalize_path(link)
@@ -69,15 +64,13 @@ class SearchScope:
 
     def __init__(
         self,
-        find_links,  # type: List[str]
-        index_urls,  # type: List[str]
-    ):
-        # type: (...) -> None
+        find_links: List[str],
+        index_urls: List[str],
+    ) -> None:
         self.find_links = find_links
         self.index_urls = index_urls
 
-    def get_formatted_locations(self):
-        # type: () -> str
+    def get_formatted_locations(self) -> str:
         lines = []
         redacted_index_urls = []
         if self.index_urls and self.index_urls != [PyPI.simple_url]:
@@ -110,16 +103,14 @@ class SearchScope:
             )
         return '\n'.join(lines)
 
-    def get_index_urls_locations(self, project_name):
-        # type: (str) -> List[str]
+    def get_index_urls_locations(self, project_name: str) -> List[str]:
         """Returns the locations found via self.index_urls
 
         Checks the url_name on the main (first in the list) index and
         use this url_name to produce all locations
         """
 
-        def mkurl_pypi_url(url):
-            # type: (str) -> str
+        def mkurl_pypi_url(url: str) -> str:
             loc = posixpath.join(
                 url,
                 urllib.parse.quote(canonicalize_name(project_name)))

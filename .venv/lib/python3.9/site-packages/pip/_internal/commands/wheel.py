@@ -1,23 +1,19 @@
 import logging
 import os
 import shutil
+from optparse import Values
+from typing import List
 
 from pip._internal.cache import WheelCache
 from pip._internal.cli import cmdoptions
 from pip._internal.cli.req_command import RequirementCommand, with_cleanup
 from pip._internal.cli.status_codes import SUCCESS
 from pip._internal.exceptions import CommandError
+from pip._internal.req.req_install import InstallRequirement
 from pip._internal.req.req_tracker import get_requirement_tracker
 from pip._internal.utils.misc import ensure_dir, normalize_path
 from pip._internal.utils.temp_dir import TempDirectory
-from pip._internal.utils.typing import MYPY_CHECK_RUNNING
 from pip._internal.wheel_builder import build, should_build_for_wheel_command
-
-if MYPY_CHECK_RUNNING:
-    from optparse import Values
-    from typing import List
-
-    from pip._internal.req.req_install import InstallRequirement
 
 logger = logging.getLogger(__name__)
 
@@ -44,8 +40,7 @@ class WheelCommand(RequirementCommand):
       %prog [options] [-e] <local project path> ...
       %prog [options] <archive url/path> ..."""
 
-    def add_options(self):
-        # type: () -> None
+    def add_options(self) -> None:
 
         self.cmd_opts.add_option(
             '-w', '--wheel-dir',
@@ -58,13 +53,6 @@ class WheelCommand(RequirementCommand):
         self.cmd_opts.add_option(cmdoptions.no_binary())
         self.cmd_opts.add_option(cmdoptions.only_binary())
         self.cmd_opts.add_option(cmdoptions.prefer_binary())
-        self.cmd_opts.add_option(
-            '--build-option',
-            dest='build_options',
-            metavar='options',
-            action='append',
-            help="Extra arguments to be supplied to 'setup.py bdist_wheel'.",
-        )
         self.cmd_opts.add_option(cmdoptions.no_build_isolation())
         self.cmd_opts.add_option(cmdoptions.use_pep517())
         self.cmd_opts.add_option(cmdoptions.no_use_pep517())
@@ -85,13 +73,8 @@ class WheelCommand(RequirementCommand):
             help="Don't verify if built wheel is valid.",
         )
 
-        self.cmd_opts.add_option(
-            '--global-option',
-            dest='global_options',
-            action='append',
-            metavar='options',
-            help="Extra global options to be supplied to the setup.py "
-            "call before the 'bdist_wheel' command.")
+        self.cmd_opts.add_option(cmdoptions.build_options())
+        self.cmd_opts.add_option(cmdoptions.global_options())
 
         self.cmd_opts.add_option(
             '--pre',
@@ -112,8 +95,7 @@ class WheelCommand(RequirementCommand):
         self.parser.insert_option_group(0, self.cmd_opts)
 
     @with_cleanup
-    def run(self, options, args):
-        # type: (Values, List[str]) -> int
+    def run(self, options: Values, args: List[str]) -> int:
         cmdoptions.check_install_build_global(options)
 
         session = self.get_default_session(options)
@@ -159,7 +141,7 @@ class WheelCommand(RequirementCommand):
             reqs, check_supported_wheels=True
         )
 
-        reqs_to_build = []  # type: List[InstallRequirement]
+        reqs_to_build: List[InstallRequirement] = []
         for req in requirement_set.requirements.values():
             if req.is_wheel:
                 preparer.save_linked_requirement(req)

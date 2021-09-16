@@ -1,4 +1,4 @@
-#!/Users/javakky/Downloads/NicoApiClient/.venv/bin/python3.9
+#!/Users/javakky/NicoApiClient/.venv/bin/python3
 # -*- coding: utf-8 -*-
 import re
 import sys

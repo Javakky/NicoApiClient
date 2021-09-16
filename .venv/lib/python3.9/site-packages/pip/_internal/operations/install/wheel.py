@@ -13,62 +13,50 @@ import shutil
 import sys
 import warnings
 from base64 import urlsafe_b64encode
+from email.message import Message
 from itertools import chain, filterfalse, starmap
-from zipfile import ZipFile
+from typing import (
+    IO,
+    TYPE_CHECKING,
+    Any,
+    BinaryIO,
+    Callable,
+    Dict,
+    Iterable,
+    Iterator,
+    List,
+    NewType,
+    Optional,
+    Sequence,
+    Set,
+    Tuple,
+    Union,
+    cast,
+)
+from zipfile import ZipFile, ZipInfo
 
-from pip._vendor import pkg_resources
 from pip._vendor.distlib.scripts import ScriptMaker
 from pip._vendor.distlib.util import get_export_entry
+from pip._vendor.packaging.utils import canonicalize_name
 from pip._vendor.six import ensure_str, ensure_text, reraise
 
 from pip._internal.exceptions import InstallationError
 from pip._internal.locations import get_major_minor_version
+from pip._internal.metadata import BaseDistribution, get_wheel_distribution
 from pip._internal.models.direct_url import DIRECT_URL_METADATA_NAME, DirectUrl
-from pip._internal.models.scheme import SCHEME_KEYS
+from pip._internal.models.scheme import SCHEME_KEYS, Scheme
 from pip._internal.utils.filesystem import adjacent_tmp_file, replace
 from pip._internal.utils.misc import captured_stdout, ensure_dir, hash_file, partition
-from pip._internal.utils.typing import MYPY_CHECK_RUNNING
 from pip._internal.utils.unpacking import (
     current_umask,
     is_within_directory,
     set_extracted_file_to_default_mode_plus_executable,
     zip_item_is_executable,
 )
-from pip._internal.utils.wheel import parse_wheel, pkg_resources_distribution_for_wheel
+from pip._internal.utils.wheel import parse_wheel
 
-# Use the custom cast function at runtime to make cast work,
-# and import typing.cast when performing pre-commit and type
-# checks
-if not MYPY_CHECK_RUNNING:
-    from pip._internal.utils.typing import cast
-else:
-    from email.message import Message
-    from typing import (
-        IO,
-        Any,
-        BinaryIO,
-        Callable,
-        Dict,
-        Iterable,
-        Iterator,
-        List,
-        NewType,
-        Optional,
-        Protocol,
-        Sequence,
-        Set,
-        Tuple,
-        Union,
-        cast,
-    )
-    from zipfile import ZipInfo
-
-    from pip._vendor.pkg_resources import Distribution
-
-    from pip._internal.models.scheme import Scheme
-
-    RecordPath = NewType('RecordPath', str)
-    InstalledCSVRow = Tuple[RecordPath, str, Union[int, str]]
+if TYPE_CHECKING:
+    from typing import Protocol
 
     class File(Protocol):
         src_record_path = None  # type: RecordPath
@@ -81,6 +69,9 @@ else:
 
 
 logger = logging.getLogger(__name__)
+
+RecordPath = NewType('RecordPath', str)
+InstalledCSVRow = Tuple[RecordPath, str, Union[int, str]]
 
 
 def rehash(path, blocksize=1 << 20):
@@ -127,29 +118,15 @@ def wheel_root_is_purelib(metadata):
     return metadata.get("Root-Is-Purelib", "").lower() == "true"
 
 
-def get_entrypoints(distribution):
-    # type: (Distribution) -> Tuple[Dict[str, str], Dict[str, str]]
-    # get the entry points and then the script names
-    try:
-        console = distribution.get_entry_map('console_scripts')
-        gui = distribution.get_entry_map('gui_scripts')
-    except KeyError:
-        # Our dict-based Distribution raises KeyError if entry_points.txt
-        # doesn't exist.
-        return {}, {}
-
-    def _split_ep(s):
-        # type: (pkg_resources.EntryPoint) -> Tuple[str, str]
-        """get the string representation of EntryPoint,
-        remove space and split on '='
-        """
-        split_parts = str(s).replace(" ", "").split("=")
-        return split_parts[0], split_parts[1]
-
-    # convert the EntryPoint objects into strings with module:function
-    console = dict(_split_ep(v) for v in console.values())
-    gui = dict(_split_ep(v) for v in gui.values())
-    return console, gui
+def get_entrypoints(dist: BaseDistribution) -> Tuple[Dict[str, str], Dict[str, str]]:
+    console_scripts = {}
+    gui_scripts = {}
+    for entry_point in dist.iter_entry_points():
+        if entry_point.group == "console_scripts":
+            console_scripts[entry_point.name] = entry_point.value
+        elif entry_point.group == "gui_scripts":
+            gui_scripts[entry_point.name] = entry_point.value
+    return console_scripts, gui_scripts
 
 
 def message_about_scripts_not_on_PATH(scripts):
@@ -629,9 +606,7 @@ def _install_wheel(
     files = chain(files, other_scheme_files)
 
     # Get the defined entry points
-    distribution = pkg_resources_distribution_for_wheel(
-        wheel_zip, name, wheel_path
-    )
+    distribution = get_wheel_distribution(wheel_path, canonicalize_name(name))
     console, gui = get_entrypoints(distribution)
 
     def is_entrypoint_wrapper(file):
@@ -766,11 +741,11 @@ def _install_wheel(
     # Record the REQUESTED file
     if requested:
         requested_path = os.path.join(dest_info_dir, 'REQUESTED')
-        with open(requested_path, "w"):
+        with open(requested_path, "wb"):
             pass
         generated.append(requested_path)
 
-    record_text = distribution.get_metadata('RECORD')
+    record_text = distribution.read_text('RECORD')
     record_rows = list(csv.reader(record_text.splitlines()))
 
     rows = get_csv_rows_for_installed(

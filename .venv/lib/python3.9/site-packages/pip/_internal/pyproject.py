@@ -1,14 +1,11 @@
 import os
 from collections import namedtuple
+from typing import Any, List, Optional
 
-from pip._vendor import toml
+from pip._vendor import tomli
 from pip._vendor.packaging.requirements import InvalidRequirement, Requirement
 
 from pip._internal.exceptions import InstallationError
-from pip._internal.utils.typing import MYPY_CHECK_RUNNING
-
-if MYPY_CHECK_RUNNING:
-    from typing import Any, List, Optional
 
 
 def _is_list_of_str(obj):
@@ -62,7 +59,7 @@ def load_pyproject_toml(
 
     if has_pyproject:
         with open(pyproject_toml, encoding="utf-8") as f:
-            pp_toml = toml.load(f)
+            pp_toml = tomli.load(f)
         build_system = pp_toml.get("build-system")
     else:
         build_system = None

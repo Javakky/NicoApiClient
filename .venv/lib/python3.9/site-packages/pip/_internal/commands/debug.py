@@ -2,9 +2,11 @@ import locale
 import logging
 import os
 import sys
+from optparse import Values
+from types import ModuleType
+from typing import Any, Dict, List, Optional
 
 import pip._vendor
-from pip._vendor import pkg_resources
 from pip._vendor.certifi import where
 from pip._vendor.packaging.version import parse as parse_version
 
@@ -13,35 +15,26 @@ from pip._internal.cli import cmdoptions
 from pip._internal.cli.base_command import Command
 from pip._internal.cli.cmdoptions import make_target_python
 from pip._internal.cli.status_codes import SUCCESS
+from pip._internal.configuration import Configuration
+from pip._internal.metadata import get_environment
 from pip._internal.utils.logging import indent_log
 from pip._internal.utils.misc import get_pip_version
-from pip._internal.utils.typing import MYPY_CHECK_RUNNING
-
-if MYPY_CHECK_RUNNING:
-    from optparse import Values
-    from types import ModuleType
-    from typing import Dict, List, Optional
-
-    from pip._internal.configuration import Configuration
 
 logger = logging.getLogger(__name__)
 
 
-def show_value(name, value):
-    # type: (str, Optional[str]) -> None
+def show_value(name: str, value: Any) -> None:
     logger.info('%s: %s', name, value)
 
 
-def show_sys_implementation():
-    # type: () -> None
+def show_sys_implementation() -> None:
     logger.info('sys.implementation:')
     implementation_name = sys.implementation.name
     with indent_log():
         show_value('name', implementation_name)
 
 
-def create_vendor_txt_map():
-    # type: () -> Dict[str, str]
+def create_vendor_txt_map() -> Dict[str, str]:
     vendor_txt_path = os.path.join(
         os.path.dirname(pip_location),
         '_vendor',
@@ -58,8 +51,7 @@ def create_vendor_txt_map():
     return dict(line.split('==', 1) for line in lines)  # type: ignore
 
 
-def get_module_from_module_name(module_name):
-    # type: (str) -> ModuleType
+def get_module_from_module_name(module_name: str) -> ModuleType:
     # Module name can be uppercase in vendor.txt for some reason...
     module_name = module_name.lower()
     # PATCH: setuptools is actually only pkg_resources.
@@ -75,22 +67,21 @@ def get_module_from_module_name(module_name):
     return getattr(pip._vendor, module_name)
 
 
-def get_vendor_version_from_module(module_name):
-    # type: (str) -> Optional[str]
+def get_vendor_version_from_module(module_name: str) -> Optional[str]:
     module = get_module_from_module_name(module_name)
     version = getattr(module, '__version__', None)
 
     if not version:
-        # Try to find version in debundled module info
-        pkg_set = pkg_resources.WorkingSet([os.path.dirname(module.__file__)])
-        package = pkg_set.find(pkg_resources.Requirement.parse(module_name))
-        version = getattr(package, 'version', None)
+        # Try to find version in debundled module info.
+        env = get_environment([os.path.dirname(module.__file__)])
+        dist = env.get_distribution(module_name)
+        if dist:
+            version = str(dist.version)
 
     return version
 
 
-def show_actual_vendor_versions(vendor_txt_versions):
-    # type: (Dict[str, str]) -> None
+def show_actual_vendor_versions(vendor_txt_versions: Dict[str, str]) -> None:
     """Log the actual version and print extra info if there is
     a conflict or if the actual version could not be imported.
     """
@@ -107,8 +98,7 @@ def show_actual_vendor_versions(vendor_txt_versions):
         logger.info('%s==%s%s', module_name, actual_version, extra_message)
 
 
-def show_vendor_versions():
-    # type: () -> None
+def show_vendor_versions() -> None:
     logger.info('vendored library versions:')
 
     vendor_txt_versions = create_vendor_txt_map()
@@ -116,8 +106,7 @@ def show_vendor_versions():
         show_actual_vendor_versions(vendor_txt_versions)
 
 
-def show_tags(options):
-    # type: (Values) -> None
+def show_tags(options: Values) -> None:
     tag_limit = 10
 
     target_python = make_target_python(options)
@@ -150,8 +139,7 @@ def show_tags(options):
             logger.info(msg)
 
 
-def ca_bundle_info(config):
-    # type: (Configuration) -> str
+def ca_bundle_info(config: Configuration) -> str:
     levels = set()
     for key, _ in config.items():
         levels.add(key.split('.')[0])
@@ -180,14 +168,12 @@ class DebugCommand(Command):
       %prog <options>"""
     ignore_require_venv = True
 
-    def add_options(self):
-        # type: () -> None
+    def add_options(self) -> None:
         cmdoptions.add_target_python_options(self.cmd_opts)
         self.parser.insert_option_group(0, self.cmd_opts)
         self.parser.config.load()
 
-    def run(self, options, args):
-        # type: (Values, List[str]) -> int
+    def run(self, options: Values, args: List[str]) -> int:
         logger.warning(
             "This command is only meant for debugging. "
             "Do not use this with automation for parsing and getting these "

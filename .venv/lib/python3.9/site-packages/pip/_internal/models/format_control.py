@@ -1,10 +1,8 @@
+from typing import FrozenSet, Optional, Set
+
 from pip._vendor.packaging.utils import canonicalize_name
 
 from pip._internal.exceptions import CommandError
-from pip._internal.utils.typing import MYPY_CHECK_RUNNING
-
-if MYPY_CHECK_RUNNING:
-    from typing import FrozenSet, Optional, Set
 
 
 class FormatControl:
@@ -13,8 +11,11 @@ class FormatControl:
 
     __slots__ = ["no_binary", "only_binary"]
 
-    def __init__(self, no_binary=None, only_binary=None):
-        # type: (Optional[Set[str]], Optional[Set[str]]) -> None
+    def __init__(
+        self,
+        no_binary: Optional[Set[str]] = None,
+        only_binary: Optional[Set[str]] = None
+    ) -> None:
         if no_binary is None:
             no_binary = set()
         if only_binary is None:
@@ -23,8 +24,7 @@ class FormatControl:
         self.no_binary = no_binary
         self.only_binary = only_binary
 
-    def __eq__(self, other):
-        # type: (object) -> bool
+    def __eq__(self, other: object) -> bool:
         if not isinstance(other, self.__class__):
             return NotImplemented
 
@@ -36,8 +36,7 @@ class FormatControl:
             for k in self.__slots__
         )
 
-    def __repr__(self):
-        # type: () -> str
+    def __repr__(self) -> str:
         return "{}({}, {})".format(
             self.__class__.__name__,
             self.no_binary,
@@ -45,8 +44,7 @@ class FormatControl:
         )
 
     @staticmethod
-    def handle_mutual_excludes(value, target, other):
-        # type: (str, Set[str], Set[str]) -> None
+    def handle_mutual_excludes(value: str, target: Set[str], other: Set[str]) -> None:
         if value.startswith('-'):
             raise CommandError(
                 "--no-binary / --only-binary option requires 1 argument."
@@ -68,8 +66,7 @@ class FormatControl:
             other.discard(name)
             target.add(name)
 
-    def get_allowed_formats(self, canonical_name):
-        # type: (str) -> FrozenSet[str]
+    def get_allowed_formats(self, canonical_name: str) -> FrozenSet[str]:
         result = {"binary", "source"}
         if canonical_name in self.only_binary:
             result.discard('source')
@@ -81,8 +78,7 @@ class FormatControl:
             result.discard('binary')
         return frozenset(result)
 
-    def disallow_binaries(self):
-        # type: () -> None
+    def disallow_binaries(self) -> None:
         self.handle_mutual_excludes(
             ':all:', self.no_binary, self.only_binary,
         )
