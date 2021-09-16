@@ -1,11 +1,11 @@
-import math
 import statistics
 from json import JSONEncoder
 from typing import Optional, Dict, Any, List, Union
 
+import math
 import requests
 
-from nicovideo_api_client.nicovideo.constants import FieldType
+from nicovideo_api_client.constants import FieldType
 
 
 class SnapshotSearchAPIV2Result:

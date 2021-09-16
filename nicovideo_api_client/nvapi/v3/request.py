@@ -1,13 +1,13 @@
-import math
-import time
 import urllib
 from typing import Dict, List
 from urllib.parse import urlencode, unquote_plus
 
+import math
 import requests
+import time
 
-from nicovideo_api_client.nicovideo.api.v2.result import SnapshotSearchAPIV2Result
-from nicovideo_api_client.nicovideo.nvapi.v3.result import SnapshotSearchNVAPIV3Result
+from nicovideo_api_client.api.v2.result import SnapshotSearchAPIV2Result
+from nicovideo_api_client.nvapi.v3.result import SnapshotSearchNVAPIV3Result
 
 
 class SnapshotSearchNVAPIV3Request:
@@ -17,7 +17,8 @@ class SnapshotSearchNVAPIV3Request:
         self.query: Dict[str, str] = query
         self.limit = limit
 
-    def get(self, url: str):
+    @staticmethod
+    def get(url: str):
         return requests.get(url, headers={'X-Frontend-Id': '6'})
 
     def request(self) -> SnapshotSearchNVAPIV3Result:

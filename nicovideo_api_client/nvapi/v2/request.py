@@ -1,12 +1,12 @@
-import math
-import time
 import urllib
 from typing import Dict, List
 from urllib.parse import urlencode, unquote_plus
 
+import math
 import requests
+import time
 
-from nicovideo_api_client.nicovideo.nvapi.v2.result import SnapshotSearchNVAPIV2Result
+from nicovideo_api_client.nvapi.v2.result import SnapshotSearchNVAPIV2Result
 
 
 class SnapshotSearchNVAPIV2Request:
@@ -16,7 +16,8 @@ class SnapshotSearchNVAPIV2Request:
         self.query: Dict[str, str] = query
         self.limit = limit
 
-    def get(self, url: str):
+    @staticmethod
+    def get(url: str):
         return requests.get(url, headers={'X-Frontend-Id': '6'})
 
     def request(self) -> SnapshotSearchNVAPIV2Result:

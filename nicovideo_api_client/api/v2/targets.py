@@ -1,6 +1,6 @@
 from typing import Dict
 
-from nicovideo_api_client.nicovideo.api.v2.field import SnapshotSearchAPIV2Fields
+from nicovideo_api_client.api.v2.field import SnapshotSearchAPIV2Fields
 
 
 class SnapshotSearchAPIV2TagsExact:
