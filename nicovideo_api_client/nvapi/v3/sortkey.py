@@ -1,6 +1,6 @@
 from typing import Dict
 
-from nicovideo_api_client.nicovideo.nvapi.v3.limit import SnapshotSearchNVAPIV3Limit
+from nicovideo_api_client.nvapi.v3.limit import SnapshotSearchNVAPIV3Limit
 
 
 class SnapshotSearchNVAPIV3SortKey:

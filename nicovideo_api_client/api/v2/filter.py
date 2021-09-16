@@ -2,9 +2,9 @@ import urllib.parse
 from json import JSONEncoder
 from typing import Dict, Union
 
-from nicovideo_api_client.nicovideo.api.v2.complex_filter import ComplexFilterOperator, ComplexFilterTerm
-from nicovideo_api_client.nicovideo.api.v2.limit import SnapshotSearchAPIV2Limit
-from nicovideo_api_client.nicovideo.api.v2.simple_filter import SnapshotSearchAPIV2SimpleFilter
+from nicovideo_api_client.api.v2.complex_filter import ComplexFilterOperator, ComplexFilterTerm
+from nicovideo_api_client.api.v2.limit import SnapshotSearchAPIV2Limit
+from nicovideo_api_client.api.v2.simple_filter import SnapshotSearchAPIV2SimpleFilter
 
 
 class SnapshotSearchAPIV2Filter:

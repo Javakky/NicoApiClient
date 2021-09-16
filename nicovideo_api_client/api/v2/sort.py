@@ -1,7 +1,7 @@
 from typing import Dict
 
-from nicovideo_api_client.nicovideo.constants import FieldType, sort_types
-from nicovideo_api_client.nicovideo.api.v2.filter import SnapshotSearchAPIV2Filter
+from nicovideo_api_client.api.v2.filter import SnapshotSearchAPIV2Filter
+from nicovideo_api_client.constants import FieldType, sort_types
 
 
 class SnapshotSearchAPIV2Sort:

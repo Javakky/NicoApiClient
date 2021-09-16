@@ -2,12 +2,12 @@ import sys
 
 sys.path.append(".")
 
-from nicovideo_api_client.nicovideo.api.v2.snapshot_search_api_v2 import SnapshotSearchAPIV2
-from nicovideo_api_client.nicovideo.constants import FieldType
+from nicovideo_api_client.api.v2.snapshot_search_api_v2 import SnapshotSearchAPIV2
+from nicovideo_api_client.constants import FieldType
 
 # URL生成
 url = SnapshotSearchAPIV2() \
-    .tagsExact() \
+    .tags_exact() \
     .q("VOCALOID") \
     .field({FieldType.TITLE, FieldType.CONTENT_ID}) \
     .sort(FieldType.VIEW_COUNTER) \
@@ -20,7 +20,7 @@ print(url)
 
 # 実行
 json = SnapshotSearchAPIV2() \
-    .tagsExact() \
+    .tags_exact() \
     .q("VOCALOID") \
     .field({FieldType.TITLE, FieldType.CONTENT_ID}) \
     .sort(FieldType.VIEW_COUNTER) \

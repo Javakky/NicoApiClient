@@ -1,10 +1,9 @@
+import re
 from datetime import datetime
 from typing import Dict, List, Any
 
-from nicovideo_api_client.nicovideo.constants import FieldType
-from nicovideo_api_client.nicovideo.api.v2.limit import SnapshotSearchAPIV2Limit
-
-import re
+from nicovideo_api_client.api.v2.limit import SnapshotSearchAPIV2Limit
+from nicovideo_api_client.constants import FieldType
 
 
 class SnapshotSearchAPIV2SimpleFilter:
@@ -12,12 +11,12 @@ class SnapshotSearchAPIV2SimpleFilter:
         self.query: Dict[str, str] = query
         self.filters: Dict[str, List[Any]] = {}
 
-    def set_filter(self, type: FieldType, value: Any):
-        if type == FieldType.START_TIME:
+    def set_filter(self, field_type: FieldType, value: Any):
+        if field_type == FieldType.START_TIME:
             if not isinstance(value, datetime):
                 raise TypeError("FieldType.START_TIMEを指定した時の型は datetime であるべきです")
             v = value.strftime('%Y-%m-%dT%H:%M:%S+09:00')
-        elif type == FieldType.CONTENT_ID:
+        elif field_type == FieldType.CONTENT_ID:
             if isinstance(value, int):
                 v = f"sm{value}"
             elif isinstance(value, str):
@@ -29,13 +28,13 @@ class SnapshotSearchAPIV2SimpleFilter:
         else:
             raise NotImplementedError("未知のTypeが指定されました")
 
-        if type.value not in self.filters:
-            self.filters[type.value] = []
+        if field_type.value not in self.filters:
+            self.filters[field_type.value] = []
 
-        self.filters[type.value].append(v)
+        self.filters[field_type.value].append(v)
 
         self.query[
-            f'filters[{type.value}][{len(self.filters[type.value])}]'
+            f'filters[{field_type.value}][{len(self.filters[field_type.value])}]'
         ] = v
         return self
 
