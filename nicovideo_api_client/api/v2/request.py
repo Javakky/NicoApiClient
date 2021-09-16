@@ -1,4 +1,4 @@
-from typing import Dict, List
+from typing import Dict, List, Tuple
 from urllib.parse import urlencode, unquote_plus
 
 import math
@@ -15,7 +15,7 @@ class SnapshotSearchAPIV2Request:
         self.query: Dict[str, str] = query
         self.limit = limit
 
-    def request(self) -> SnapshotSearchAPIV2Result:
+    def request(self, timeout: float = 400.0) -> SnapshotSearchAPIV2Result:
         if self.limit <= 100:
             self.query["_limit"] = str(self.limit)
         else:
@@ -31,18 +31,30 @@ class SnapshotSearchAPIV2Request:
         if total_count <= self.limit:
             self.limit = total_count
 
+        total_time = 0.0
+
         for pos in range(1, math.ceil(self.limit / 100)):
             self.query["_offset"] = str(pos * 100)
             if self.limit < (pos + 1) * 100:
                 self.query["_limit"] = str(self.limit % 100)
-            tmp = SnapshotSearchAPIV2Result(self.query, requests.get(self.build_url()))
-            while "meta" not in tmp.json() or tmp.status() != 200:
+
+            while True:
+                (response, time) = self._request()
+                total_time += time
+                if total_time > timeout:
+                    raise TimeoutError("通信がタイムアウトしました")
+                if "meta" in response.json() or response.status() == 200: break
                 print("Connection Failed!")
                 time.sleep(1.5)
-                tmp = SnapshotSearchAPIV2Result(self.query, requests.get(self.build_url()))
-            results.append(tmp)
-
+                
+            results.append(response)
         return SnapshotSearchAPIV2Result(self.query, results)
+
+    def _request(self, timeout: float) -> Tuple[SnapshotSearchAPIV2Result, float]:
+        response = requests.get(self.build_url(), timeout = (timeout / 4, timeout * 3 / 4))
+        total_time = response.elapsed.total_seconds()
+        tmp = SnapshotSearchAPIV2Result(self.query, response)
+        return (tmp, total_time)
 
     def build_url(self, decode: bool = False) -> str:
         query = urlencode(self.query)
