@@ -18,3 +18,7 @@ json = SnapshotSearchAPIV2() \
     .request() \
     .json()
 ```
+
+## 利用規約
+
+https://site.nicovideo.jp/search-api-docs/snapshot#api%E5%88%A9%E7%94%A8%E8%A6%8F%E7%B4%84
