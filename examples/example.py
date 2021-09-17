@@ -32,13 +32,16 @@ request = SnapshotSearchAPIV2() \
     .field({FieldType.TITLE}) \
     .sort(FieldType.VIEW_COUNTER) \
     .json_filter(
-        JsonFilterOperator.not_(
-            JsonFilterTerm.set_range_time(
-                end=datetime.datetime(2021, 1, 1, 0, 0, 0),
-                include_upper=False
-            )
+    JsonFilterOperator.not_(
+        JsonFilterTerm.set_range_time(
+            end=datetime.datetime(2021, 1, 1, 0, 0, 0),
+            include_upper=False
         )
-    ).limit(10)
+    )
+).limit(10)
 
 print(request.build_url())
 print(request.request().json())
+
+dt = SnapshotSearchAPIV2().version()
+print(dt)
