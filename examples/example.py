@@ -42,3 +42,6 @@ request = SnapshotSearchAPIV2() \
 
 print(request.build_url())
 print(request.request().json())
+
+dt = SnapshotSearchAPIV2().version()
+print(dt)
