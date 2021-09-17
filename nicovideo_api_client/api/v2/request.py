@@ -22,10 +22,9 @@ class SnapshotSearchAPIV2Request:
             self.query["_limit"] = "100"
 
         total_time = 0.0
-        wait_time = 0.0
 
-        (response, add_time) = self._request(timeout)
-        total_time += add_time
+        (response, response_time) = self._request(timeout)
+        total_time += response_time
 
         results: List[SnapshotSearchAPIV2Result] = [response]
 
@@ -39,18 +38,16 @@ class SnapshotSearchAPIV2Request:
             if self.limit < (pos + 1) * 100:
                 self.query["_limit"] = str(self.limit % 100)
 
-            wait_time = total_time - wait_time
-            time.sleep(wait_time)
-            wait_time = total_time
+            time.sleep(response_time)
 
             while True:
-                (response, add_time) = self._request(timeout)
-                total_time += add_time
+                (response, response_time) = self._request(timeout)
+                total_time += response_time
                 if total_time > timeout:
                     raise TimeoutError("通信がタイムアウトしました")
                 if "meta" in response.json() or response.status() == 200: break
                 print("Connection Failed!")
-                time.sleep(1.5)
+                time.sleep(response_time)
                 
             results.append(response)
         return SnapshotSearchAPIV2Result(self.query, results)
