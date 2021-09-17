@@ -10,7 +10,7 @@ from nicovideo_api_client.constants import FieldType
 
 class SnapshotSearchAPIV2Result:
     def __init__(self, query: Dict[str, str], response: Union[requests.Response, List['SnapshotSearchAPIV2Result']]):
-        self.fields: List[str] = query["fields"].split(",") if "fields" in query else []
+        self._fields: List[str] = query["fields"].split(",") if "fields" in query else []
         self._json: Optional[Dict[str, Any]] = None
 
         if isinstance(response, requests.Response):
@@ -41,17 +41,17 @@ class SnapshotSearchAPIV2Result:
         return self.json()['data']
 
     def sum_view_counter(self) -> int:
-        if FieldType.VIEW_COUNTER.value not in self.fields:
+        if FieldType.VIEW_COUNTER.value not in self._fields:
             raise Exception("フィールドに viewCounter が指定されていません")
         return sum(list(map(lambda x: x[FieldType.VIEW_COUNTER.value], self.data())))
 
     def avg_view_counter(self) -> int:
-        if FieldType.VIEW_COUNTER.value not in self.fields:
+        if FieldType.VIEW_COUNTER.value not in self._fields:
             raise Exception("フィールドに viewCounter が指定されていません")
         return statistics.mean(list(map(lambda x: x[FieldType.VIEW_COUNTER.value], self.data())))
 
     def center_view_counter(self) -> int:
-        if FieldType.VIEW_COUNTER.value not in self.fields:
+        if FieldType.VIEW_COUNTER.value not in self._fields:
             raise Exception("フィールドに viewCounter が指定されていません")
         return self.data()[math.floor(self.total_count() / 2)][FieldType.VIEW_COUNTER.value]
 

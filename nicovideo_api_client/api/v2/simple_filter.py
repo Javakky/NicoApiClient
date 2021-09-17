@@ -8,8 +8,8 @@ from nicovideo_api_client.constants import FieldType
 
 class SnapshotSearchAPIV2SimpleFilter:
     def __init__(self, query: Dict[str, str]):
-        self.query: Dict[str, str] = query
-        self.filters: Dict[str, List[Any]] = {}
+        self._query: Dict[str, str] = query
+        self._filters: Dict[str, List[Any]] = {}
 
     def set_filter(self, field_type: FieldType, value: Any):
         if field_type == FieldType.START_TIME:
@@ -28,15 +28,15 @@ class SnapshotSearchAPIV2SimpleFilter:
         else:
             raise NotImplementedError("未知のTypeが指定されました")
 
-        if field_type.value not in self.filters:
-            self.filters[field_type.value] = []
+        if field_type.value not in self._filters:
+            self._filters[field_type.value] = []
 
-        self.filters[field_type.value].append(v)
+        self._filters[field_type.value].append(v)
 
-        self.query[
-            f'filters[{field_type.value}][{len(self.filters[field_type.value])}]'
+        self._query[
+            f'filters[{field_type.value}][{len(self._filters[field_type.value])}]'
         ] = v
         return self
 
     def filter(self) -> SnapshotSearchAPIV2Limit:
-        return SnapshotSearchAPIV2Limit(self.query)
+        return SnapshotSearchAPIV2Limit(self._query)
