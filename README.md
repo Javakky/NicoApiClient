@@ -3,6 +3,12 @@
 ## 概要
 [ニコニコ動画 『スナップショット検索API v2』](https://site.nicovideo.jp/search-api-docs/snapshot) などの API について、仕様をなるべく意識せずに利用できるクライアントを提供する。
 
+## install
+
+```shell
+pip install nicovideo-api-client
+```
+
 ## example
 
 ```python
