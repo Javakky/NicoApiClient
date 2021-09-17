@@ -33,10 +33,10 @@ class SnapshotSearchAPIV2Request:
         if total_count <= self._limit:
             self._limit = total_count
 
-        for pos in range(1, math.ceil(self.limit / 100)):
-            self.query["_offset"] = str(pos * 100)
-            if self.limit < (pos + 1) * 100:
-                self.query["_limit"] = str(self.limit % 100)
+        for pos in range(1, math.ceil(self._limit / 100)):
+            self._query["_offset"] = str(pos * 100)
+            if self._limit < (pos + 1) * 100:
+                self._query["_limit"] = str(self._limit % 100)
 
             time.sleep(response_time)
 
