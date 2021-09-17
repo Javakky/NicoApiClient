@@ -21,26 +21,31 @@ class SnapshotSearchAPIV2Request:
         else:
             self.query["_limit"] = "100"
 
-        results: List[SnapshotSearchAPIV2Result] = [SnapshotSearchAPIV2Result(
-            self.query,
-            requests.get(self.build_url())
-        )]
+        total_time = 0.0
+        wait_time = 0.0
+
+        (response, add_time) = self._request(timeout)
+        total_time += add_time
+
+        results: List[SnapshotSearchAPIV2Result] = [response]
 
         total_count = int(results[0].total_count())
 
         if total_count <= self.limit:
             self.limit = total_count
 
-        total_time = 0.0
-
         for pos in range(1, math.ceil(self.limit / 100)):
             self.query["_offset"] = str(pos * 100)
             if self.limit < (pos + 1) * 100:
                 self.query["_limit"] = str(self.limit % 100)
 
+            wait_time = total_time - wait_time
+            time.sleep(wait_time)
+            wait_time = total_time
+
             while True:
-                (response, time) = self._request()
-                total_time += time
+                (response, add_time) = self._request(timeout)
+                total_time += add_time
                 if total_time > timeout:
                     raise TimeoutError("通信がタイムアウトしました")
                 if "meta" in response.json() or response.status() == 200: break
