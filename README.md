@@ -5,6 +5,8 @@
 
 ## install
 
+PyPIリポジトリ: https://pypi.org/project/nicovideo-api-client/
+
 ```shell
 pip install nicovideo-api-client
 ```
