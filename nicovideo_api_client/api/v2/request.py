@@ -21,22 +21,24 @@ class SnapshotSearchAPIV2Request:
         else:
             self._query["_limit"] = "100"
 
-        results: List[SnapshotSearchAPIV2Result] = [SnapshotSearchAPIV2Result(
-            self._query,
-            requests.get(self.build_url())
-        )]
+        total_time = 0.0
+
+        (response, response_time) = self._request(timeout)
+        total_time += response_time
+
+        results: List[SnapshotSearchAPIV2Result] = [response]
 
         total_count = int(results[0].total_count())
 
         if total_count <= self._limit:
             self._limit = total_count
 
-        total_time = 0.0
-
         for pos in range(1, math.ceil(self._limit / 100)):
             self._query["_offset"] = str(pos * 100)
             if self._limit < (pos + 1) * 100:
                 self._query["_limit"] = str(self._limit % 100)
+
+            time.sleep(response_time)
 
             while True:
                 (response, response_time) = self._request(timeout)
@@ -46,8 +48,8 @@ class SnapshotSearchAPIV2Request:
                 if "meta" in response.json() or response.status() == 200:
                     break
                 print("Connection Failed!")
-                time.sleep(1.5)
-
+                time.sleep(response_time)
+                
             results.append(response)
         return SnapshotSearchAPIV2Result(self._query, results)
 
