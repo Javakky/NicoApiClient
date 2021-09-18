@@ -11,6 +11,10 @@ PyPIリポジトリ: https://pypi.org/project/nicovideo-api-client/
 pip install nicovideo-api-client
 ```
 
+### installed
+
+[![Downloads](https://pepy.tech/badge/nicovideo-api-client)](https://pepy.tech/project/nicovideo-api-client) [![Downloads](https://pepy.tech/badge/nicovideo-api-client/month)](https://pepy.tech/project/nicovideo-api-client) [![Downloads](https://pepy.tech/badge/nicovideo-api-client/week)](https://pepy.tech/project/nicovideo-api-client)
+
 ## example
 
 ```python
