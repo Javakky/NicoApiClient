@@ -33,7 +33,7 @@ request = SnapshotSearchAPIV2() \
     .json_filter(
     JsonFilterOperator.not_(
         JsonFilterTerm.set_range_time(
-            end=datetime.datetime(2021, 1, 1, 0, 0, 0),
+            to_=datetime.datetime(2021, 1, 1, 0, 0, 0),
             include_upper=False
         )
     )
