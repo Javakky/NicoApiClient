@@ -10,6 +10,12 @@ class SnapshotSearchAPIV2Fields:
         self._query: Dict[str, str] = query
 
     def field(self, fields: Set[FieldType]) -> 'SnapshotSearchAPIV2Sort':
+        """
+        レスポンスの返すフィールドタイプを指定する。
+
+        :param fields: レスポンスの返すフィールドタイプ一覧
+        :return: ソートタイプ指定オブジェクト
+        """
         self._fields = set(map(lambda x: x.value, fields))
         if len(self._fields) > 0:
             self._query["fields"] = ','.join(self._fields)

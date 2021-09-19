@@ -9,6 +9,13 @@ class SnapshotSearchAPIV2Sort:
         self._query: Dict[str, str] = query
 
     def sort(self, sort_type: FieldType, reverse: bool = False) -> SnapshotSearchAPIV2Filter:
+        """
+        ソートタイプを指定する。
+
+        :param sort_type: ソートに利用するフィールドタイプ
+        :param reverse: True: 昇順, False (デフォルト): 降順
+        :return: フィルター指定オブジェクト
+        """
         if sort_type not in sort_types:
             raise Exception("不正なソートタイプ")
         self._query['_sort'] = ('+' if reverse else '-') + sort_type.value
