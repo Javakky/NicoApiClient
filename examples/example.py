@@ -2,10 +2,9 @@ import datetime
 
 import sys
 
-from nicovideo_api_client.api.v2.json_filter import JsonFilterOperator, JsonFilterTerm
-
 sys.path.append(".")
 
+from nicovideo_api_client.api.v2.json_filter import JsonFilterOperator, JsonFilterTerm
 from nicovideo_api_client.api.v2.snapshot_search_api_v2 import SnapshotSearchAPIV2
 from nicovideo_api_client.constants import FieldType
 
