@@ -7,7 +7,7 @@ import re
 
 package_name = "nicovideo_api_client"
 
-packages = [package_name, "nicovideo_api_client.api.v2", "nicovideo_api_client.nvapi.v2", "nicovideo_api_client.nvapi.v3"]
+packages = [package_name, "nicovideo_api_client.api.v2"]
 
 root_dir = path.abspath(path.dirname(__file__))
 
