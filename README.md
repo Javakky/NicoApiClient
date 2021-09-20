@@ -17,19 +17,7 @@ pip install nicovideo-api-client
 
 ### documentation
 
-```bash
-sphinx-apidoc -f -e -o ./docs ./nicovideo_api_client
-cd docs
-make html
-```
-
-で `docs/_build/html` にファイルが生成される。
-
-```bash
-python3 -m http.server
-```
-
-などで適宜サーバーを立てて読むとよい。
+[NicoApiClient コードドキュメント](https://javakky.github.io/NicoApiClientDocs/)
 
 ## example
 
