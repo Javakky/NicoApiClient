@@ -1,3 +1,4 @@
+from collections import Set
 from datetime import datetime
 
 import requests
@@ -28,6 +29,18 @@ class SnapshotSearchAPIV2:
         :return: クエリ(キーワード)入力オブジェクト
         """
         return SnapshotSearchAPIV2Targets(FieldType.TITLE, FieldType.DESCRIPTION, FieldType.TAGS)
+
+    @staticmethod
+    def targets(targets: Set[FieldType]) -> SnapshotSearchAPIV2Targets:
+        """
+        検索対象のフィールドタイプを指定して検索を行う。
+
+        :return: クエリ(キーワード)入力オブジェクト
+        """
+
+        if FieldType.TAGS_EXACT in targets and len(targets) > 1:
+            raise Exception("tagsExact は他のフィールドタイプと併用して指定できません")
+        return SnapshotSearchAPIV2Targets(*targets)
 
     @staticmethod
     def version(timeout: float = 400) -> datetime:
