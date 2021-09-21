@@ -35,6 +35,19 @@ sort_types = [
     FieldType.LAST_COMMENT_TIME
 ]
 
+target_types = [
+    FieldType.CONTENT_ID,
+    FieldType.TITLE,
+    FieldType.DESCRIPTION,
+    FieldType.TAGS,
+    FieldType.LAST_RES_BODY,
+    FieldType.CATEGORY_TAGS,
+    FieldType.TAGS,
+    FieldType.TAGS_EXACT,
+    FieldType.GENRE,
+    FieldType.GENRE_KEYWORD
+]
+
 
 class SortKeyType(Enum):
     REGISTERED_AT = 'registeredAt'

@@ -4,7 +4,7 @@ from datetime import datetime
 import requests
 
 from nicovideo_api_client.api.v2.targets import SnapshotSearchAPIV2Targets
-from nicovideo_api_client.constants import END_POINT_URL_V2_VERSION, FieldType
+from nicovideo_api_client.constants import END_POINT_URL_V2_VERSION, FieldType, target_types
 
 
 class SnapshotSearchAPIV2:
@@ -37,6 +37,10 @@ class SnapshotSearchAPIV2:
 
         :return: クエリ(キーワード)入力オブジェクト
         """
+
+        for t in targets:
+            if t not in target_types:
+                raise Exception("ターゲットに指定できないフィールドタイプです")
 
         if FieldType.TAGS_EXACT in targets and len(targets) > 1:
             raise Exception("tagsExact は他のフィールドタイプと併用して指定できません")
