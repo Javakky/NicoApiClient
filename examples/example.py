@@ -26,7 +26,7 @@ print(request.request().json())
 
 # jsonFilter を利用したリクエスト
 request = SnapshotSearchAPIV2() \
-    .tags_exact() \
+    .targets({FieldType.TITLE}) \
     .query("VOCALOID") \
     .field({FieldType.TITLE}) \
     .sort(FieldType.VIEW_COUNTER) \
