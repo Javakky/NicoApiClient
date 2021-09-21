@@ -1,0 +1,1 @@
+pytest `dirname $0`/../tests

@@ -16,7 +16,7 @@ class SnapshotSearchAPIV2Fields:
         :param fields: レスポンスの返すフィールドタイプ一覧
         :return: ソートタイプ指定オブジェクト
         """
-        self._fields = set(map(lambda x: x.value, fields))
+        self._fields = sorted(list(map(lambda x: x.value, fields)))
         if len(self._fields) > 0:
             self._query["fields"] = ','.join(self._fields)
         return SnapshotSearchAPIV2Sort(self._query)

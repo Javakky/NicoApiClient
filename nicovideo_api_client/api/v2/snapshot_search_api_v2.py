@@ -1,4 +1,4 @@
-from collections import Set
+from collections.abc import Set
 from datetime import datetime
 
 import requests
@@ -12,6 +12,7 @@ class SnapshotSearchAPIV2:
     `ニコニコ動画 『スナップショット検索API v2』 <https://site.nicovideo.jp/search-api-docs/snapshot>`_ のエンドポイント
     ここの関数から返るオブジェクトをメソッドチェーンをつないで呼び出すことで適切に設定された状態でAPIを叩くことができる。
     """
+
     @staticmethod
     def tags_exact() -> SnapshotSearchAPIV2Targets:
         """

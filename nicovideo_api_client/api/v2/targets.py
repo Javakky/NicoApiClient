@@ -6,7 +6,10 @@ from nicovideo_api_client.constants import FieldType
 
 class SnapshotSearchAPIV2Targets:
     def __init__(self, *targets: FieldType):
-        self._query: Dict[str, str] = {'targets': ','.join(map(lambda x: x.value, list(targets)))}
+        list_targets = list(targets)
+        if len(list_targets) == 0:
+            raise Exception("targets が設定されていません")
+        self._query: Dict[str, str] = {'targets': ','.join(map(lambda x: x.value, list_targets))}
 
     def query(self, keyword: str) -> SnapshotSearchAPIV2Fields:
         """
