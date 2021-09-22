@@ -1,3 +1,6 @@
+import sys
+sys.path.append(".")
+
 from examples import json_filter, version, simple
 
 if __name__ == '__main__':
