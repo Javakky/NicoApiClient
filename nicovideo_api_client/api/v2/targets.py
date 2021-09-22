@@ -9,7 +9,9 @@ class SnapshotSearchAPIV2Targets:
         list_targets = list(targets)
         if len(list_targets) == 0:
             raise Exception("targets が設定されていません")
-        self._query: Dict[str, str] = {'targets': ','.join(map(lambda x: x.value, list_targets))}
+        self._query: Dict[str, str] = {
+            "targets": ",".join(map(lambda x: x.value, list_targets))
+        }
 
     def query(self, keyword: str) -> SnapshotSearchAPIV2Fields:
         """
@@ -24,5 +26,5 @@ class SnapshotSearchAPIV2Targets:
         :param keyword: 検索するキーワード
         :return: レスポンスフィールドのタイプ指定オブジェクト
         """
-        self._query['q'] = keyword
+        self._query["q"] = keyword
         return SnapshotSearchAPIV2Fields(self._query)

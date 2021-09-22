@@ -20,8 +20,7 @@ class SnapshotSearchAPIV2Filter:
         return SnapshotSearchAPIV2SimpleFilter(self._query)
 
     def json_filter(
-            self,
-            op: Union[JsonFilterOperator, JsonFilterTerm]
+        self, op: Union[JsonFilterOperator, JsonFilterTerm]
     ) -> SnapshotSearchAPIV2Limit:
         """
         `JsonFilterOperator` を使って表現した条件から、 `jsonFilter` を利用して絞り込む。
@@ -29,5 +28,7 @@ class SnapshotSearchAPIV2Filter:
         :param op: 絞り込み条件
         :return: リクエスト上限設定オブジェクト
         """
-        self._query["jsonFilter"] = urllib.parse.quote_plus(JSONEncoder().encode(op.json))
+        self._query["jsonFilter"] = urllib.parse.quote_plus(
+            JSONEncoder().encode(op.json)
+        )
         return SnapshotSearchAPIV2Limit(self._query)

@@ -4,13 +4,16 @@ from nicovideo_api_client.constants import FieldType
 
 def main():
     # URL生成
-    request = SnapshotSearchAPIV2() \
-        .tags_exact() \
-        .query("VOCALOID") \
-        .field({FieldType.TITLE, FieldType.DESCRIPTION}) \
-        .sort(FieldType.VIEW_COUNTER) \
-        .simple_filter().filter() \
+    request = (
+        SnapshotSearchAPIV2()
+        .tags_exact()
+        .query("VOCALOID")
+        .field({FieldType.TITLE, FieldType.DESCRIPTION})
+        .sort(FieldType.VIEW_COUNTER)
+        .simple_filter()
+        .filter()
         .limit(100)
+    )
 
     # https://api.search.nicovideo.jp/api/v2/snapshot/video/contents/search?targets=tagsExact&q=VOCALOID&fields=contentId%2Ctitle&_sort=-viewCounter
     print(request.build_url())
@@ -20,5 +23,5 @@ def main():
     print(request.request().json())
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()

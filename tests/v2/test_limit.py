@@ -11,5 +11,5 @@ class SnapshotSearchAPIV2LimitTestCase(unittest.TestCase):
         assert SnapshotSearchAPIV2Limit({}).limit(100)._limit == 100
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     unittest.main()

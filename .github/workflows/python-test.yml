@@ -24,4 +24,5 @@ jobs:
         run: |
           pip install poetry
           poetry install
+          poetry run task lint
           poetry run task test

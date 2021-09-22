@@ -10,17 +10,25 @@ from nicovideo_api_client.constants import FieldType
 
 class SnapshotSearchAPIV2Result:
     """
-    `レスポンス仕様 <https://site.nicovideo.jp/search-api-docs/snapshot#%E3%83%AC%E3%82%B9%E3%83%9D%E3%83%B3%E3%82%B9>`_
+    `レスポンス仕様 <https://site.nicovideo.jp/search-api-docs/snapshot
+    #%E3%83%AC%E3%82%B9%E3%83%9D%E3%83%B3%E3%82%B9>`_
     """
-    def __init__(self, query: Dict[str, str], response: Union[requests.Response, List['SnapshotSearchAPIV2Result']]):
-        self._fields: List[str] = query["fields"].split(",") if "fields" in query else []
+
+    def __init__(
+        self,
+        query: Dict[str, str],
+        response: Union[requests.Response, List["SnapshotSearchAPIV2Result"]],
+    ):
+        self._fields: List[str] = (
+            query["fields"].split(",") if "fields" in query else []
+        )
         self._json: Optional[Dict[str, Any]] = None
 
         if isinstance(response, requests.Response):
             self._json: Optional[Dict[str, Any]] = response.json()
             return
 
-        results: List['SnapshotSearchAPIV2Result'] = response
+        results: List["SnapshotSearchAPIV2Result"] = response
 
         if len(results) < 1:
             raise Exception("空のリストが渡されました")
@@ -40,17 +48,17 @@ class SnapshotSearchAPIV2Result:
         """
         リクエストのメタ情報 (HTTP Status など) を返す。
         """
-        if 'meta' not in self.json():
+        if "meta" not in self.json():
             return {}
-        return self.json()['meta']
+        return self.json()["meta"]
 
     def data(self) -> List[Dict[str, Any]]:
         """
         レスポンスの本体データを Dict オブジェクト形式で返す。
         """
-        if 'data' not in self.json():
+        if "data" not in self.json():
             return []
-        return self.json()['data']
+        return self.json()["data"]
 
     def sum_view_counter(self) -> int:
         """
@@ -66,7 +74,9 @@ class SnapshotSearchAPIV2Result:
         """
         if FieldType.VIEW_COUNTER.value not in self._fields:
             raise Exception("フィールドに viewCounter が指定されていません")
-        return statistics.mean(list(map(lambda x: x[FieldType.VIEW_COUNTER.value], self.data())))
+        return statistics.mean(
+            list(map(lambda x: x[FieldType.VIEW_COUNTER.value], self.data()))
+        )
 
     def center_view_counter(self) -> int:
         """
@@ -74,7 +84,9 @@ class SnapshotSearchAPIV2Result:
         """
         if FieldType.VIEW_COUNTER.value not in self._fields:
             raise Exception("フィールドに viewCounter が指定されていません")
-        return self.data()[math.floor(self.total_count() / 2)][FieldType.VIEW_COUNTER.value]
+        return self.data()[math.floor(self.total_count() / 2)][
+            FieldType.VIEW_COUNTER.value
+        ]
 
     def status(self) -> int:
         """
@@ -84,13 +96,13 @@ class SnapshotSearchAPIV2Result:
 
         TODO: 分割リクエストにエラー対応を実装
         """
-        return self.meta()['status']
+        return self.meta()["status"]
 
     def total_count(self) -> int:
         """
         レスポンスに含まれる件数
         """
-        return self.meta()['totalCount']
+        return self.meta()["totalCount"]
 
     def text(self) -> str:
         """
