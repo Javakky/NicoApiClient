@@ -1,0 +1,34 @@
+[tool.poetry]
+name = "nicovideo_api_client"
+version = "0.1.0"
+description = "ニコニコ動画 スナップショット検索APIv2の Python クライアント"
+authors = ["Javakky <iemura.java@gmail.com>"]
+homepage = "https://github.com/Javakky/NicoApiClient"
+readme = "README.md"
+classifiers = [
+    "Development Status :: 2 - Pre-Alpha",
+    "Programming Language :: Python",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.9"
+]
+
+[tool.poetry.dependencies]
+python = "^3.9"
+requests = "^2.26.0"
+urllib3 = "^1.26.6"
+
+[tool.poetry.dev-dependencies]
+sphinx-rtd-theme = "^1.0.0"
+pytest = "^6.2.5"
+Sphinx = "^4.2.0"
+taskipy = "^1.8.2"
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.taskipy.tasks]
+start = "python examples/example.py"
+test = "pytest tests"
+docs = "sh script/make-docs.sh"
+build = "bash -c 'pipenv run docs && sh script/build.sh'"
