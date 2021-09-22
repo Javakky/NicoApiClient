@@ -14,8 +14,11 @@ class SnapshotSearchAPIV2TargetsTestCase(unittest.TestCase):
 
     def test_query(self):
         expected = "keyword"
-        assert SnapshotSearchAPIV2Targets(FieldType.TITLE).query(expected)._query["q"] == expected
+        assert (
+            SnapshotSearchAPIV2Targets(FieldType.TITLE).query(expected)._query["q"]
+            == expected
+        )
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     unittest.main()

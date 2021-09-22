@@ -15,7 +15,7 @@ class SnapshotSearchAPIV2SimpleFilter:
         if field_type == FieldType.START_TIME:
             if not isinstance(value, datetime):
                 raise TypeError("FieldType.START_TIMEを指定した時の型は datetime であるべきです")
-            v = value.strftime('%Y-%m-%dT%H:%M:%S+09:00')
+            v = value.strftime("%Y-%m-%dT%H:%M:%S+09:00")
         elif field_type == FieldType.CONTENT_ID:
             if isinstance(value, int):
                 v = f"sm{value}"
@@ -34,7 +34,7 @@ class SnapshotSearchAPIV2SimpleFilter:
         self._filters[field_type.value].append(v)
 
         self._query[
-            f'filters[{field_type.value}][{len(self._filters[field_type.value])}]'
+            f"filters[{field_type.value}][{len(self._filters[field_type.value])}]"
         ] = v
         return self
 

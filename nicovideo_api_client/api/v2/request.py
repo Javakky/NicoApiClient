@@ -10,7 +10,6 @@ from nicovideo_api_client.constants import END_POINT_URL_V2
 
 
 class SnapshotSearchAPIV2Request:
-
     def __init__(self, query: Dict[str, str], limit: int):
         self._query: Dict[str, str] = query
         self._limit = limit
@@ -60,7 +59,7 @@ class SnapshotSearchAPIV2Request:
                     break
                 print("Connection Failed!")
                 time.sleep(response_time)
-                
+
             results.append(response)
         return SnapshotSearchAPIV2Result(self._query, results)
 
@@ -84,4 +83,4 @@ class SnapshotSearchAPIV2Request:
         query = urlencode(self._query)
         if decode:
             query = unquote_plus(query)
-        return END_POINT_URL_V2 + '?' + query
+        return END_POINT_URL_V2 + "?" + query

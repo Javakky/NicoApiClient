@@ -34,5 +34,5 @@ class SnapshotSearchAPIV2TestCase(unittest.TestCase):
                 assert "ターゲットに指定できないフィールドタイプです" == str(e.value)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     unittest.main()
