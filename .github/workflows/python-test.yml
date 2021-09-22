@@ -22,7 +22,6 @@ jobs:
           python-version: 3.9.7
       - name: Run Tests
         run: |
-          pip install pipenv
-          pipenv --python 3
-          pipenv install --dev
-          pipenv run test
+          pip install poetry
+          poetry install
+          poetry run task test
