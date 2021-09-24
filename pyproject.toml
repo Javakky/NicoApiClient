@@ -34,7 +34,6 @@ build-backend = "poetry.core.masonry.api"
 start = "python examples/example.py"
 test = "pytest tests"
 docs = "sh script/make-docs.sh"
-build = "bash -c 'pipenv run docs && sh script/build.sh'"
 lint = "poetry run pflake8 nicovideo_api_client examples tests"
 format = "poetry run black nicovideo_api_client examples tests"
 
