@@ -6,7 +6,7 @@ import requests
 import time
 
 from nicovideo_api_client.api.v2.result import SnapshotSearchAPIV2Result
-from nicovideo_api_client.constants import END_POINT_URL_V2
+from nicovideo_api_client.constants import END_POINT_URL_V2, FieldType
 
 
 class SnapshotSearchAPIV2Request:
@@ -50,14 +50,17 @@ class SnapshotSearchAPIV2Request:
 
             time.sleep(response_time)
 
-            while True:
+            for r in range(FieldType.DEFAULT_RETRY):
                 (response, response_time) = self._request(timeout)
                 total_time += response_time
                 if total_time > timeout:
                     raise TimeoutError("通信がタイムアウトしました")
                 if "meta" in response.json() or response.status() == 200:
                     break
-                print("Connection Failed!")
+                if r == FieldType.DEFAULT_RETRY - 1:
+                    print(response.status())
+                else:
+                    print("Connection Failed!")
                 time.sleep(response_time)
 
             results.append(response)

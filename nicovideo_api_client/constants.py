@@ -18,6 +18,7 @@ class FieldType(Enum):
     TAGS_EXACT = "tagsExact"
     GENRE = "genre"
     GENRE_KEYWORD = "genre.keyword"
+    DEFAULT_RETRY = 3
 
 
 END_POINT_URL_V2 = (
