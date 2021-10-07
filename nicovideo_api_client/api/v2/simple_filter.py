@@ -9,7 +9,7 @@ from nicovideo_api_client.constants import FieldType
 class SnapshotSearchAPIV2SimpleFilter:
     def __init__(self, query: Dict[str, str]):
         self._query: Dict[str, str] = query
-        self._filters: Dict[str, str] = {}
+        self._filters: Dict[str, List[str]] = {}
 
     def set_filter(self, field_type: FieldType, value: Union[int, str, datetime]):
         if field_type == FieldType.START_TIME:
