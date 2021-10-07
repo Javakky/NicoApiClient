@@ -6,7 +6,7 @@ import requests
 import time
 
 from nicovideo_api_client.api.v2.result import SnapshotSearchAPIV2Result
-from nicovideo_api_client.constants import END_POINT_URL_V2, DEFAULT_RETRY, FieldType
+from nicovideo_api_client.constants import END_POINT_URL_V2, DEFAULT_RETRY
 
 
 class SnapshotSearchAPIV2Request:
