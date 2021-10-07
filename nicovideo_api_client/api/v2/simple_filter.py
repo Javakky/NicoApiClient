@@ -1,6 +1,6 @@
 import re
 from datetime import datetime
-from typing import Dict, List, Any
+from typing import Dict, List, Union
 
 from nicovideo_api_client.api.v2.limit import SnapshotSearchAPIV2Limit
 from nicovideo_api_client.constants import FieldType
@@ -9,9 +9,9 @@ from nicovideo_api_client.constants import FieldType
 class SnapshotSearchAPIV2SimpleFilter:
     def __init__(self, query: Dict[str, str]):
         self._query: Dict[str, str] = query
-        self._filters: Dict[str, List[Any]] = {}
+        self._filters: Dict[str, List[str]] = {}
 
-    def set_filter(self, field_type: FieldType, value: Any):
+    def set_filter(self, field_type: FieldType, value: Union[int, str, datetime]):
         if field_type == FieldType.START_TIME:
             if not isinstance(value, datetime):
                 raise TypeError("FieldType.START_TIMEを指定した時の型は datetime であるべきです")
