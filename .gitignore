@@ -12,3 +12,4 @@ NicoApiClient.iml
 /docs/*.rst
 !/docs/index.rst
 *.pyc-
+__pycache__/
