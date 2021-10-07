@@ -1,6 +1,6 @@
 import re
 from datetime import datetime
-from typing import Dict, List, Any, Union
+from typing import Dict, List, Union
 
 from nicovideo_api_client.api.v2.limit import SnapshotSearchAPIV2Limit
 from nicovideo_api_client.constants import FieldType
