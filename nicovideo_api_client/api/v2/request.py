@@ -60,9 +60,6 @@ class SnapshotSearchAPIV2Request:
         url = self.build_url(True if "jsonFilter" in self._query else False)
 
         for r in range(DEFAULT_RETRY):
-            if r == DEFAULT_RETRY - 1:
-                raise Exception("リトライ回数に達しました")
-
             response = requests.get(url, timeout=(timeout / 4, timeout * 3 / 4))
             response_time = response.elapsed.total_seconds()
             total_time += response_time
@@ -73,7 +70,7 @@ class SnapshotSearchAPIV2Request:
                 break
             time.sleep(response_time)
         else:
-            print("Connection Failed!")
+            raise Exception("リトライ回数に達しました")
         time.sleep(response_time)
         tmp = SnapshotSearchAPIV2Result(self._query, response)
         return tmp, total_time
