@@ -54,7 +54,7 @@ class SnapshotSearchAPIV2Request:
 
     def _request(
         self, timeout: float, total_time: float
-    ) -> Tuple[SnapshotSearchAPIV2Result, float, float]:
+    ) -> Tuple[SnapshotSearchAPIV2Result, float]:
         # `'jsonFilter'` の値までまとめてエンコードされてしまっているので、それを避けるため True にしている
         # TODO: `'q'` がエンコードされずよくないので原因調査して修正する。
         url = self.build_url(True if "jsonFilter" in self._query else False)
@@ -62,11 +62,12 @@ class SnapshotSearchAPIV2Request:
         for r in range(DEFAULT_RETRY):
             response = requests.get(url, timeout=(timeout / 4, timeout * 3 / 4))
             response_time = response.elapsed.total_seconds()
+            response_obj = SnapshotSearchAPIV2Result(self._query, response)
             total_time += response_time
 
             if total_time > timeout:
                 raise TimeoutError("通信がタイムアウトしました")
-            elif "meta" in response.json() or response.status() == 200:
+            elif "meta" in response_obj.json() and response_obj.status() == 200:
                 break
             time.sleep(response_time)
         else:
