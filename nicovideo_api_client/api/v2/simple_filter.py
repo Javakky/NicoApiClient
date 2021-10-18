@@ -11,7 +11,9 @@ class SnapshotSearchAPIV2SimpleFilter:
         self._query: Dict[str, str] = query
         self._filters: Dict[str, List[str]] = {}
 
-    def set_filter(self, field_type: FieldType, value: Union[int, str, datetime]):
+    def _set_filter(
+        self, field_type: FieldType, value: Union[int, str, datetime]
+    ) -> str:
         if field_type == FieldType.START_TIME:
             if not isinstance(value, datetime):
                 raise TypeError("FieldType.START_TIMEを指定した時の型は datetime であるべきです")
@@ -34,27 +36,27 @@ class SnapshotSearchAPIV2SimpleFilter:
         self._filters[field_type.value].append(v)
         return v
 
-    def matchFilter(self, field_type: FieldType, value: Union[int, str, datetime]):
+    def _match_filter(self, field_type: FieldType, value: Union[int, str, datetime]):
         v = self.set_filter(field_type, value)
 
         self._query[
-            f"filters[{field_type.value}][{len(self._filters[field_type.value])}]"
+            f"filters[{field_type.value}][{len(self._filters[field_type.value]) - 1}]"
         ] = v
         return self
 
-    def rangeFilter(
-        self, field_type: FieldType, value: Union[int, str, datetime], range: str
+    def _range_filter(
+        self, field_type: FieldType, range: str, value: Union[int, str, datetime]
     ):
         v = self.set_filter(field_type, value)
 
         self._query[f"filters[{field_type.value}][{range}]"] = v
         return self
 
-    def filter(self, value: Union[list, dict] = []) -> SnapshotSearchAPIV2Limit:
-        if isinstance(value, list):
+    def filter(
+        self, value: Union[List[int, str, datetime], Dict[int, str, datetime]] = []
+    ) -> SnapshotSearchAPIV2Limit:
+        if isinstance(value, map):
             for v in value:
-                if len(v) != 2:
-                    raise Exception("一致検索には検索する値と型を指定するべきです。")
                 self.matchFilter(v[0], v[1])
         elif isinstance(value, dict):
             for k, v in value.items():
@@ -64,5 +66,5 @@ class SnapshotSearchAPIV2SimpleFilter:
                     )
                 self.rangeFilter(k, v[0], v[1])
         else:
-            raise Exception("検索にはリストか辞書を渡す必要があります。")
+            raise TypeError("検索にはリストか辞書を渡す必要があります。")
         return SnapshotSearchAPIV2Limit(self._query)
