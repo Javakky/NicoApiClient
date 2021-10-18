@@ -52,10 +52,8 @@ class SnapshotSearchAPIV2SimpleFilter:
         self._query[f"filters[{field_type.value}][{range}]"] = v
         return self
 
-    def filter(
-        self, value: Union[List[int, str, datetime], Dict[int, str, datetime]] = []
-    ) -> SnapshotSearchAPIV2Limit:
-        if isinstance(value, map):
+    def filter(self, value: Union[list, dict] = []) -> SnapshotSearchAPIV2Limit:
+        if isinstance(value, list):
             for v in value:
                 self._match_filter(v[0], v[1])
         elif isinstance(value, dict):
