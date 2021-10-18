@@ -57,14 +57,14 @@ class SnapshotSearchAPIV2SimpleFilter:
     ) -> SnapshotSearchAPIV2Limit:
         if isinstance(value, map):
             for v in value:
-                self.matchFilter(v[0], v[1])
+                self._match_filter(v[0], v[1])
         elif isinstance(value, dict):
             for k, v in value.items():
                 if len(v) != 2:
                     raise Exception(
                         "範囲検索のvalueはFeildTypeと[gt, lt, gte, lte]のいずれかをとるべきです。"
                     )
-                self.rangeFilter(k, v[0], v[1])
+                self._range_filter(k, v[0], v[1])
         else:
             raise TypeError("検索にはリストか辞書を渡す必要があります。")
         return SnapshotSearchAPIV2Limit(self._query)
