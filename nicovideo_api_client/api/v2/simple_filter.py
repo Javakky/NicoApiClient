@@ -32,11 +32,37 @@ class SnapshotSearchAPIV2SimpleFilter:
             self._filters[field_type.value] = []
 
         self._filters[field_type.value].append(v)
+        return v
+
+    def matchFilter(self, field_type: FieldType, value: Union[int, str, datetime]):
+        v = self.set_filter(field_type, value)
 
         self._query[
             f"filters[{field_type.value}][{len(self._filters[field_type.value])}]"
         ] = v
         return self
 
-    def filter(self) -> SnapshotSearchAPIV2Limit:
+    def rangeFilter(
+        self, field_type: FieldType, value: Union[int, str, datetime], range: str
+    ):
+        v = self.set_filter(field_type, value)
+
+        self._query[f"filters[{field_type.value}][{range}]"] = v
+        return self
+
+    def filter(self, value: Union[list, dict] = []) -> SnapshotSearchAPIV2Limit:
+        if isinstance(value, list):
+            for v in value:
+                if len(v) != 2:
+                    raise Exception("一致検索には検索する値と型を指定するべきです。")
+                self.matchFilter(v[0], v[1])
+        elif isinstance(value, dict):
+            for k, v in value.items():
+                if len(v) != 2:
+                    raise Exception(
+                        "範囲検索のvalueはFeildTypeと[gt, lt, gte, lte]のいずれかをとるべきです。"
+                    )
+                self.rangeFilter(k, v[0], v[1])
+        else:
+            raise Exception("検索にはリストか辞書を渡す必要があります。")
         return SnapshotSearchAPIV2Limit(self._query)
