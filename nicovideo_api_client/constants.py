@@ -1,4 +1,6 @@
 from enum import Enum
+from typing import List, Dict, Union, Literal
+from datetime import datetime
 
 
 class FieldType(Enum):
@@ -55,3 +57,35 @@ target_types = [
 
 class SortKeyType(Enum):
     REGISTERED_AT = "registeredAt"
+
+
+class MatchValue:
+    def __init__(self, match_value: Union[List[str], List[int], List[datetime]]):
+        self.match_value = match_value
+
+
+class RangeLiteral:
+    def __init__(self, range_literal: Literal["gt", "gte", "lt", "lte"]):
+        self.range_literal = range_literal
+
+
+class RangeValue:
+    def __init__(
+        self,
+        range_value: Union[
+            Dict[RangeLiteral, str],
+            Dict[RangeLiteral, int],
+            Dict[RangeLiteral, datetime],
+        ],
+    ):
+        self.range_value = range_value
+
+
+class MatchDict:
+    def __init__(self, match_dict: Dict[FieldType, MatchValue]):
+        self.match_dict = match_dict
+
+
+class RangeDict:
+    def __init__(self, range_dict: Dict[FieldType, MatchValue]):
+        self.range_dict = range_dict

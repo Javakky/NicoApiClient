@@ -1,9 +1,16 @@
 import re
 from datetime import datetime
-from typing import Dict, List, Union
+from typing import Dict, List, Union, Optional
 
 from nicovideo_api_client.api.v2.limit import SnapshotSearchAPIV2Limit
-from nicovideo_api_client.constants import FieldType
+from nicovideo_api_client.constants import (
+    FieldType,
+    MatchDict,
+    RangeDict,
+    MatchValue,
+    RangeValue,
+    RangeLiteral,
+)
 
 
 class SnapshotSearchAPIV2SimpleFilter:
@@ -36,33 +43,31 @@ class SnapshotSearchAPIV2SimpleFilter:
         self._filters[field_type.value].append(v)
         return v
 
-    def _match_filter(self, field_type: FieldType, value: Union[int, str, datetime]):
-        v = self.set_filter(field_type, value)
+    def _match_filter(self, field_type: FieldType, match_value: MatchValue):
+        for value in match_value:
+            v = self.set_filter(field_type, value)
 
-        self._query[
-            f"filters[{field_type.value}][{len(self._filters[field_type.value]) - 1}]"
-        ] = v
+            self._query[
+                f"filters[{field_type.value}][{len(self._filters[field_type.value]) - 1}]"
+            ] = v
         return self
 
-    def _range_filter(
-        self, field_type: FieldType, range: str, value: Union[int, str, datetime]
-    ):
-        v = self.set_filter(field_type, value)
+    def _range_filter(self, field_type: FieldType, range_value: RangeValue):
+        for literal, value in range_value.items():
+            v = self.set_filter(field_type, value)
 
-        self._query[f"filters[{field_type.value}][{range}]"] = v
+            self._query[f"filters[{field_type}][{literal}]"] = v
         return self
 
-    def filter(self, value: Union[list, dict] = []) -> SnapshotSearchAPIV2Limit:
-        if isinstance(value, list):
-            for v in value:
-                self._match_filter(v[0], v[1])
-        elif isinstance(value, dict):
+    def filter(
+        self, value: Optional[Union[MatchDict, RangeDict]]
+    ) -> SnapshotSearchAPIV2Limit:
+        if isinstance(value, MatchDict):
             for k, v in value.items():
-                if len(v) != 2:
-                    raise Exception(
-                        "範囲検索のvalueはFeildTypeと[gt, lt, gte, lte]のいずれかをとるべきです。"
-                    )
-                self._range_filter(k, v[0], v[1])
+                self._match_filter(k, v)
+        elif isinstance(value, RangeDict):
+            for k, v in value.items():
+                self._range_filter(k, v)
         else:
             raise TypeError("検索にはリストか辞書を渡す必要があります。")
         return SnapshotSearchAPIV2Limit(self._query)
