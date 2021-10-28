@@ -1,6 +1,6 @@
 import re
 from datetime import datetime
-from typing import Dict, List, Union
+from typing import Dict, List, Union, Optional
 
 from nicovideo_api_client.api.v2.limit import SnapshotSearchAPIV2Limit
 from nicovideo_api_client.constants import (
@@ -43,7 +43,7 @@ class SnapshotSearchAPIV2SimpleFilter:
         return v
 
     def _match_filter(self, field_type: FieldType, match_value: MatchValue):
-        for value in match_value:
+        for value in match_value.match_value:
             v = self.set_filter(field_type, value)
 
             self._query[
@@ -59,7 +59,7 @@ class SnapshotSearchAPIV2SimpleFilter:
         return self
 
     def filter(
-        self, value: Union[MatchDict, RangeDict] = None
+        self, value: Optional[Union[MatchDict, RangeDict]] = None
     ) -> SnapshotSearchAPIV2Limit:
         if value is not None:
             if isinstance(value, MatchDict):

@@ -9,11 +9,11 @@ classifiers = [
     "Development Status :: 2 - Pre-Alpha",
     "Programming Language :: Python",
     "Programming Language :: Python :: 3",
-    "Programming Language :: Python :: 3.9"
+    "Programming Language :: Python :: 3.10"
 ]
 
 [tool.poetry.dependencies]
-python = "^3.9"
+python = "^3.10"
 requests = "^2.26.0"
 urllib3 = "^1.26.6"
 
