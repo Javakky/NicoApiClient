@@ -8,7 +8,7 @@ from nicovideo_api_client.constants import (
     MatchDict,
     RangeDict,
     MatchValue,
-    RangeValue
+    RangeValue,
 )
 
 
@@ -47,7 +47,7 @@ class SnapshotSearchAPIV2SimpleFilter:
             v = self.set_filter(field_type, value)
 
             self._query[
-                f"filters[{field_type.value}][{len(self._filters[field_type.value]) - 1}]"
+                f"filters[{field_type}][{len(self._filters[field_type]) - 1}]"
             ] = v
         return self
 
