@@ -1,6 +1,6 @@
 import re
 from datetime import datetime
-from typing import Dict, List, Union, Optional
+from typing import Dict, List, Union
 
 from nicovideo_api_client.api.v2.limit import SnapshotSearchAPIV2Limit
 from nicovideo_api_client.constants import (
@@ -59,14 +59,15 @@ class SnapshotSearchAPIV2SimpleFilter:
         return self
 
     def filter(
-        self, value: Optional[Union[MatchDict, RangeDict]]
+        self, value: Union[MatchDict, RangeDict] = None
     ) -> SnapshotSearchAPIV2Limit:
-        if isinstance(value, MatchDict):
-            for k, v in value.items():
-                self._match_filter(k, v)
-        elif isinstance(value, RangeDict):
-            for k, v in value.items():
-                self._range_filter(k, v)
-        else:
-            raise TypeError("検索には特定の型を指定する必要があります")
+        if value is not None:
+            if isinstance(value, MatchDict):
+                for k, v in value.items():
+                    self._match_filter(k, v)
+            elif isinstance(value, RangeDict):
+                for k, v in value.items():
+                    self._range_filter(k, v)
+            else:
+                raise TypeError("検索には特定の型を指定する必要があります")
         return SnapshotSearchAPIV2Limit(self._query)
