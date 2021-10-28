@@ -8,8 +8,7 @@ from nicovideo_api_client.constants import (
     MatchDict,
     RangeDict,
     MatchValue,
-    RangeValue,
-    RangeLiteral,
+    RangeValue
 )
 
 
@@ -69,5 +68,5 @@ class SnapshotSearchAPIV2SimpleFilter:
             for k, v in value.items():
                 self._range_filter(k, v)
         else:
-            raise TypeError("検索にはリストか辞書を渡す必要があります。")
+            raise TypeError("検索には特定の型を指定する必要があります")
         return SnapshotSearchAPIV2Limit(self._query)
