@@ -5,17 +5,16 @@ from typing import Dict, List, Union, Optional
 from nicovideo_api_client.api.v2.limit import SnapshotSearchAPIV2Limit
 from nicovideo_api_client.constants import (
     FieldType,
-    MatchDict,
-    RangeDict,
     MatchValue,
     RangeValue,
+    MatchDict,
+    RangeDict,
 )
 
 
 class SnapshotSearchAPIV2SimpleFilter:
     def __init__(self, query: Dict[str, str]):
         self._query: Dict[str, str] = query
-        self._filters: Dict[str, List[str]] = {}
 
     def _set_filter(
         self, field_type: FieldType, value: Union[int, str, datetime]
@@ -43,7 +42,7 @@ class SnapshotSearchAPIV2SimpleFilter:
         return v
 
     def _match_filter(self, field_type: FieldType, match_value: MatchValue):
-        for value in match_value.match_value:
+        for value in match_value:
             v = self.set_filter(field_type, value)
 
             self._query[
@@ -53,7 +52,7 @@ class SnapshotSearchAPIV2SimpleFilter:
 
     def _range_filter(self, field_type: FieldType, range_value: RangeValue):
         for literal, value in range_value.items():
-            v = self.set_filter(field_type, value)
+            v = self._set_filter(field_type, value)
 
             self._query[f"filters[{field_type}][{literal}]"] = v
         return self
