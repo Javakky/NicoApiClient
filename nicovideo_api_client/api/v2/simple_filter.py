@@ -43,7 +43,7 @@ class SnapshotSearchAPIV2SimpleFilter:
 
     def _match_filter(self, field_type: FieldType, match_value: MatchValue):
         for value in match_value:
-            v = self.set_filter(field_type, value)
+            v = self._set_filter(field_type, value)
 
             self._query[
                 f"filters[{field_type}][{len(self._filters[field_type]) - 1}]"

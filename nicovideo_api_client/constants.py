@@ -65,4 +65,4 @@ RangeValue = Union[
     Dict[RangeLiteral, str], Dict[RangeLiteral, int], Dict[RangeLiteral, datetime]
 ]
 MatchDict = Dict[FieldType, MatchValue]
-RangeDict = Dict[FieldType, MatchValue]
+RangeDict = Dict[FieldType, RangeValue]
