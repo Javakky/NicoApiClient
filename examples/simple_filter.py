@@ -11,11 +11,11 @@ from nicovideo_api_client.constants import (
 def main():
     """一致検索の場合"""
     # フィルタの指定
-    title: MatchValue = ["初音ミク", "鏡音リン", "GUMI"]
-    description: MatchValue = ["初投稿", "1作目"]
+    view: MatchValue = [100, 1000, 10000]
+    mylist: MatchValue = [10, 100]
     match_filter: MatchDict = {
-        FieldType.TITLE: title,
-        FieldType.DESCRIPTION: description,
+        FieldType.VIEW_COUNTER: view,
+        FieldType.MYLIST_COUNTER: mylist,
     }
 
     # URL生成
