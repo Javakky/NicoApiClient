@@ -61,8 +61,9 @@ class SnapshotSearchAPIV2SimpleFilter:
                 for k, v in value.items():
                     self._match_filter(k, v)
             elif isinstance(value, RangeDict):
-                for k, v in value.items():
+                range_dict: RangeDict = value
+                for k, v in range_dict.items():
                     self._range_filter(k, v)
             else:
-                raise TypeError("検索には特定の型を指定する必要があります")
+                raise TypeError("検索にはMatchDictまたはRangeDictどちらかの型を指定する必要があります")
         return SnapshotSearchAPIV2Limit(self._query)
