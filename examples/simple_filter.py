@@ -25,8 +25,8 @@ def main():
         .query("VOCALOID")
         .field({FieldType.TITLE, FieldType.DESCRIPTION})
         .sort(FieldType.VIEW_COUNTER)
-        .simple_filter(match_filter)
-        .filter()
+        .simple_filter()
+        .filter(match_filter)
         .limit(100)
     )
 
@@ -52,8 +52,8 @@ def main():
         .query("VOCALOID")
         .field({FieldType.TITLE, FieldType.DESCRIPTION})
         .sort(FieldType.VIEW_COUNTER)
-        .simple_filter(range_filter)
-        .filter()
+        .simple_filter()
+        .filter(range_filter)
         .limit(100)
     )
 

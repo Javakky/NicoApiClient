@@ -1,6 +1,6 @@
 import re
 from datetime import datetime
-from typing import Dict, Union, Optional
+from typing import List, Dict, Union, Optional
 
 from nicovideo_api_client.api.v2.limit import SnapshotSearchAPIV2Limit
 from nicovideo_api_client.constants import (
@@ -57,10 +57,10 @@ class SnapshotSearchAPIV2SimpleFilter:
         self, value: Optional[Union[MatchDict, RangeDict]] = None
     ) -> SnapshotSearchAPIV2Limit:
         if value is not None:
-            if isinstance(value, MatchDict):
+            if type(value) is MatchDict:
                 for k, v in value.items():
                     self._match_filter(k, v)
-            elif isinstance(value, RangeDict):
+            elif type(value) is RangeDict:
                 range_dict: RangeDict = value
                 for k, v in range_dict.items():
                     self._range_filter(k, v)

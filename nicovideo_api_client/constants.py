@@ -1,5 +1,5 @@
 from enum import Enum
-from typing import List, Dict, Union, Literal
+from typing import List, Dict, Union, Literal, TypeAlias
 from datetime import datetime
 
 
@@ -59,10 +59,10 @@ class SortKeyType(Enum):
     REGISTERED_AT = "registeredAt"
 
 
-MatchValue = Union[List[str], List[int], List[datetime]]
-RangeLiteral = Literal["gt", "gte", "lt", "lte"]
-RangeValue = Union[
+MatchValue: TypeAlias = Union[List[str], List[int], List[datetime]]
+RangeLiteral: TypeAlias = Literal["gt", "gte", "lt", "lte"]
+RangeValue: TypeAlias = Union[
     Dict[RangeLiteral, str], Dict[RangeLiteral, int], Dict[RangeLiteral, datetime]
 ]
-MatchDict = Dict[FieldType, MatchValue]
-RangeDict = Dict[FieldType, RangeValue]
+MatchDict: TypeAlias = Dict[FieldType, MatchValue]
+RangeDict: TypeAlias = Dict[FieldType, RangeValue]
