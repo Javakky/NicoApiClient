@@ -19,7 +19,11 @@ class SnapshotSearchAPIV2SimpleFilter:
     def _cast_value(
         self, field_type: FieldType, value: Union[int, str, datetime]
     ) -> str:
-        if field_type == FieldType.START_TIME:
+        if (
+            field_type == FieldType.START_TIME
+            or field_type == FieldType.LAST_COMMENT_TIME
+            or field_type == FieldType.START_TIME
+        ):
             if not isinstance(value, datetime):
                 raise TypeError("FieldType.START_TIMEを指定した時の型は datetime であるべきです")
             v = value.strftime("%Y-%m-%dT%H:%M:%S+09:00")
@@ -32,80 +36,30 @@ class SnapshotSearchAPIV2SimpleFilter:
                 v = value
             else:
                 raise TypeError("FieldType.CONTENT_IDを指定した時の型は int または str であるべきです")
-        elif field_type == FieldType.VIEW_COUNTER:
+        elif (
+            field_type == FieldType.COMMENT_COUNTER
+            or field_type == FieldType.LENGTH_SECONDS
+            or field_type == FieldType.LIKE_COUNTER
+            or field_type == FieldType.MYLIST_COUNTER
+            or field_type == FieldType.VIEW_COUNTER
+        ):
             if isinstance(value, int):
                 v = value
             elif isinstance(value, str):
                 if not isinstance(int(value), int):
-                    raise TypeError("FieldType.VIEW_COUNTERは整数が指定されるべきです")
+                    raise TypeError(f"FieldType.{field_type}は整数が指定されるべきです")
                 v = int(value)
             else:
-                raise TypeError("FieldType.VIEW_COUNTERを指定した時の型は int または str であるべきです")
-        elif field_type == FieldType.MYLIST_COUNTER:
-            if isinstance(value, int):
-                v = value
-            elif isinstance(value, str):
-                if not isinstance(int(value), int):
-                    raise TypeError("FieldType.MYLIST_COUNTERは整数が指定されるべきです")
-                v = int(value)
-            else:
-                raise TypeError("FieldType.MYLIST_COUNTERを指定した時の型は int または str であるべきです")
-        elif field_type == FieldType.LIKE_COUNTER:
-            if isinstance(value, int):
-                v = value
-            elif isinstance(value, str):
-                if not isinstance(int(value), int):
-                    raise TypeError("FieldType.LIKE_COUNTERは整数が指定されるべきです")
-                v = int(value)
-            else:
-                raise TypeError("FieldType.LIKE_COUNTERを指定した時の型は int または str であるべきです")
-        elif field_type == FieldType.LENGTH_SECONDS:
-            if isinstance(value, int):
-                v = value
-            elif isinstance(value, str):
-                if not isinstance(int(value), int):
-                    raise TypeError("FieldType.LENGTH_SECONDSは整数が指定されるべきです")
-                v = int(value)
-            else:
-                raise TypeError("FieldType.LENGTH_SECONDSを指定した時の型は int または str であるべきです")
-        elif field_type == FieldType.START_TIME:
-            if not isinstance(value, datetime):
-                raise TypeError("FieldType.START_TIMEを指定した時の型は datetime であるべきです")
-            v = value.strftime("%Y-%m-%dT%H:%M:%S+09:00")
-        elif field_type == FieldType.COMMENT_COUNTER:
-            if isinstance(value, int):
-                v = value
-            elif isinstance(value, str):
-                if not isinstance(int(value), int):
-                    raise TypeError("FieldType.COMMENT_COUNTERは整数が指定されるべきです")
-                v = int(value)
-            else:
-                raise TypeError(
-                    "FieldType.COMMENT_COUNTERを指定した時の型は int または str であるべきです"
-                )
-        elif field_type == FieldType.LAST_COMMENT_TIME:
-            if not isinstance(value, datetime):
-                raise TypeError("FieldType.LAST_COMMENT_TIMEを指定した時の型は datetime であるべきです")
-            v = value.strftime("%Y-%m-%dT%H:%M:%S+09:00")
-        elif field_type == FieldType.CATEGORY_TAGS:
+                raise TypeError(f"FieldType.{field_type}を指定した時の型は int または str であるべきです")
+        elif (
+            field_type == FieldType.GENRE_KEYWORD
+            or field_type == FieldType.GENRE
+            or field_type == FieldType.TAGS_EXACT
+            or field_type == FieldType.TAGS
+            or field_type == FieldType.CATEGORY_TAGS
+        ):
             if not isinstance(value, str):
-                raise TypeError("FieldType.CATEGORY_TAGSを指定した時の型は str であるべきです")
-            v = value
-        elif field_type == FieldType.TAGS:
-            if not isinstance(value, str):
-                raise TypeError("FieldType.TAGSを指定した時の型は str であるべきです")
-            v = value
-        elif field_type == FieldType.TAGS_EXACT:
-            if not isinstance(value, str):
-                raise TypeError("FieldType.TAGS_EXACTを指定した時の型は str であるべきです")
-            v = value
-        elif field_type == FieldType.GENRE:
-            if not isinstance(value, str):
-                raise TypeError("FieldType.GENREを指定した時の型は str であるべきです")
-            v = value
-        elif field_type == FieldType.GENRE_KEYWORD:
-            if not isinstance(value, str):
-                raise TypeError("FieldType.GENRE_KEYWORDを指定した時の型は str であるべきです")
+                raise TypeError(f"FieldType.{field_type}を指定した時の型は str であるべきです")
             v = value
         elif (
             field_type == FieldType.TITLE
@@ -115,7 +69,7 @@ class SnapshotSearchAPIV2SimpleFilter:
             or field_type == FieldType.THUMBNAIL_URL
             or field_type == FieldType.LAST_RES_BODY
         ):
-            raise TypeError("filterに指定できないFieldTypeです")
+            raise TypeError(f"FieldType.{field_type}はfilterに指定できないFieldTypeです")
         else:
             raise NotImplementedError("未知のTypeが指定されました")
 
