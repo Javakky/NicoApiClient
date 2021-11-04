@@ -35,19 +35,15 @@ class SnapshotSearchAPIV2SimpleFilter:
         else:
             raise NotImplementedError("未知のTypeが指定されました")
 
-        if field_type.value not in self._filters:
-            self._filters[field_type.value] = []
-
-        self._filters[field_type.value].append(v)
         return v
 
     def _match_filter(self, field_type: FieldType, match_value: MatchValue):
+        field_count: int = 0
         for value in match_value:
             v = self._set_filter(field_type, value)
 
-            self._query[
-                f"filters[{field_type}][{len(self._filters[field_type]) - 1}]"
-            ] = v
+            self._query[f"filters[{field_type}][{field_count}]"] = v
+            field_count += 1
         return self
 
     def _range_filter(self, field_type: FieldType, range_value: RangeValue):
