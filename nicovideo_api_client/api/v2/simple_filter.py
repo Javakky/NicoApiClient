@@ -20,7 +20,11 @@ class SnapshotSearchAPIV2SimpleFilter:
         self, field_type: FieldType, value: Union[int, str, datetime]
     ) -> str:
         match field_type:
-            case FieldType.START_TIME, FieldType.LAST_COMMENT_TIME, FieldType.START_TIME:
+            case (
+                FieldType.START_TIME
+                | FieldType.LAST_COMMENT_TIME
+                | FieldType.START_TIME
+            ):
                 if not isinstance(value, datetime):
                     raise TypeError("FieldType.START_TIMEを指定した時の型は datetime であるべきです")
                 v = value.strftime("%Y-%m-%dT%H:%M:%S+09:00")
@@ -33,7 +37,13 @@ class SnapshotSearchAPIV2SimpleFilter:
                     v = value
                 else:
                     raise TypeError("FieldType.CONTENT_IDを指定した時の型は int または str であるべきです")
-            case FieldType.COMMENT_COUNTER, FieldType.LENGTH_SECONDS, FieldType.LIKE_COUNTER, FieldType.MYLIST_COUNTER, FieldType.VIEW_COUNTER:
+            case (
+                FieldType.COMMENT_COUNTER
+                | FieldType.LENGTH_SECONDS
+                | FieldType.LIKE_COUNTER
+                | FieldType.MYLIST_COUNTER
+                | FieldType.VIEW_COUNTER
+            ):
                 if isinstance(value, int):
                     v = value
                 elif isinstance(value, str):
@@ -42,11 +52,24 @@ class SnapshotSearchAPIV2SimpleFilter:
                     v = int(value)
                 else:
                     raise TypeError(f"FieldType.{field_type}を指定した時の型は int または str であるべきです")
-            case FieldType.GENRE_KEYWORD, FieldType.GENRE, FieldType.TAGS_EXACT, FieldType.TAGS, FieldType.CATEGORY_TAGS:
+            case (
+                FieldType.GENRE_KEYWORD
+                | FieldType.GENRE
+                | FieldType.TAGS_EXACT
+                | FieldType.TAGS
+                | FieldType.CATEGORY_TAGS
+            ):
                 if not isinstance(value, str):
                     raise TypeError(f"FieldType.{field_type}を指定した時の型は str であるべきです")
                 v = value
-            case FieldType.TITLE, FieldType.DESCRIPTION, FieldType.USER_ID, FieldType.CHANNEL_ID, FieldType.THUMBNAIL_URL, FieldType.LAST_RES_BODY:
+            case (
+                FieldType.TITLE
+                | FieldType.DESCRIPTION
+                | FieldType.USER_ID
+                | FieldType.CHANNEL_ID
+                | FieldType.THUMBNAIL_URL
+                | FieldType.LAST_RES_BODY
+            ):
                 raise TypeError(f"FieldType.{field_type}はfilterに指定できないFieldTypeです")
             case _:
                 raise NotImplementedError("未知のTypeが指定されました")
