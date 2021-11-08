@@ -104,7 +104,9 @@ class SnapshotSearchAPIV2SimpleFilter:
         return self
 
     def filter(
-        self, value: Optional[Union[MatchDict, RangeDict, CombinedDict]] = None, combine: bool = False
+        self,
+        value: Optional[Union[MatchDict, RangeDict, CombinedDict]] = None,
+        combine: bool = False,
     ) -> SnapshotSearchAPIV2Limit:
         if value is not None:
             if type(value) is not dict:
