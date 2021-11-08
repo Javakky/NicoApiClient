@@ -69,3 +69,4 @@ RangeValue: TypeAlias = Union[
 ]
 MatchDict: TypeAlias = Dict[FieldType, MatchValue]
 RangeDict: TypeAlias = Dict[FieldType, RangeValue]
+CombinedDict: TypeAlias = Dict[FieldType, Union[MatchValue, RangeValue]]

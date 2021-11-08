@@ -9,6 +9,7 @@ from nicovideo_api_client.constants import (
     RangeValue,
     MatchDict,
     RangeDict,
+    CombinedDict,
 )
 
 
@@ -93,18 +94,29 @@ class SnapshotSearchAPIV2SimpleFilter:
             self._query[f"filters[{field_type}][{literal}]"] = v
         return self
 
+    def _classify(self, field_type: FieldType, value: Union[MatchValue, RangeValue]):
+        if type(value) is list:
+            self._match_filter(field_type, value)
+        elif type(value) is dict:
+            self._range_filter(field_type, value)
+        else:
+            raise TypeError("検索する値はListまたはDictで渡されるべきです")
+        return self
+
     def filter(
-        self, value: Optional[Union[MatchDict, RangeDict]] = None
+        self, value: Optional[Union[MatchDict, RangeDict, CombinedDict]] = None, combine: bool = False
     ) -> SnapshotSearchAPIV2Limit:
         if value is not None:
-            if type(value) is dict:
-                for k, v in value.items():
-                    if type(v) is list:
-                        self._match_filter(k, v)
-                    elif type(v) is dict:
-                        self._range_filter(k, v)
-                    else:
-                        raise TypeError("検索する値はListまたはDictで渡されるべきです")
-            else:
+            if type(value) is not dict:
                 raise TypeError("検索にはMatchDictまたはRangeDictどちらかの型を指定する必要があります")
+            elif combine is True:
+                field_type_list: list = []
+                for k, v in value.items():
+                    if k in field_type_list:
+                        raise Exception("複合検索では同じFieldTypeを複数回指定することはできません")
+                    field_type_list.append(k)
+                    self._classify(k, v)
+            else:
+                for k, v in value.items():
+                    self._classify(k, v)
         return SnapshotSearchAPIV2Limit(self._query)
