@@ -51,7 +51,9 @@ class SnapshotSearchAPIV2SimpleFilter:
                         raise TypeError(f"FieldType.{field_type}は整数が指定されるべきです")
                     v = int(value)
                 else:
-                    raise TypeError(f"FieldType.{field_type}を指定した時の型は int または str であるべきです")
+                    raise TypeError(
+                        f"FieldType.{field_type}を指定した時の型は int または str であるべきです"
+                    )
             case (
                 FieldType.GENRE_KEYWORD
                 | FieldType.GENRE
