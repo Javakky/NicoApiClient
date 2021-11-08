@@ -19,60 +19,37 @@ class SnapshotSearchAPIV2SimpleFilter:
     def _cast_value(
         self, field_type: FieldType, value: Union[int, str, datetime]
     ) -> str:
-        if (
-            field_type == FieldType.START_TIME
-            or field_type == FieldType.LAST_COMMENT_TIME
-            or field_type == FieldType.START_TIME
-        ):
-            if not isinstance(value, datetime):
-                raise TypeError("FieldType.START_TIMEを指定した時の型は datetime であるべきです")
-            v = value.strftime("%Y-%m-%dT%H:%M:%S+09:00")
-        elif field_type == FieldType.CONTENT_ID:
-            if isinstance(value, int):
-                v = f"sm{value}"
-            elif isinstance(value, str):
-                if not re.compile(r"sm\d+").fullmatch(value):
-                    raise TypeError("FieldType.CONTENT_IDはsm(数字)の形で表されるべきです")
+        match field_type:
+            case FieldType.START_TIME, FieldType.LAST_COMMENT_TIME, FieldType.START_TIME:
+                if not isinstance(value, datetime):
+                    raise TypeError("FieldType.START_TIMEを指定した時の型は datetime であるべきです")
+                v = value.strftime("%Y-%m-%dT%H:%M:%S+09:00")
+            case FieldType.CONTENT_ID:
+                if isinstance(value, int):
+                    v = f"sm{value}"
+                elif isinstance(value, str):
+                    if not re.compile(r"sm\d+").fullmatch(value):
+                        raise TypeError("FieldType.CONTENT_IDはsm(数字)の形で表されるべきです")
+                    v = value
+                else:
+                    raise TypeError("FieldType.CONTENT_IDを指定した時の型は int または str であるべきです")
+            case FieldType.COMMENT_COUNTER, FieldType.LENGTH_SECONDS, FieldType.LIKE_COUNTER, FieldType.MYLIST_COUNTER, FieldType.VIEW_COUNTER:
+                if isinstance(value, int):
+                    v = value
+                elif isinstance(value, str):
+                    if not isinstance(int(value), int):
+                        raise TypeError(f"FieldType.{field_type}は整数が指定されるべきです")
+                    v = int(value)
+                else:
+                    raise TypeError(f"FieldType.{field_type}を指定した時の型は int または str であるべきです")
+            case FieldType.GENRE_KEYWORD, FieldType.GENRE, FieldType.TAGS_EXACT, FieldType.TAGS, FieldType.CATEGORY_TAGS:
+                if not isinstance(value, str):
+                    raise TypeError(f"FieldType.{field_type}を指定した時の型は str であるべきです")
                 v = value
-            else:
-                raise TypeError("FieldType.CONTENT_IDを指定した時の型は int または str であるべきです")
-        elif (
-            field_type == FieldType.COMMENT_COUNTER
-            or field_type == FieldType.LENGTH_SECONDS
-            or field_type == FieldType.LIKE_COUNTER
-            or field_type == FieldType.MYLIST_COUNTER
-            or field_type == FieldType.VIEW_COUNTER
-        ):
-            if isinstance(value, int):
-                v = value
-            elif isinstance(value, str):
-                if not isinstance(int(value), int):
-                    raise TypeError(f"FieldType.{field_type}は整数が指定されるべきです")
-                v = int(value)
-            else:
-                raise TypeError(f"FieldType.{field_type}を指定した時の型は int または str であるべきです")
-        elif (
-            field_type == FieldType.GENRE_KEYWORD
-            or field_type == FieldType.GENRE
-            or field_type == FieldType.TAGS_EXACT
-            or field_type == FieldType.TAGS
-            or field_type == FieldType.CATEGORY_TAGS
-        ):
-            if not isinstance(value, str):
-                raise TypeError(f"FieldType.{field_type}を指定した時の型は str であるべきです")
-            v = value
-        elif (
-            field_type == FieldType.TITLE
-            or field_type == FieldType.DESCRIPTION
-            or field_type == FieldType.USER_ID
-            or field_type == FieldType.CHANNEL_ID
-            or field_type == FieldType.THUMBNAIL_URL
-            or field_type == FieldType.LAST_RES_BODY
-        ):
-            raise TypeError(f"FieldType.{field_type}はfilterに指定できないFieldTypeです")
-        else:
-            raise NotImplementedError("未知のTypeが指定されました")
-
+            case FieldType.TITLE, FieldType.DESCRIPTION, FieldType.USER_ID, FieldType.CHANNEL_ID, FieldType.THUMBNAIL_URL, FieldType.LAST_RES_BODY:
+                raise TypeError(f"FieldType.{field_type}はfilterに指定できないFieldTypeです")
+            case _:
+                raise NotImplementedError("未知のTypeが指定されました")
         return v
 
     def _match_filter(self, field_type: FieldType, match_value: MatchValue):
