@@ -118,8 +118,10 @@ class SnapshotSearchAPIV2SimpleFilter:
         検索フィルターを指定する。
 
         Args:
-            value(Optional[Union[MatchDict, RangeDict, CombinedDict]]): フィルターを指定したいフィールドの辞書
-            combine(bool): 複合検索を使用する場合にTrueを指定する。デフォルト値はFalse
+            value(Optional[Union[MatchDict, RangeDict, CombinedDict]]):
+                フィルターを指定したいフィールドの辞書
+            combine(bool):
+                複合検索を使用する場合にTrueを指定する。デフォルト値はFalse
 
         Returns:
             レスポンス要素数の指定オブジェクト
