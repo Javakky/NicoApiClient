@@ -114,6 +114,22 @@ class SnapshotSearchAPIV2SimpleFilter:
         value: Optional[Union[MatchDict, RangeDict, CombinedDict]] = None,
         combine: bool = False,
     ) -> SnapshotSearchAPIV2Limit:
+        """
+        検索フィルターを指定する。
+
+        Args:
+            value(Optional[Union[MatchDict, RangeDict, CombinedDict]]): フィルターを指定したいフィールドの辞書
+            combine(bool): 複合検索を使用する場合にTrueを指定する。デフォルト値はFalse
+
+        Returns:
+            レスポンス要素数の指定オブジェクト
+
+        Examples:
+            #一致検索の場合: filter(MatchDict型の辞書, False)
+            #範囲検索の場合: filter(RangeDict型の辞書, False)
+            #複合検索の場合: filter(CombinedDict型の辞書, True)
+        """
+
         if value is not None:
             if type(value) is not dict:
                 raise TypeError("検索にはMatchDictまたはRangeDictどちらかの型を指定する必要があります")
