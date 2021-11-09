@@ -1,5 +1,6 @@
 import unittest
-from datetime import datetime
+from datetime import datetime, timedelta
+from unittest import mock
 
 from nicovideo_api_client.api.v2.json_filter import JsonFilterOperator, JsonFilterTerm
 from nicovideo_api_client.api.v2.snapshot_search_api_v2 import SnapshotSearchAPIV2
@@ -11,6 +12,24 @@ from nicovideo_api_client.constants import (
     RangeDict,
     CombinedDict,
 )
+from tests.mock_response import MockResponse
+
+
+META_DATA = {
+    "status": 200,
+    "totalCount": 1,
+    "id": "594513df-85ea-4122-9859-f4ec2701cacf",
+}
+
+DATA_DATA = [
+    {
+        "contentId": "sm9",
+        "title": "テスト",
+        "description": "テスト",
+        "startTime": "2016-11-03T02:09:11+09:00",
+        "viewCounter": 1,
+    }
+]
 
 
 class SnapshotSearchAPIV2RequestTestCase(unittest.TestCase):
@@ -19,7 +38,7 @@ class SnapshotSearchAPIV2RequestTestCase(unittest.TestCase):
         actual = (
             SnapshotSearchAPIV2()
             .targets({FieldType.TITLE})
-            .query("歌ってみた")
+            .query("テスト")
             .field({FieldType.TITLE})
             .sort(FieldType.VIEW_COUNTER)
             .simple_filter()
@@ -29,7 +48,7 @@ class SnapshotSearchAPIV2RequestTestCase(unittest.TestCase):
         assert (
             actual.build_url(False)
             == "https://api.search.nicovideo.jp/api/v2/snapshot/video/contents/search"
-            "?targets=title&q=%E6%AD%8C%E3%81%A3%E3%81%A6%E3%81%BF%E3%81%9F&fields"
+            "?targets=title&q=%E3%83%86%E3%82%B9%E3%83%88&fields"
             "=title&_sort=-viewCounter"
         )
 
@@ -150,7 +169,7 @@ class SnapshotSearchAPIV2RequestTestCase(unittest.TestCase):
         actual = (
             SnapshotSearchAPIV2()
             .targets({FieldType.TITLE})
-            .query("歌ってみた")
+            .query("テスト")
             .field({FieldType.TITLE})
             .sort(FieldType.VIEW_COUNTER)
             .json_filter(
@@ -165,11 +184,46 @@ class SnapshotSearchAPIV2RequestTestCase(unittest.TestCase):
         assert (
             actual.build_url(True)
             == "https://api.search.nicovideo.jp/api/v2/snapshot/video/contents/search"
-            "?targets=title&q=歌ってみた&fields=title&_sort=-viewCounter&jsonFilter=%7B"
+            "?targets=title&q=テスト&fields=title&_sort=-viewCounter&jsonFilter=%7B"
             "%22type%22%3A+%22not%22%2C+%22filter%22%3A+%7B%22type%22%3A+%22range%22%2C"
             "+%22field%22%3A+%22startTime%22%2C+%22to%22%3A+%222021-01-01T00%3A00%3A00"
             "%2B09%3A00%22%2C+%22include_lower%22%3A+true%7D%7D"
         )
+
+    @staticmethod
+    def mocked_requests_get_success_single_result(*args, **kwargs):
+        return MockResponse(
+            {
+                "meta": META_DATA,
+                "data": DATA_DATA,
+            },
+            200,
+            timedelta(milliseconds=300),
+        )
+
+    @staticmethod
+    @mock.patch("requests.get", side_effect=mocked_requests_get_success_single_result)
+    def test_request(mock_get):
+        actual = (
+            SnapshotSearchAPIV2()
+            .targets({FieldType.TITLE})
+            .query("テスト")
+            .field({FieldType.TITLE})
+            .sort(FieldType.VIEW_COUNTER)
+            .simple_filter()
+            .filter()
+            .limit(10)
+            .request()
+        )
+        assert actual.meta_id() == META_DATA["id"]
+        assert actual.status() == META_DATA["status"]
+        assert actual.total_count() == META_DATA["totalCount"]
+        assert len(actual.data()) == 1
+        assert actual.data()[0]["contentId"] == DATA_DATA[0]["contentId"]
+        assert actual.data()[0]["title"] == DATA_DATA[0]["title"]
+        assert actual.data()[0]["description"] == DATA_DATA[0]["description"]
+        assert actual.data()[0]["startTime"] == DATA_DATA[0]["startTime"]
+        assert actual.data()[0]["viewCounter"] == DATA_DATA[0]["viewCounter"]
 
 
 if __name__ == "__main__":

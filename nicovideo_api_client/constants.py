@@ -70,3 +70,5 @@ RangeValue: TypeAlias = Union[
 MatchDict: TypeAlias = Dict[FieldType, MatchValue]
 RangeDict: TypeAlias = Dict[FieldType, RangeValue]
 CombinedDict: TypeAlias = Dict[FieldType, Union[MatchValue, RangeValue]]
+JSON_LITERAL: TypeAlias = str | int | float | bool | None
+JSON: TypeAlias = JSON_LITERAL | Dict[str, "JSON"] | List["JSON"]

@@ -52,6 +52,28 @@ class SnapshotSearchAPIV2Result:
             return {}
         return self.json()["meta"]
 
+    def status(self) -> int:
+        """
+        HTTP レスポンスのStatus を返す。
+
+        複数回に分割リクエストした場合、エラー処理ができていないためここに辿り着いた時点で 200
+
+        TODO: 分割リクエストにエラー対応を実装
+        """
+        return self.meta()["status"]
+
+    def meta_id(self) -> str:
+        """
+        リクエストID
+        """
+        return self.meta()["id"]
+
+    def total_count(self) -> int:
+        """
+        レスポンスに含まれる件数
+        """
+        return self.meta()["totalCount"]
+
     def data(self) -> List[Dict[str, Any]]:
         """
         レスポンスの本体データを Dict オブジェクト形式で返す。
@@ -87,22 +109,6 @@ class SnapshotSearchAPIV2Result:
         return self.data()[math.floor(self.total_count() / 2)][
             FieldType.VIEW_COUNTER.value
         ]
-
-    def status(self) -> int:
-        """
-        HTTP レスポンスのStatus を返す。
-
-        複数回に分割リクエストした場合、エラー処理ができていないためここに辿り着いた時点で 200
-
-        TODO: 分割リクエストにエラー対応を実装
-        """
-        return self.meta()["status"]
-
-    def total_count(self) -> int:
-        """
-        レスポンスに含まれる件数
-        """
-        return self.meta()["totalCount"]
 
     def text(self) -> str:
         """
