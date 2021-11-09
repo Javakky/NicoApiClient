@@ -5,6 +5,7 @@ from nicovideo_api_client.constants import (
     RangeDict,
     MatchValue,
     RangeValue,
+    CombinedDict,
 )
 
 
@@ -23,7 +24,14 @@ def main():
         SnapshotSearchAPIV2()
         .tags_exact()
         .query("VOCALOID")
-        .field({FieldType.TITLE, FieldType.DESCRIPTION})
+        .field(
+            {
+                FieldType.TITLE,
+                FieldType.DESCRIPTION,
+                FieldType.VIEW_COUNTER,
+                FieldType.MYLIST_COUNTER,
+            }
+        )
         .sort(FieldType.VIEW_COUNTER)
         .simple_filter()
         .filter(match_filter)
@@ -50,10 +58,52 @@ def main():
         SnapshotSearchAPIV2()
         .tags_exact()
         .query("VOCALOID")
-        .field({FieldType.TITLE, FieldType.DESCRIPTION})
+        .field(
+            {
+                FieldType.TITLE,
+                FieldType.DESCRIPTION,
+                FieldType.VIEW_COUNTER,
+                FieldType.MYLIST_COUNTER,
+            }
+        )
         .sort(FieldType.VIEW_COUNTER)
         .simple_filter()
         .filter(range_filter)
+        .limit(100)
+    )
+
+    print(request.build_url())
+
+    # 実行
+    # API のレスポンスが表示される
+    print(request.request().json())
+
+    """複合検索の場合"""
+    # フィルタの指定
+    view: MatchValue = [1000, 10000]
+    mylist: RangeValue = {"gt": 10, "lte": 100}
+    combined_filter: CombinedDict = {
+        FieldType.VIEW_COUNTER: view,
+        FieldType.MYLIST_COUNTER: mylist,
+    }
+    combine: bool = True
+
+    # URL生成
+    request = (
+        SnapshotSearchAPIV2()
+        .tags_exact()
+        .query("VOCALOID")
+        .field(
+            {
+                FieldType.TITLE,
+                FieldType.DESCRIPTION,
+                FieldType.VIEW_COUNTER,
+                FieldType.MYLIST_COUNTER,
+            }
+        )
+        .sort(FieldType.VIEW_COUNTER)
+        .simple_filter()
+        .filter(combined_filter, combine)
         .limit(100)
     )
 

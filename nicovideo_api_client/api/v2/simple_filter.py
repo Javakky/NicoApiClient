@@ -27,7 +27,7 @@ class SnapshotSearchAPIV2SimpleFilter:
                 | FieldType.START_TIME
             ):
                 if not isinstance(value, datetime):
-                    raise TypeError("FieldType.START_TIMEを指定した時の型は datetime であるべきです")
+                    raise TypeError(f"FieldType.{field_type.value}を指定した時の型は datetime であるべきです")
                 v = value.strftime("%Y-%m-%dT%H:%M:%S+09:00")
             case FieldType.CONTENT_ID:
                 if isinstance(value, int):
@@ -49,11 +49,11 @@ class SnapshotSearchAPIV2SimpleFilter:
                     v = value
                 elif isinstance(value, str):
                     if not isinstance(int(value), int):
-                        raise TypeError(f"FieldType.{field_type}は整数が指定されるべきです")
+                        raise TypeError(f"FieldType.{field_type.value}は整数が指定されるべきです")
                     v = int(value)
                 else:
                     raise TypeError(
-                        f"FieldType.{field_type}を指定した時の型は int または str であるべきです"
+                        f"FieldType.{field_type.value}を指定した時の型は int または str であるべきです"
                     )
             case (
                 FieldType.GENRE_KEYWORD
@@ -63,7 +63,7 @@ class SnapshotSearchAPIV2SimpleFilter:
                 | FieldType.CATEGORY_TAGS
             ):
                 if not isinstance(value, str):
-                    raise TypeError(f"FieldType.{field_type}を指定した時の型は str であるべきです")
+                    raise TypeError(f"FieldType.{field_type.value}を指定した時の型は str であるべきです")
                 v = value
             case (
                 FieldType.TITLE
@@ -73,7 +73,7 @@ class SnapshotSearchAPIV2SimpleFilter:
                 | FieldType.THUMBNAIL_URL
                 | FieldType.LAST_RES_BODY
             ):
-                raise TypeError(f"FieldType.{field_type}はfilterに指定できないFieldTypeです")
+                raise TypeError(f"FieldType.{field_type.value}はfilterに指定できないFieldTypeです")
             case _:
                 raise NotImplementedError("未知のTypeが指定されました")
         return v
@@ -83,7 +83,7 @@ class SnapshotSearchAPIV2SimpleFilter:
         for value in match_value:
             v = self._cast_value(field_type, value)
 
-            self._query[f"filters[{field_type}][{field_count}]"] = v
+            self._query[f"filters[{field_type.value}][{field_count}]"] = v
             field_count += 1
         return self
 
@@ -91,7 +91,7 @@ class SnapshotSearchAPIV2SimpleFilter:
         for literal, value in range_value.items():
             v = self._cast_value(field_type, value)
 
-            self._query[f"filters[{field_type}][{literal}]"] = v
+            self._query[f"filters[{field_type.value}][{literal}]"] = v
         return self
 
     def _classify(self, field_type: FieldType, value: Union[MatchValue, RangeValue]):
