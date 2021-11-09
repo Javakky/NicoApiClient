@@ -27,7 +27,9 @@ class SnapshotSearchAPIV2SimpleFilter:
                 | FieldType.START_TIME
             ):
                 if not isinstance(value, datetime):
-                    raise TypeError(f"FieldType.{field_type.value}を指定した時の型は datetime であるべきです")
+                    raise TypeError(
+                        f"FieldType.{field_type.value}を指定した時の型は datetime であるべきです"
+                    )
                 v = value.strftime("%Y-%m-%dT%H:%M:%S+09:00")
             case FieldType.CONTENT_ID:
                 if isinstance(value, int):
@@ -63,7 +65,9 @@ class SnapshotSearchAPIV2SimpleFilter:
                 | FieldType.CATEGORY_TAGS
             ):
                 if not isinstance(value, str):
-                    raise TypeError(f"FieldType.{field_type.value}を指定した時の型は str であるべきです")
+                    raise TypeError(
+                        f"FieldType.{field_type.value}を指定した時の型は str であるべきです"
+                    )
                 v = value
             case (
                 FieldType.TITLE
@@ -73,7 +77,9 @@ class SnapshotSearchAPIV2SimpleFilter:
                 | FieldType.THUMBNAIL_URL
                 | FieldType.LAST_RES_BODY
             ):
-                raise TypeError(f"FieldType.{field_type.value}はfilterに指定できないFieldTypeです")
+                raise TypeError(
+                    f"FieldType.{field_type.value}はfilterに指定できないFieldTypeです"
+                )
             case _:
                 raise NotImplementedError("未知のTypeが指定されました")
         return v
