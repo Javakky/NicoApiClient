@@ -31,7 +31,7 @@ requires = ["poetry-core>=1.0.0"]
 build-backend = "poetry.core.masonry.api"
 
 [tool.taskipy.tasks]
-start = "python examples/example.py"
+example = "python examples/example.py"
 test = "pytest tests"
 docs = "sh script/make-docs.sh"
 lint = "poetry run pflake8 nicovideo_api_client examples tests"
