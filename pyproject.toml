@@ -9,7 +9,7 @@ classifiers = [
     "Development Status :: 2 - Pre-Alpha",
     "Programming Language :: Python",
     "Programming Language :: Python :: 3",
-    "Programming Language :: Python :: 3.9"
+    "Programming Language :: Python :: 3.10"
 ]
 
 [tool.poetry.dependencies]
@@ -40,7 +40,7 @@ format = "poetry run black nicovideo_api_client examples tests"
 [tool.flake8]
 max-line-length = 88
 extend-ignore = "E203,E402,"
-max-complexity = 10
+max-complexity = 15
 
 [tool.black]
 line-length = 88

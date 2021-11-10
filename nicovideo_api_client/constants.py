@@ -1,12 +1,17 @@
 from enum import Enum
+from typing import List, Dict, Union, Literal, TypeAlias
+from datetime import datetime
 
 
 class FieldType(Enum):
     CONTENT_ID = "contentId"
     TITLE = "title"
     DESCRIPTION = "description"
+    USER_ID = "userId"
+    CHANNEL_ID = "channelId"
     VIEW_COUNTER = "viewCounter"
     MYLIST_COUNTER = "mylistCounter"
+    LIKE_COUNTER = "likeCounter"
     LENGTH_SECONDS = "lengthSeconds"
     THUMBNAIL_URL = "thumbnailUrl"
     START_TIME = "startTime"
@@ -55,3 +60,13 @@ target_types = [
 
 class SortKeyType(Enum):
     REGISTERED_AT = "registeredAt"
+
+
+MatchValue: TypeAlias = Union[List[str], List[int], List[datetime]]
+RangeLiteral: TypeAlias = Literal["gt", "gte", "lt", "lte"]
+RangeValue: TypeAlias = Union[
+    Dict[RangeLiteral, str], Dict[RangeLiteral, int], Dict[RangeLiteral, datetime]
+]
+MatchDict: TypeAlias = Dict[FieldType, MatchValue]
+RangeDict: TypeAlias = Dict[FieldType, RangeValue]
+CombinedDict: TypeAlias = Dict[FieldType, Union[MatchValue, RangeValue]]
