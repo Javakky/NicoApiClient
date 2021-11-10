@@ -15,6 +15,24 @@ from nicovideo_api_client.constants import (
 
 class SnapshotSearchAPIV2RequestTestCase(unittest.TestCase):
     def test_build_url(self):
+        """検索フィルターなし"""
+        actual = (
+            SnapshotSearchAPIV2()
+            .targets({FieldType.TITLE})
+            .query("歌ってみた")
+            .field({FieldType.TITLE})
+            .sort(FieldType.VIEW_COUNTER)
+            .simple_filter()
+            .filter()
+            .limit(10)
+        )
+        assert (
+            actual.build_url(False)
+            == "https://api.search.nicovideo.jp/api/v2/snapshot/video/contents/search"
+            "?targets=title&q=%E6%AD%8C%E3%81%A3%E3%81%A6%E3%81%BF%E3%81%9F&fields"
+            "=title&_sort=-viewCounter"
+        )
+
         """一致検索の場合"""
         # フィルタの指定
         view: MatchValue = [100, 1000, 10000]
@@ -47,8 +65,10 @@ class SnapshotSearchAPIV2RequestTestCase(unittest.TestCase):
             "?targets=title&q=%E6%AD%8C%E3%81%A3%E3%81%A6%E3%81%BF%E3%81%9F&"
             "fields=description%2CmylistCounter%2Ctitle%2CviewCounter&"
             "_sort=-viewCounter&filters%5BviewCounter%5D%5B0%5D=100&"
-            "filters%5BviewCounter%5D%5B1%5D=1000&filters%5BviewCounter%5D%5B2%5D=10000&"
-            "filters%5BmylistCounter%5D%5B0%5D=10&filters%5BmylistCounter%5D%5B1%5D=100"
+            "filters%5BviewCounter%5D%5B1%5D=1000&"
+            "filters%5BviewCounter%5D%5B2%5D=10000&"
+            "filters%5BmylistCounter%5D%5B0%5D=10&"
+            "filters%5BmylistCounter%5D%5B1%5D=100"
         )
 
         """範囲検索の場合"""
