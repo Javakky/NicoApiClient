@@ -35,7 +35,7 @@ start = "python examples/example.py"
 test = "pytest tests"
 docs = "sh script/make-docs.sh"
 lint = "poetry run pflake8 nicovideo_api_client examples tests"
-format = "poetry run black --exclude=\"tests/v2/mocked_requests_get.py\"  nicovideo_api_client examples tests"
+format = "poetry run black nicovideo_api_client examples tests"
 
 [tool.flake8]
 max-line-length = 88
@@ -44,3 +44,9 @@ max-complexity = 15
 
 [tool.black]
 line-length = 88
+exclude = '''
+(
+    tests/v2/mocked_requests_get.py
+    | nicovideo_api_client/api/v2/simple_filter.py
+)
+'''

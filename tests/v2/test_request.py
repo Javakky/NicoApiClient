@@ -33,7 +33,8 @@ DATA_DATA = [
 
 
 class SnapshotSearchAPIV2RequestTestCase(unittest.TestCase):
-    def test_build_url(self):
+    @staticmethod
+    def test_build_url():
         """検索フィルターなし"""
         actual = (
             SnapshotSearchAPIV2()
@@ -52,7 +53,8 @@ class SnapshotSearchAPIV2RequestTestCase(unittest.TestCase):
             "=title&_sort=-viewCounter"
         )
 
-        """一致検索の場合"""
+    @staticmethod
+    def test_build_url_match_filter():
         # フィルタの指定
         view: MatchValue = [100, 1000, 10000]
         mylist: MatchValue = [10, 100]
@@ -60,7 +62,6 @@ class SnapshotSearchAPIV2RequestTestCase(unittest.TestCase):
             FieldType.VIEW_COUNTER: view,
             FieldType.MYLIST_COUNTER: mylist,
         }
-
         actual = (
             SnapshotSearchAPIV2()
             .targets({FieldType.TITLE})
@@ -90,7 +91,8 @@ class SnapshotSearchAPIV2RequestTestCase(unittest.TestCase):
             "filters%5BmylistCounter%5D%5B1%5D=100"
         )
 
-        """範囲検索の場合"""
+    @staticmethod
+    def test_build_url_range_filter():
         # フィルタの指定
         view: RangeValue = {"gte": 1000, "lt": 10000}
         mylist: RangeValue = {"gt": 10, "lte": 100}
@@ -127,7 +129,8 @@ class SnapshotSearchAPIV2RequestTestCase(unittest.TestCase):
             "filters%5BmylistCounter%5D%5Blte%5D=100"
         )
 
-        """複合検索の場合"""
+    @staticmethod
+    def test_url_builder_combi_filter():
         # フィルタの指定
         view: MatchValue = [1000, 10000]
         mylist: RangeValue = {"gt": 10, "lte": 100}
@@ -165,7 +168,8 @@ class SnapshotSearchAPIV2RequestTestCase(unittest.TestCase):
             "filters%5BmylistCounter%5D%5Blte%5D=100"
         )
 
-    def test_build_url_jsonFilter(self):
+    @staticmethod
+    def test_build_url_jsonFilter():
         actual = (
             SnapshotSearchAPIV2()
             .targets({FieldType.TITLE})
