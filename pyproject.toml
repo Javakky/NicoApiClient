@@ -44,3 +44,9 @@ max-complexity = 15
 
 [tool.black]
 line-length = 88
+exclude = '''
+(
+    tests/v2/mocked_requests_get.py
+    | nicovideo_api_client/api/v2/simple_filter.py
+)
+'''
