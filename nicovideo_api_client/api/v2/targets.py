@@ -1,4 +1,4 @@
-from typing import Dict
+from typing import Dict, Optional
 
 from nicovideo_api_client.api.v2.field import SnapshotSearchAPIV2Fields
 from nicovideo_api_client.constants import FieldType
@@ -13,7 +13,7 @@ class SnapshotSearchAPIV2Targets:
             "targets": ",".join(map(lambda x: x.value, list_targets))
         }
 
-    def query(self, keyword: str) -> SnapshotSearchAPIV2Fields:
+    def query(self, keyword: Optional[str] = "") -> SnapshotSearchAPIV2Fields:
         """
         検索クエリ(キーワード)を指定する。
 
@@ -26,5 +26,6 @@ class SnapshotSearchAPIV2Targets:
         :param keyword: 検索するキーワード
         :return: レスポンスフィールドのタイプ指定オブジェクト
         """
+
         self._query["q"] = keyword
         return SnapshotSearchAPIV2Fields(self._query)
