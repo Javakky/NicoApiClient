@@ -1,12 +1,12 @@
-from typing import Dict, List, Tuple
-from urllib.parse import urlencode, unquote_plus
-
 import math
-import requests
 import time
+from typing import Dict, List, Tuple
+from urllib.parse import unquote_plus, urlencode
+
+import requests
 
 from nicovideo_api_client.api.v2.result import SnapshotSearchAPIV2Result
-from nicovideo_api_client.constants import END_POINT_URL_V2, DEFAULT_RETRY
+from nicovideo_api_client.constants import DEFAULT_RETRY, END_POINT_URL_V2
 
 
 class SnapshotSearchAPIV2Request:

@@ -1,7 +1,6 @@
 from datetime import datetime
 from typing import Dict, List, Optional, Union
 
-
 TypeOp = Dict[str, Union[str, bool, int, List["TypeOp"], "TypeOp"]]
 
 
