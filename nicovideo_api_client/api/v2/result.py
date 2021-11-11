@@ -1,8 +1,8 @@
+import math
 import statistics
 from json import JSONEncoder
-from typing import Optional, Dict, Any, List, Union
+from typing import Any, Dict, List, Optional, Union
 
-import math
 import requests
 
 from nicovideo_api_client.constants import FieldType

@@ -1,15 +1,15 @@
 import re
 from datetime import datetime
-from typing import Dict, Union, Optional
+from typing import Dict, Optional, Union
 
 from nicovideo_api_client.api.v2.limit import SnapshotSearchAPIV2Limit
 from nicovideo_api_client.constants import (
-    FieldType,
-    MatchValue,
-    RangeValue,
-    MatchDict,
-    RangeDict,
     CombinedDict,
+    FieldType,
+    MatchDict,
+    MatchValue,
+    RangeDict,
+    RangeValue,
 )
 
 
