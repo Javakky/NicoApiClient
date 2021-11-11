@@ -13,7 +13,9 @@ class SnapshotSearchAPIV2Targets:
             "targets": ",".join(map(lambda x: x.value, list_targets))
         }
 
-    def query(self, keyword: Optional[str] = "") -> SnapshotSearchAPIV2Fields:
+    def query(
+        self, keyword: str, no_keyword: Optional[bool] = False
+    ) -> SnapshotSearchAPIV2Fields:
         """
         検索クエリ(キーワード)を指定する。
 
@@ -23,9 +25,12 @@ class SnapshotSearchAPIV2Targets:
 
         TODO: AND・OR検索を実装する
 
-        :param keyword: 検索するキーワード
+        :param
+            keyword: 検索するキーワード
+            no_keyword: キーワードなし検索を行う場合のフラグ。デフォルト値はFalse
         :return: レスポンスフィールドのタイプ指定オブジェクト
         """
-
+        if keyword == "" and no_keyword is False:
+            raise Exception("キーワードなし検索を行うには第2引数にTrueを指定する必要があります")
         self._query["q"] = keyword
         return SnapshotSearchAPIV2Fields(self._query)
