@@ -13,9 +13,7 @@ class SnapshotSearchAPIV2Targets:
             "targets": ",".join(map(lambda x: x.value, list_targets))
         }
 
-    def query(
-        self, keyword: str, no_keyword: Optional[bool] = False
-    ) -> SnapshotSearchAPIV2Fields:
+    def query(self, keyword: str) -> SnapshotSearchAPIV2Fields:
         """
         検索クエリ(キーワード)を指定する。
 
@@ -27,10 +25,23 @@ class SnapshotSearchAPIV2Targets:
 
         :param
             keyword: 検索するキーワード
-            no_keyword: キーワードなし検索を行う場合のフラグ。デフォルト値はFalse
         :return: レスポンスフィールドのタイプ指定オブジェクト
         """
-        if keyword == "" and no_keyword is False:
-            raise Exception("キーワードなし検索を行うには第2引数にTrueを指定する必要があります")
+        if keyword == "":
+            raise Exception("キーワードなし検索を行うにはno_keywordメソッドを指定する必要があります")
         self._query["q"] = keyword
+        return SnapshotSearchAPIV2Fields(self._query)
+
+    def no_keyword(self) -> SnapshotSearchAPIV2Fields:
+        """
+        キーワードなし検索を行う。
+
+        `クエリ文字列仕様 <https://site.nicovideo.jp/search-api-docs/snapshot#%EF%BC%8A1-
+        %E3%82%AF%E3%82%A8%E3%83%AA%E6%96%87%E5%AD%97%E5%88%97%E4%BB%95%E6%A7%98>`_
+        q=自体の省略はできません。
+        負荷の高い検索となりますので、filtersと併用しヒット件数を10万件以内に絞り込んだ上でご利用ください。
+
+        :return: レスポンスフィールドのタイプ指定オブジェクト
+        """
+        self._query["q"] = ""
         return SnapshotSearchAPIV2Fields(self._query)

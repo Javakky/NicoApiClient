@@ -31,4 +31,6 @@ class SnapshotSearchAPIV2Filter:
         self._query["jsonFilter"] = urllib.parse.quote_plus(
             JSONEncoder().encode(op.json)
         )
+        if self._query["q"] == "":
+            raise Exception("JSONフィルタでキーワードなし検索を行うことはできません")
         return SnapshotSearchAPIV2Limit(self._query)
