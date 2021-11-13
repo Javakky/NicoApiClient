@@ -99,7 +99,7 @@ class JsonFilterTestCase(unittest.TestCase):
         )
 
     def test_keyword_undefined(self):
-        with self.assertRaises(Exception) as error:
+        with self.assertRaises(KeyError) as error:
             SnapshotSearchAPIV2Filter({}).json_filter(
                 JsonFilterOperator.or_(
                     JsonFilterOperator.not_(self.term_view), self.term_time
@@ -108,7 +108,7 @@ class JsonFilterTestCase(unittest.TestCase):
         self.assertEqual(error.exception.args[0], "キーワードが指定されていません")
 
     def test_no_keyword(self):
-        with self.assertRaises(Exception) as error:
+        with self.assertRaises(ValueError) as error:
             SnapshotSearchAPIV2Filter({"q": ""}).json_filter(
                 JsonFilterOperator.or_(
                     JsonFilterOperator.not_(self.term_view), self.term_time

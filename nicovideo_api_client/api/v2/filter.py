@@ -32,7 +32,7 @@ class SnapshotSearchAPIV2Filter:
             JSONEncoder().encode(op.json)
         )
         if "q" not in self._query:
-            raise Exception("キーワードが指定されていません")
+            raise KeyError("キーワードが指定されていません")
         elif self._query["q"] == "":
-            raise Exception("JSONフィルタでキーワードなし検索を行うことはできません")
+            raise ValueError("JSONフィルタでキーワードなし検索を行うことはできません")
         return SnapshotSearchAPIV2Limit(self._query)
