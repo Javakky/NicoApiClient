@@ -18,7 +18,7 @@ class JsonFilterTestCase(unittest.TestCase):
     )
 
     def test_set_range_time(self):
-        actual = SnapshotSearchAPIV2Filter({}).json_filter(self.term_time)
+        actual = SnapshotSearchAPIV2Filter({"q": "test"}).json_filter(self.term_time)
         assert (
             actual._query["jsonFilter"]
             == "%7B%22type%22%3A+%22range%22%2C+%22field%22%3A+%22startTime%22%2C"
@@ -28,7 +28,7 @@ class JsonFilterTestCase(unittest.TestCase):
         )
 
     def test_set_range_view(self):
-        actual = SnapshotSearchAPIV2Filter({}).json_filter(self.term_view)
+        actual = SnapshotSearchAPIV2Filter({"q": "test"}).json_filter(self.term_view)
         assert (
             actual._query["jsonFilter"]
             == "%7B%22type%22%3A+%22range%22%2C+%22field%22%3A+%22viewCounter%22%2C"
@@ -37,7 +37,7 @@ class JsonFilterTestCase(unittest.TestCase):
         )
 
     def test_not(self):
-        actual = SnapshotSearchAPIV2Filter({}).json_filter(
+        actual = SnapshotSearchAPIV2Filter({"q": "test"}).json_filter(
             JsonFilterOperator.not_(self.term_view)
         )
         assert (
@@ -49,7 +49,7 @@ class JsonFilterTestCase(unittest.TestCase):
         )
 
     def test_or(self):
-        actual = SnapshotSearchAPIV2Filter({}).json_filter(
+        actual = SnapshotSearchAPIV2Filter({"q": "test"}).json_filter(
             JsonFilterOperator.or_(self.term_view, self.term_time)
         )
         assert (
@@ -65,7 +65,7 @@ class JsonFilterTestCase(unittest.TestCase):
         )
 
     def test_and(self):
-        actual = SnapshotSearchAPIV2Filter({}).json_filter(
+        actual = SnapshotSearchAPIV2Filter({"q": "test"}).json_filter(
             JsonFilterOperator.and_(self.term_view, self.term_time)
         )
         assert (
@@ -81,7 +81,7 @@ class JsonFilterTestCase(unittest.TestCase):
         )
 
     def test_nested(self):
-        actual = SnapshotSearchAPIV2Filter({}).json_filter(
+        actual = SnapshotSearchAPIV2Filter({"q": "test"}).json_filter(
             JsonFilterOperator.or_(
                 JsonFilterOperator.not_(self.term_view), self.term_time
             )
@@ -97,6 +97,24 @@ class JsonFilterTestCase(unittest.TestCase):
             "+%222021-12-31T00%3A00%3A00%2B09%3A00%22%2C+%22include_lower%22%3A"
             "+true%2C+%22include_upper%22%3A+true%7D%5D%7D"
         )
+
+    def test_keyword_undefined(self):
+        with self.assertRaises(KeyError) as error:
+            SnapshotSearchAPIV2Filter({}).json_filter(
+                JsonFilterOperator.or_(
+                    JsonFilterOperator.not_(self.term_view), self.term_time
+                )
+            )
+        self.assertEqual(error.exception.args[0], "キーワードが指定されていません")
+
+    def test_no_keyword(self):
+        with self.assertRaises(ValueError) as error:
+            SnapshotSearchAPIV2Filter({"q": ""}).json_filter(
+                JsonFilterOperator.or_(
+                    JsonFilterOperator.not_(self.term_view), self.term_time
+                )
+            )
+        self.assertEqual(error.exception.args[0], "JSONフィルタでキーワードなし検索を行うことはできません")
 
 
 if __name__ == "__main__":

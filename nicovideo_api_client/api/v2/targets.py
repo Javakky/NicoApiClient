@@ -23,8 +23,25 @@ class SnapshotSearchAPIV2Targets:
 
         TODO: AND・OR検索を実装する
 
-        :param keyword: 検索するキーワード
+        :param
+            keyword: 検索するキーワード
         :return: レスポンスフィールドのタイプ指定オブジェクト
         """
+        if keyword == "":
+            raise Exception("キーワードなし検索を行うにはno_keywordメソッドを指定する必要があります")
         self._query["q"] = keyword
+        return SnapshotSearchAPIV2Fields(self._query)
+
+    def no_keyword(self) -> SnapshotSearchAPIV2Fields:
+        """
+        キーワードなし検索を行う。
+
+        `クエリ文字列仕様 <https://site.nicovideo.jp/search-api-docs/snapshot#%EF%BC%8A1-
+        %E3%82%AF%E3%82%A8%E3%83%AA%E6%96%87%E5%AD%97%E5%88%97%E4%BB%95%E6%A7%98>`_
+        q=自体の省略はできません。
+        負荷の高い検索となりますので、filtersと併用しヒット件数を10万件以内に絞り込んだ上でご利用ください。
+
+        :return: レスポンスフィールドのタイプ指定オブジェクト
+        """
+        self._query["q"] = ""
         return SnapshotSearchAPIV2Fields(self._query)

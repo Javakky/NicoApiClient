@@ -131,8 +131,9 @@ class SnapshotSearchAPIV2SimpleFilter:
             #範囲検索の場合: filter(RangeDict型の辞書, False)
             #複合検索の場合: filter(CombinedDict型の辞書, True)
         """
-
-        if value is not None:
+        if self._query["q"] == "" and value is None:
+            raise Exception("キーワード無し検索を行う場合には必ず検索フィルタを指定してください")
+        elif value is not None:
             if type(value) is not dict:
                 raise TypeError("検索にはMatchDictまたはRangeDictどちらかの型を指定する必要があります")
             elif combine is True:
