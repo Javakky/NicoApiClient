@@ -20,13 +20,3 @@ class SnapshotSearchAPIV2Fields:
         if len(self._fields) > 0:
             self._query["fields"] = ",".join(self._fields)
         return SnapshotSearchAPIV2Sort(self._query)
-
-    def _and(self, keyword: Union[str, list[str]]) -> "SnapshotSearchAPIV2Fields":
-        if type(keyword) is str:
-            self._query["q"] += " " + keyword
-        elif type(keyword) is list:
-            self._query["q"] += " " + " OR ".join(keyword)
-        else:
-            raise TypeError("検索キーワードには str または list が指定されるべきです")
-
-        return self

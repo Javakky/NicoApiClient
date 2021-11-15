@@ -1,4 +1,4 @@
-from typing import Dict, Union
+from typing import Dict, Union, Set
 
 from nicovideo_api_client.api.v2.field import SnapshotSearchAPIV2Fields
 from nicovideo_api_client.constants import FieldType
@@ -19,23 +19,39 @@ class SnapshotSearchAPIV2Targets:
 
         `クエリ文字列仕様 <https://site.nicovideo.jp/search-api-docs/snapshot#%EF%BC%8A1-
         %E3%82%AF%E3%82%A8%E3%83%AA%E6%96%87%E5%AD%97%E5%88%97%E4%BB%95%E6%A7%98>`_
-        に沿った値を入力することで AND, OR 検索など複数のキーワードを含めた検索を行うことができる。
-
-        TODO: AND・OR検索を実装する
+        に沿った値を入力することでキーワードを含めた検索を行うことができる。
 
         :param
-            keyword: 検索するキーワード
+            keyword: 検索するキーワード。文字列または文字列を要素に持つリスト。
         :return: レスポンスフィールドのタイプ指定オブジェクト
         """
+
         if keyword == "":
             raise Exception("キーワードなし検索を行うにはno_keywordメソッドを指定する必要があります")
-        elif type(keyword) is str:
-            self._query["q"] = keyword
-        elif type(keyword) is list:
-            self._query["q"] = " OR ".join(keyword)
-        else:
-            raise TypeError("検索キーワードには str または list が指定されるべきです")
+        self._query["q"] = None
+        key = SnapshotSearchAPIV2And(self._query)
+        key.and_(keyword)
         return SnapshotSearchAPIV2Fields(self._query)
+
+    def and_or_query(self, keyword: Union[str, list[str]]) -> "SnapshotSearchAPIV2And":
+        """
+        AND・OR検索を用いて検索クエリ(キーワード)を指定する。
+
+        `クエリ文字列仕様 <https://site.nicovideo.jp/search-api-docs/snapshot#%EF%BC%8A1-
+        %E3%82%AF%E3%82%A8%E3%83%AA%E6%96%87%E5%AD%97%E5%88%97%E4%BB%95%E6%A7%98>`_
+        に沿った値を入力することで AND, OR 検索など複数のキーワードを含めた検索を行うことができる。
+
+        :param
+            keyword: 検索するキーワード。文字列または文字列を要素に持つリスト。
+        :return: レスポンスアンドのタイプ指定オブジェクト
+        """
+
+        self._query["q"] = None
+        if keyword == "":
+            raise Exception("キーワードなし検索を行うにはno_keywordメソッドを指定する必要があります")
+        key = SnapshotSearchAPIV2And(self._query)
+        key.and_(keyword)
+        return SnapshotSearchAPIV2And(self._query)
 
     def no_keyword(self) -> SnapshotSearchAPIV2Fields:
         """
@@ -50,3 +66,37 @@ class SnapshotSearchAPIV2Targets:
         """
         self._query["q"] = ""
         return SnapshotSearchAPIV2Fields(self._query)
+
+
+class SnapshotSearchAPIV2And:
+    def __init__(self, query: Dict[str, str]):
+        self._query: Dict[str, str] = query
+
+    def field(self, fields: Set[FieldType]):
+        field = SnapshotSearchAPIV2Fields(self._query)
+        return field.field(fields)
+
+    def and_(self, keyword: Union[str, list[str]]):
+        if type(keyword) is str:
+            keyword = keyword.replace(" ", "")
+            if keyword == "OR":
+                keyword = '"OR"'
+            if self._query["q"] is None:
+                self._query["q"] = keyword
+            else:
+                self._query["q"] += " " + keyword
+        elif type(keyword) is list:
+            arranged_keywords = []
+            for k in keyword:
+                k = k.replace(" ", "")
+                if k == "OR":
+                    k = '"OR"'
+                arranged_keywords.append(k)
+            if self._query["q"] is None:
+                self._query["q"] = " OR ".join(arranged_keywords)
+            else:
+                self._query["q"] += " " + " OR ".join(arranged_keywords)
+        else:
+            raise TypeError("検索キーワードには str または list が指定されるべきです")
+
+        return self

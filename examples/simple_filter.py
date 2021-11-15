@@ -10,6 +10,46 @@ from nicovideo_api_client.constants import (
 
 
 def main():
+    """通常検索の場合"""
+    # URL生成
+    request = (
+        SnapshotSearchAPIV2()
+        .tags_exact()
+        .query("VOCALOID")
+        .field({FieldType.TITLE})
+        .sort(FieldType.VIEW_COUNTER)
+        .simple_filter()
+        .filter()
+        .limit(100)
+    )
+
+    print(request.build_url())
+
+    # 実行
+    # API のレスポンスが表示される
+    print(request.request().json())
+
+    """AND・OR検索の場合"""
+    # URL生成
+    request = (
+        SnapshotSearchAPIV2()
+        .tags_exact()
+        .and_or_query("VOCALOID")
+        .and_(["初音ミク", "鏡音リン"])
+        .and_(["MMD"])
+        .field({FieldType.TITLE})
+        .sort(FieldType.VIEW_COUNTER)
+        .simple_filter()
+        .filter()
+        .limit(100)
+    )
+
+    print(request.build_url())
+
+    # 実行
+    # API のレスポンスが表示される
+    print(request.request().json())
+
     """一致検索の場合"""
     # フィルタの指定
     view: MatchValue = [100, 1000, 10000]
@@ -23,7 +63,7 @@ def main():
     request = (
         SnapshotSearchAPIV2()
         .tags_exact()
-        .query("VOCALOID トーマ OR KEMUVOXX OR Neru 初音ミク OR 鏡音リン")
+        .query("VOCALOID")
         .field(
             {
                 FieldType.TITLE,
