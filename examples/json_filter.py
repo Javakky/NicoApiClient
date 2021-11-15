@@ -9,7 +9,9 @@ def main():
     request = (
         SnapshotSearchAPIV2()
         .tags_exact()
-        .query("VOCALOID")
+        .query(["初音ミク", "鏡音リン"])
+        ._and(["歌ってみた", "踊ってみた"])
+        ._and("VOCALOID")
         .field({FieldType.TITLE})
         .sort(FieldType.VIEW_COUNTER)
         .json_filter(

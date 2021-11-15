@@ -1,4 +1,4 @@
-from typing import Dict
+from typing import Dict, Union
 
 from nicovideo_api_client.api.v2.field import SnapshotSearchAPIV2Fields
 from nicovideo_api_client.constants import FieldType
@@ -13,7 +13,7 @@ class SnapshotSearchAPIV2Targets:
             "targets": ",".join(map(lambda x: x.value, list_targets))
         }
 
-    def query(self, keyword: str) -> SnapshotSearchAPIV2Fields:
+    def query(self, keyword: Union[str, list[str]]) -> SnapshotSearchAPIV2Fields:
         """
         検索クエリ(キーワード)を指定する。
 
@@ -29,7 +29,12 @@ class SnapshotSearchAPIV2Targets:
         """
         if keyword == "":
             raise Exception("キーワードなし検索を行うにはno_keywordメソッドを指定する必要があります")
-        self._query["q"] = keyword
+        elif type(keyword) is str:
+            self._query["q"] = keyword
+        elif type(keyword) is list:
+            self._query["q"] = " OR ".join(keyword)
+        else:
+            raise TypeError("検索キーワードには str または list が指定されるべきです")
         return SnapshotSearchAPIV2Fields(self._query)
 
     def no_keyword(self) -> SnapshotSearchAPIV2Fields:

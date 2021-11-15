@@ -23,7 +23,7 @@ def main():
     request = (
         SnapshotSearchAPIV2()
         .tags_exact()
-        .query("VOCALOID")
+        .query("VOCALOID トーマ OR KEMUVOXX OR Neru 初音ミク OR 鏡音リン")
         .field(
             {
                 FieldType.TITLE,
