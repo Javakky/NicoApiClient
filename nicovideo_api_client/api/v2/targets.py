@@ -13,7 +13,7 @@ class SnapshotSearchAPIV2Targets:
             "targets": ",".join(map(lambda x: x.value, list_targets))
         }
 
-    def query(self, keyword: Union[str, list[str]]) -> SnapshotSearchAPIV2Fields:
+    def single_query(self, keyword: Union[str, list[str]]) -> SnapshotSearchAPIV2Fields:
         """
         検索クエリ(キーワード)を指定する。
 
@@ -29,11 +29,10 @@ class SnapshotSearchAPIV2Targets:
         if keyword == "":
             raise Exception("キーワードなし検索を行うにはno_keywordメソッドを指定する必要があります")
         self._query["q"] = None
-        key = SnapshotSearchAPIV2And(self._query)
-        key.and_(keyword)
+        SnapshotSearchAPIV2And(self._query).and_(keyword)
         return SnapshotSearchAPIV2Fields(self._query)
 
-    def and_or_query(self, keyword: Union[str, list[str]]) -> "SnapshotSearchAPIV2And":
+    def query(self, keyword: Union[str, list[str]]) -> "SnapshotSearchAPIV2And":
         """
         AND・OR検索を用いて検索クエリ(キーワード)を指定する。
 
@@ -49,9 +48,7 @@ class SnapshotSearchAPIV2Targets:
         self._query["q"] = None
         if keyword == "":
             raise Exception("キーワードなし検索を行うにはno_keywordメソッドを指定する必要があります")
-        key = SnapshotSearchAPIV2And(self._query)
-        key.and_(keyword)
-        return SnapshotSearchAPIV2And(self._query)
+        return SnapshotSearchAPIV2And(self._query).and_(keyword)
 
     def no_keyword(self) -> SnapshotSearchAPIV2Fields:
         """
@@ -73,29 +70,26 @@ class SnapshotSearchAPIV2And:
         self._query: Dict[str, str] = query
 
     def field(self, fields: Set[FieldType]):
-        field = SnapshotSearchAPIV2Fields(self._query)
-        return field.field(fields)
+        return SnapshotSearchAPIV2Fields(self._query).field(fields)
+
+    def _arrage_keyword(self, keyword: str):
+        if " " in keyword:
+            raise Exception("検索ワードに半角スペースが含まれています")
+        if keyword == "OR":
+            keyword = '"OR"'
+        if self._query["q"] is None:
+            self._query["q"] = keyword
+        else:
+            self._query["q"] += " " + keyword
 
     def and_(self, keyword: Union[str, list[str]]):
         if type(keyword) is str:
-            keyword = keyword.replace(" ", "")
-            if keyword == "OR":
-                keyword = '"OR"'
-            if self._query["q"] is None:
-                self._query["q"] = keyword
-            else:
-                self._query["q"] += " " + keyword
+            self._arrage_keyword(keyword)
         elif type(keyword) is list:
-            arranged_keywords = []
             for k in keyword:
-                k = k.replace(" ", "")
-                if k == "OR":
-                    k = '"OR"'
-                arranged_keywords.append(k)
-            if self._query["q"] is None:
-                self._query["q"] = " OR ".join(arranged_keywords)
-            else:
-                self._query["q"] += " " + " OR ".join(arranged_keywords)
+                self._arrage_keyword(k)
+                if k != keyword[-1]:
+                    self._query["q"] += " OR"
         else:
             raise TypeError("検索キーワードには str または list が指定されるべきです")
 

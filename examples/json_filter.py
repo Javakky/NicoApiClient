@@ -11,7 +11,7 @@ def main():
     request = (
         SnapshotSearchAPIV2()
         .tags_exact()
-        .query("VOCALOID")
+        .single_query("VOCALOID")
         .field({FieldType.TITLE})
         .sort(FieldType.VIEW_COUNTER)
         .json_filter(
@@ -34,7 +34,7 @@ def main():
     request = (
         SnapshotSearchAPIV2()
         .tags_exact()
-        .and_or_query("VOCALOID")
+        .query("VOCALOID")
         .and_(["初音ミク", "鏡音リン"])
         .and_(["MMD"])
         .field({FieldType.TITLE})
