@@ -71,8 +71,6 @@ DEFAULT_RETRY = 3
 END_POINT_URL_V2 = (
     "https://api.search.nicovideo.jp/api/v2/snapshot/video/contents/search"
 )
-END_POINT_URL_NVV3 = "https://nvapi.nicovideo.jp/v3/"
-END_POINT_URL_NVV2 = "https://nvapi.nicovideo.jp/v2/"
 END_POINT_URL_VIDEO = "https://www.nicovideo.jp/watch/"
 END_POINT_URL_V2_VERSION = "https://api.search.nicovideo.jp/api/v2/snapshot/version"
 
