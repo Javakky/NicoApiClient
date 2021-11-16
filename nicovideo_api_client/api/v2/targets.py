@@ -23,12 +23,11 @@ class SnapshotSearchAPIV2Targets:
 
         :param
             keyword: 検索するキーワード。文字列または文字列を要素に持つリスト。
-        :return: レスポンスフィールドのタイプ指定オブジェクト
+        :return: レスポンスアンドのタイプ指定オブジェクト
         """
 
         if keyword == "":
             raise Exception("キーワードなし検索を行うにはno_keywordメソッドを指定する必要があります")
-        self._query["q"] = None
         SnapshotSearchAPIV2And(self._query).and_(keyword)
         return SnapshotSearchAPIV2Fields(self._query)
 
@@ -45,7 +44,6 @@ class SnapshotSearchAPIV2Targets:
         :return: レスポンスアンドのタイプ指定オブジェクト
         """
 
-        self._query["q"] = None
         if keyword == "":
             raise Exception("キーワードなし検索を行うにはno_keywordメソッドを指定する必要があります")
         return SnapshotSearchAPIV2And(self._query).and_(keyword)
@@ -73,11 +71,22 @@ class SnapshotSearchAPIV2And:
         return SnapshotSearchAPIV2Fields(self._query).field(fields)
 
     def _arrage_keyword(self, keyword: str):
-        if " " in keyword:
+        """
+        キーワードを適切な形でクエリに指定する。
+
+        キーワードがダブルクォーテーションに囲まれている場合にはフレーズ検索と見なす。
+        フレーズ検索ではないキーワード中に半角スペース(および" OR ")が含まれている場合には例外処理。
+        "OR"が指定された際にはフレーズ検索ワードとして扱う。
+        クエリのqキーがNoneの場合には、キーワードを指定。それ以外の場合は文字列を連結。
+
+        :param
+            keyword: クエリのqキーに指定するための文字列
+        """
+        if (keyword[0] != '"' and keyword[-1] != '"') and " " in keyword:
             raise Exception("検索ワードに半角スペースが含まれています")
-        if keyword == "OR":
+        elif keyword == "OR":
             keyword = '"OR"'
-        if self._query["q"] is None:
+        if "q" not in self._query.keys():
             self._query["q"] = keyword
         else:
             self._query["q"] += " " + keyword
