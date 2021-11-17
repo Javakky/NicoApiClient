@@ -10,27 +10,10 @@ from nicovideo_api_client.constants import (
 
 
 def main():
-    """通常検索の場合"""
+    """キーワード指定について"""
     # URL生成
-    request = (
-        SnapshotSearchAPIV2()
-        .tags_exact()
-        .single_query("VOCALOID")
-        .field({FieldType.TITLE})
-        .sort(FieldType.VIEW_COUNTER)
-        .simple_filter()
-        .filter()
-        .limit(100)
-    )
-
-    print(request.build_url())
-
-    # 実行
-    # API のレスポンスが表示される
-    print(request.request().json())
-
-    """AND・OR検索の場合"""
-    # URL生成
+    # AND・OR検索を使う場合には、query()およびand_()を呼び出し、「文字列」または「検索ワードを文字列要素として持つリスト」を指定する。
+    # 1つのキーワードのみを指定する場合には、single_queryを呼び出し「文字列」を指定する。
     request = (
         SnapshotSearchAPIV2()
         .tags_exact()

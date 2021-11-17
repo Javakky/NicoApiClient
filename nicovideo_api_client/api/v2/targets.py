@@ -13,7 +13,7 @@ class SnapshotSearchAPIV2Targets:
             "targets": ",".join(map(lambda x: x.value, list_targets))
         }
 
-    def single_query(self, keyword: Union[str, list[str]]) -> SnapshotSearchAPIV2Fields:
+    def single_query(self, keyword: str) -> SnapshotSearchAPIV2Fields:
         """
         検索クエリ(キーワード)を指定する。
 
@@ -22,13 +22,14 @@ class SnapshotSearchAPIV2Targets:
         に沿った値を入力することでキーワードを含めた検索を行うことができる。
 
         :param
-            keyword: 検索するキーワード。文字列または文字列を要素に持つリスト。
-        :return: レスポンスアンドのタイプ指定オブジェクト
+            keyword: 検索するキーワード(文字列型)
+        :return: レスポンスフィールドのタイプ指定オブジェクト
         """
-
-        if keyword == "":
+        if type(keyword) is not str:
+            raise TypeError("single_queryで指定するキーワードは str であるべきです")
+        elif keyword == "":
             raise Exception("キーワードなし検索を行うにはno_keywordメソッドを指定する必要があります")
-        SnapshotSearchAPIV2And(self._query).and_(keyword)
+        self._query["q"] = keyword
         return SnapshotSearchAPIV2Fields(self._query)
 
     def query(self, keyword: Union[str, list[str]]) -> "SnapshotSearchAPIV2And":
@@ -73,15 +74,9 @@ class SnapshotSearchAPIV2And:
     def _arrage_keyword(self, keyword: str):
         """
         キーワードを適切な形でクエリに指定する。
-
-        キーワードがダブルクォーテーションに囲まれている場合にはフレーズ検索と見なす。
-        フレーズ検索ではないキーワード中に半角スペース(および" OR ")が含まれている場合には例外処理。
-        "OR"が指定された際にはフレーズ検索ワードとして扱う。
-        クエリのqキーがNoneの場合には、キーワードを指定。それ以外の場合は文字列を連結。
-
-        :param
-            keyword: クエリのqキーに指定するための文字列
+        :param keyword: クエリのqキーに指定するための文字列
         """
+        # フレーズ検索かどうかの判定(" "は" OR "も含んでいる)
         if (keyword[0] != '"' and keyword[-1] != '"') and " " in keyword:
             raise Exception("検索ワードに半角スペースが含まれています")
         elif keyword == "OR":
