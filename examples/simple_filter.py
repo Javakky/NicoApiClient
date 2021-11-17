@@ -10,29 +10,6 @@ from nicovideo_api_client.constants import (
 
 
 def main():
-    """キーワード指定について"""
-    # URL生成
-    # AND・OR検索を使う場合には、query()およびand_()を呼び出し、「文字列」または「検索ワードを文字列要素として持つリスト」を指定する。
-    # 1つのキーワードのみを指定する場合には、single_queryを呼び出し「文字列」を指定する。
-    request = (
-        SnapshotSearchAPIV2()
-        .tags_exact()
-        .query("VOCALOID")
-        .and_(["初音ミク", "鏡音リン"])
-        .and_(["MMD"])
-        .field({FieldType.TITLE})
-        .sort(FieldType.VIEW_COUNTER)
-        .simple_filter()
-        .filter()
-        .limit(100)
-    )
-
-    print(request.build_url())
-
-    # 実行
-    # API のレスポンスが表示される
-    print(request.request().json())
-
     """一致検索の場合"""
     # フィルタの指定
     view: MatchValue = [100, 1000, 10000]
