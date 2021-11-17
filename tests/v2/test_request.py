@@ -71,7 +71,8 @@ class SnapshotSearchAPIV2RequestTestCase(unittest.TestCase):
             actual.build_url(False)
             == "https://api.search.nicovideo.jp/api/v2/snapshot/video/contents/search"
             "?targets=title&q=%E6%AD%8C%E3%81%A3%E3%81%A6%E3%81%BF%E3%81%9F+"
-            "%E5%88%9D%E9%9F%B3%E3%83%9F%E3%82%AF+OR+%E9%8F%A1%E9%9F%B3%E3%83%AA%E3%83%B3&"
+            "%E5%88%9D%E9%9F%B3%E3%83%9F%E3%82%AF+OR+"
+            "%E9%8F%A1%E9%9F%B3%E3%83%AA%E3%83%B3&"
             "fields=title&_sort=-viewCounter"
         )
 
@@ -91,8 +92,8 @@ class SnapshotSearchAPIV2RequestTestCase(unittest.TestCase):
         assert (
             actual.build_url(False)
             == "https://api.search.nicovideo.jp/api/v2/snapshot/video/contents/search"
-            "?targets=title&q=%E6%AD%8C%E3%81%A3%E3%81%A6%E3%81%BF%E3%81%9F&fields=title&"
-            "_sort=-viewCounter"
+            "?targets=title&q=%E6%AD%8C%E3%81%A3%E3%81%A6%E3%81%BF%E3%81%9F"
+            "&fields=title&_sort=-viewCounter"
         )
 
     @staticmethod
