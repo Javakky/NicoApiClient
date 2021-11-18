@@ -11,8 +11,6 @@ def main():
         SnapshotSearchAPIV2()
         .tags_exact()
         .query("VOCALOID")
-        .and_(["初音ミク", "鏡音リン"])
-        .and_(["MMD"])
         .field({FieldType.TITLE})
         .sort(FieldType.VIEW_COUNTER)
         .json_filter(

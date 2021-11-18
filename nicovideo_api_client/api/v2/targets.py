@@ -73,7 +73,7 @@ class SnapshotSearchAPIV2And:
     def field(self, fields: Set[FieldType]):
         return SnapshotSearchAPIV2Fields(self._query).field(fields)
 
-    def _arrage_keyword(self, keyword: str):
+    def _arrange_keyword(self, keyword: str):
         """
         キーワードを適切な形でクエリに指定する。
         :param keyword: クエリのqキーに指定するための文字列
@@ -90,10 +90,10 @@ class SnapshotSearchAPIV2And:
 
     def and_(self, keyword: Union[str, list[str]]):
         if type(keyword) is str:
-            self._arrage_keyword(keyword)
+            self._arrange_keyword(keyword)
         elif type(keyword) is list:
             for k in keyword:
-                self._arrage_keyword(k)
+                self._arrange_keyword(k)
                 if k != keyword[-1]:
                     self._query["q"] += " OR"
         else:

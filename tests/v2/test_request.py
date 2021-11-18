@@ -81,7 +81,7 @@ class SnapshotSearchAPIV2RequestTestCase(unittest.TestCase):
         actual = (
             SnapshotSearchAPIV2()
             .targets({FieldType.TITLE})
-            .single_query("歌ってみた")
+            .single_query("歌ってみた OR 踊ってみた")
             .field({FieldType.TITLE})
             .sort(FieldType.VIEW_COUNTER)
             .simple_filter()
@@ -93,7 +93,9 @@ class SnapshotSearchAPIV2RequestTestCase(unittest.TestCase):
             actual.build_url(False)
             == "https://api.search.nicovideo.jp/api/v2/snapshot/video/contents/search"
             "?targets=title&q=%E6%AD%8C%E3%81%A3%E3%81%A6%E3%81%BF%E3%81%9F"
-            "&fields=title&_sort=-viewCounter"
+            "+OR+%E8%B8%8A%E3%81%A3%E3%81%A6%E3%81%BF%E3%81%9F&fields=title&"
+            "_sort=-viewCounter"
+
         )
 
     @staticmethod
