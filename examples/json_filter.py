@@ -6,6 +6,7 @@ from nicovideo_api_client.constants import FieldType
 
 
 def main():
+    # URL生成
     request = (
         SnapshotSearchAPIV2()
         .tags_exact()

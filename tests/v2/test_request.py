@@ -54,6 +54,51 @@ class SnapshotSearchAPIV2RequestTestCase(unittest.TestCase):
         )
 
     @staticmethod
+    def test_build_url_query():
+        actual = (
+            SnapshotSearchAPIV2()
+            .targets({FieldType.TITLE})
+            .query("歌ってみた")
+            .and_(["初音ミク", "鏡音リン"])
+            .field({FieldType.TITLE})
+            .sort(FieldType.VIEW_COUNTER)
+            .simple_filter()
+            .filter()
+            .limit(10)
+        )
+
+        assert (
+            actual.build_url(False)
+            == "https://api.search.nicovideo.jp/api/v2/snapshot/video/contents/search"
+            "?targets=title&q=%E6%AD%8C%E3%81%A3%E3%81%A6%E3%81%BF%E3%81%9F+"
+            "%E5%88%9D%E9%9F%B3%E3%83%9F%E3%82%AF+OR+"
+            "%E9%8F%A1%E9%9F%B3%E3%83%AA%E3%83%B3&"
+            "fields=title&_sort=-viewCounter"
+        )
+
+    @staticmethod
+    def test_build_url_single_query():
+        actual = (
+            SnapshotSearchAPIV2()
+            .targets({FieldType.TITLE})
+            .single_query("歌ってみた OR 踊ってみた")
+            .field({FieldType.TITLE})
+            .sort(FieldType.VIEW_COUNTER)
+            .simple_filter()
+            .filter()
+            .limit(10)
+        )
+
+        assert (
+            actual.build_url(False)
+            == "https://api.search.nicovideo.jp/api/v2/snapshot/video/contents/search"
+            "?targets=title&q=%E6%AD%8C%E3%81%A3%E3%81%A6%E3%81%BF%E3%81%9F"
+            "+OR+%E8%B8%8A%E3%81%A3%E3%81%A6%E3%81%BF%E3%81%9F&fields=title&"
+            "_sort=-viewCounter"
+
+        )
+
+    @staticmethod
     def test_build_url_match_filter():
         # フィルタの指定
         view: MatchValue = [100, 1000, 10000]
