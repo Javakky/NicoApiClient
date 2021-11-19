@@ -96,6 +96,16 @@ class JsonFilterTerm(JsonFilterOperator):
         include_lower: bool = True,
         include_upper: bool = True,
     ) -> "JsonFilterTerm":
+        """
+        検索フィールドについて、与えられた数値または日付の範囲内かを調べる検索要素。
+
+        :param field_type: 検索するフィールド
+        :param from_: 数値の下限または投稿時刻の最古
+        :param to_: 数値の上限または投稿時刻の最新
+        :param include_lower: from_ を含むかどうか
+        :param include_upper: to_ を含むかどうか
+        :return: 絞り込み要素オブジェクト
+        """
         term: JsonFilterTerm = JsonFilterTerm()
         if from_ is None and to_ is None:
             raise Exception("上限も下限も指定されていません")
