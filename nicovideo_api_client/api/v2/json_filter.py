@@ -115,19 +115,37 @@ class JsonFilterTerm(JsonFilterOperator):
                 | FieldType.COMMENT_COUNTER
             ):
                 if from_ is not None:
-                    json_["from"] = from_
+                    if type(from_) is int:
+                        json_["from"] = from_
+                    else:
+                        raise TypeError(
+                            f"フィールド {field_type.value} には int が指定されるべきです"
+                        )
                 if to_ is not None:
-                    json_["to"] = to_
-
+                    if type(to_) is int:
+                        json_["to"] = to_
+                    else:
+                        raise TypeError(
+                            f"フィールド {field_type.value} には int が指定されるべきです"
+                        )
             case (
                 FieldType.START_TIME
                 | FieldType.LAST_COMMENT_TIME
             ):
                 if from_ is not None:
-                    json_["from"] = from_.strftime("%Y-%m-%dT%H:%M:%S+09:00")
+                    if type(from_) is datetime:
+                        json_["from"] = from_.strftime("%Y-%m-%dT%H:%M:%S+09:00")
+                    else:
+                        raise TypeError(
+                            f"フィールド {field_type.value} には datetime が指定されるべきです"
+                        )
                 if to_ is not None:
-                    json_["to"] = to_.strftime("%Y-%m-%dT%H:%M:%S+09:00")
-
+                    if type(to_) is datetime:
+                        json_["to"] = to_.strftime("%Y-%m-%dT%H:%M:%S+09:00")
+                    else:
+                        raise TypeError(
+                            f"フィールド {field_type.value} には datetime が指定されるべきです"
+                        )
             case _:
                 raise TypeError(
                     f"{field_type.value}はjson_filterに指定できないフィールドです"
