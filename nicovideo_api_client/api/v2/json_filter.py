@@ -1,5 +1,6 @@
 from datetime import datetime
 from typing import Dict, List, Optional, Union
+from nicovideo_api_client.constants import FieldType
 
 TypeOp = Dict[str, Union[str, bool, int, List["TypeOp"], "TypeOp"]]
 
@@ -88,63 +89,49 @@ class JsonFilterTerm(JsonFilterOperator):
         super().__init__({})
 
     @staticmethod
-    def set_range_view(
-        from_: Optional[int] = None,
-        to_: Optional[int] = None,
+    def set_range(
+        field_type: FieldType,
+        from_: Optional[Union[int, datetime]] = None,
+        to_: Optional[Union[int, datetime]] = None,
         include_lower: bool = True,
         include_upper: bool = True,
     ) -> "JsonFilterTerm":
-        """
-        再生回数が与えられた範囲内かを調べる検索要素。
-
-        :param from_: 再生回数の下限
-        :param to_: 再生回数の上限
-        :param include_lower: from_ を含むかどうか
-        :param include_upper: to_ を含むかどうか
-        :return: 絞り込み要素オブジェクト
-        """
         term: JsonFilterTerm = JsonFilterTerm()
         if from_ is None and to_ is None:
             raise Exception("上限も下限も指定されていません")
         json_: Dict[str, Union[str, bool, int]] = {
             "type": "range",
-            "field": "viewCounter",
+            "field": field_type.value,
         }
-        if from_ is not None:
-            json_["from"] = from_
-        if to_ is not None:
-            json_["to"] = to_
-        if include_lower:
-            json_["include_lower"] = include_lower
-        if include_upper:
-            json_["include_upper"] = include_upper
-        term.json = json_
-        return term
 
-    @staticmethod
-    def set_range_time(
-        from_: Optional[datetime] = None,
-        to_: Optional[datetime] = None,
-        include_lower: bool = True,
-        include_upper: bool = True,
-    ) -> "JsonFilterTerm":
-        """
-        投稿時刻が与えられた範囲内かを調べる検索要素。
+        match field_type:
+            case (
+                FieldType.USER_ID
+                | FieldType.CHANNEL_ID
+                | FieldType.VIEW_COUNTER
+                | FieldType.MYLIST_COUNTER
+                | FieldType.LIKE_COUNTER
+                | FieldType.LENGTH_SECONDS
+                | FieldType.COMMENT_COUNTER
+            ):
+                if from_ is not None:
+                    json_["from"] = from_
+                if to_ is not None:
+                    json_["to"] = to_
 
-        :param from_: 投稿時刻の最古
-        :param to_: 投稿時刻の最新
-        :param include_lower: from_ を含むかどうか
-        :param include_upper: to_ を含むかどうか
-        :return: 絞り込み要素オブジェクト
-        """
-        term: JsonFilterTerm = JsonFilterTerm()
-        if from_ is None and to_ is None:
-            raise Exception("開始時刻も終了時刻も指定されていません")
-        json_: Dict[str, Union[str, bool]] = {"type": "range", "field": "startTime"}
-        if from_ is not None:
-            json_["from"] = from_.strftime("%Y-%m-%dT%H:%M:%S+09:00")
-        if to_ is not None:
-            json_["to"] = to_.strftime("%Y-%m-%dT%H:%M:%S+09:00")
+            case (
+                FieldType.START_TIME
+                | FieldType.LAST_COMMENT_TIME
+            ):
+                if from_ is not None:
+                    json_["from"] = from_.strftime("%Y-%m-%dT%H:%M:%S+09:00")
+                if to_ is not None:
+                    json_["to"] = to_.strftime("%Y-%m-%dT%H:%M:%S+09:00")
+
+            case _:
+                raise TypeError(
+                    f"{field_type.value}はjson_filterに指定できないフィールドです"
+                )
         if include_lower:
             json_["include_lower"] = include_lower
         if include_upper:

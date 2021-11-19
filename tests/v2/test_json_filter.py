@@ -3,18 +3,24 @@ from datetime import datetime
 
 from nicovideo_api_client.api.v2.filter import SnapshotSearchAPIV2Filter
 from nicovideo_api_client.api.v2.json_filter import JsonFilterTerm, JsonFilterOperator
+from nicovideo_api_client.constants import FieldType
 
 
 class JsonFilterTestCase(unittest.TestCase):
-    term_time = JsonFilterTerm.set_range_time(
+    term_time = JsonFilterTerm.set_range(
+        FieldType.START_TIME,
         from_=datetime(2021, 1, 1),
         to_=datetime(2021, 12, 31),
         include_upper=True,
         include_lower=True,
     )
 
-    term_view = JsonFilterTerm.set_range_view(
-        from_=100, to_=1000, include_upper=True, include_lower=True
+    term_view = JsonFilterTerm.set_range(
+        FieldType.VIEW_COUNTER,
+        from_=100,
+        to_=1000,
+        include_upper=True,
+        include_lower=True,
     )
 
     def test_set_range_time(self):
