@@ -88,8 +88,8 @@ class JsonFilterTerm(JsonFilterOperator):
     def __init__(self):
         super().__init__({})
 
-    @staticmethod
     def set_range(
+        self,
         field_type: FieldType,
         from_: Optional[Union[int, datetime]] = None,
         to_: Optional[Union[int, datetime]] = None,
@@ -125,37 +125,18 @@ class JsonFilterTerm(JsonFilterOperator):
                 | FieldType.COMMENT_COUNTER
             ):
                 if from_ is not None:
-                    if type(from_) is int:
-                        json_["from"] = from_
-                    else:
-                        raise TypeError(
-                            f"フィールド {field_type.value} には int が指定されるべきです"
-                        )
+                    json_["from"] = self.__arrange_value(from_, "int", field_type)
                 if to_ is not None:
-                    if type(to_) is int:
-                        json_["to"] = to_
-                    else:
-                        raise TypeError(
-                            f"フィールド {field_type.value} には int が指定されるべきです"
-                        )
+                    json_["to"] = self.__arrange_value(to_, "int", field_type)
             case (
                 FieldType.START_TIME
                 | FieldType.LAST_COMMENT_TIME
             ):
                 if from_ is not None:
-                    if type(from_) is datetime:
-                        json_["from"] = from_.strftime("%Y-%m-%dT%H:%M:%S+09:00")
-                    else:
-                        raise TypeError(
-                            f"フィールド {field_type.value} には datetime が指定されるべきです"
-                        )
+                    json_["from"] = self.__arrange_value(from_, "datetime", field_type)
+
                 if to_ is not None:
-                    if type(to_) is datetime:
-                        json_["to"] = to_.strftime("%Y-%m-%dT%H:%M:%S+09:00")
-                    else:
-                        raise TypeError(
-                            f"フィールド {field_type.value} には datetime が指定されるべきです"
-                        )
+                    json_["to"] = self.__arrange_value(to_, "datetime", field_type)
             case _:
                 raise TypeError(
                     f"{field_type.value}はjson_filterに指定できないフィールドです"
@@ -166,3 +147,21 @@ class JsonFilterTerm(JsonFilterOperator):
             json_["include_upper"] = include_upper
         term.json = json_
         return term
+
+    @staticmethod
+    def __arrange_value(value: Union[int, datetime], type_: str, field_type: FieldType):
+        match type_:
+            case "int":
+                if type(value) is not int:
+                    raise TypeError(
+                        f"フィールド {field_type.value} には {type_} が指定されるべきです"
+                    )
+                return value
+            case "datetime":
+                if type(value) is not datetime:
+                    raise TypeError(
+                        f"フィールド {field_type.value} には {type_} が指定されるべきです"
+                    )
+                return value.strftime("%Y-%m-%dT%H:%M:%S+09:00")
+            case _:
+                raise Exception("type_ には \"int\" または \"datetime\" が指定されるべきです")
