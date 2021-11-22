@@ -157,7 +157,11 @@ class JsonFilterTerm(JsonFilterOperator):
         return term
 
     @staticmethod
-    def __arrange_value(value: Union[int, datetime], type_: Type[Union[int, datetime]], field_type: FieldType):
+    def __arrange_value(
+        value: Union[int, datetime],
+        type_: Type[Union[int, datetime]],
+        field_type: FieldType,
+    ):
         if type_ is int and type(value) is type_:
             return value
         elif type_ is datetime and type(value) is type_:
