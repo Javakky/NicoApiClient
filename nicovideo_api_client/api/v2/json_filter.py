@@ -125,18 +125,22 @@ class JsonFilterTerm(JsonFilterOperator):
                 | FieldType.COMMENT_COUNTER
             ):
                 if from_ is not None:
-                    json_["from"] = JsonFilterTerm.__arrange_value(from_, int, field_type)
+                    json_["from"] = JsonFilterTerm\
+                        .__arrange_value(from_, int, field_type)
                 if to_ is not None:
-                    json_["to"] = JsonFilterTerm.__arrange_value(to_, int, field_type)
+                    json_["to"] = JsonFilterTerm\
+                        .__arrange_value(to_, int, field_type)
             case (
                 FieldType.START_TIME
                 | FieldType.LAST_COMMENT_TIME
             ):
                 if from_ is not None:
-                    json_["from"] = JsonFilterTerm.__arrange_value(from_, datetime, field_type)
+                    json_["from"] = JsonFilterTerm\
+                        .__arrange_value(from_, datetime, field_type)
 
                 if to_ is not None:
-                    json_["to"] = JsonFilterTerm.__arrange_value(to_, datetime, field_type)
+                    json_["to"] = JsonFilterTerm\
+                        .__arrange_value(to_, datetime, field_type)
             case _:
                 raise TypeError(
                     f"{field_type.value}はjson_filterに指定できないフィールドです"
