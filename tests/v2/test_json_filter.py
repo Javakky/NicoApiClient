@@ -7,7 +7,7 @@ from nicovideo_api_client.constants import FieldType
 
 
 class JsonFilterTestCase(unittest.TestCase):
-    term_time = JsonFilterTerm().set_range(
+    term_time = JsonFilterTerm.set_range(
         field_type=FieldType.START_TIME,
         from_=datetime(2021, 1, 1),
         to_=datetime(2021, 12, 31),
@@ -15,7 +15,7 @@ class JsonFilterTestCase(unittest.TestCase):
         include_lower=True,
     )
 
-    term_view = JsonFilterTerm().set_range(
+    term_view = JsonFilterTerm.set_range(
         field_type=FieldType.VIEW_COUNTER,
         from_=100,
         to_=1000,
