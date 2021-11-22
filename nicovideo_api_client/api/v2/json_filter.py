@@ -1,5 +1,5 @@
 from datetime import datetime
-from typing import Dict, List, Optional, Union
+from typing import Dict, List, Optional, Union, Type
 from nicovideo_api_client.constants import FieldType
 
 TypeOp = Dict[str, Union[str, bool, int, List["TypeOp"], "TypeOp"]]
@@ -125,22 +125,26 @@ class JsonFilterTerm(JsonFilterOperator):
                 | FieldType.COMMENT_COUNTER
             ):
                 if from_ is not None:
-                    json_["from"] = JsonFilterTerm\
-                        .__arrange_value(from_, int, field_type)
+                    json_["from"] = JsonFilterTerm.__arrange_value(
+                        from_, int, field_type
+                    )
                 if to_ is not None:
-                    json_["to"] = JsonFilterTerm\
-                        .__arrange_value(to_, int, field_type)
+                    json_["to"] = JsonFilterTerm.__arrange_value(
+                        to_, int, field_type
+                    )
             case (
                 FieldType.START_TIME
                 | FieldType.LAST_COMMENT_TIME
             ):
                 if from_ is not None:
-                    json_["from"] = JsonFilterTerm\
-                        .__arrange_value(from_, datetime, field_type)
+                    json_["from"] = JsonFilterTerm.__arrange_value(
+                        from_, datetime, field_type
+                    )
 
                 if to_ is not None:
-                    json_["to"] = JsonFilterTerm\
-                        .__arrange_value(to_, datetime, field_type)
+                    json_["to"] = JsonFilterTerm.__arrange_value(
+                        to_, datetime, field_type
+                    )
             case _:
                 raise TypeError(
                     f"{field_type.value}はjson_filterに指定できないフィールドです"
@@ -153,18 +157,12 @@ class JsonFilterTerm(JsonFilterOperator):
         return term
 
     @staticmethod
-    def __arrange_value(value: Union[int, datetime], type_: type, field_type: FieldType):
-        if type_ is int:
-            if type(value) is not int:
-                raise TypeError(
-                    f"フィールド {field_type.value} には {type_} が指定されるべきです"
-                )
+    def __arrange_value(value: Union[int, datetime], type_: Type[Union[int, datetime]], field_type: FieldType):
+        if type_ is int and type(value) is type_:
             return value
-        elif type_ is datetime:
-            if type(value) is not datetime:
-                raise TypeError(
-                    f"フィールド {field_type.value} には {type_} が指定されるべきです"
-                )
+        elif type_ is datetime and type(value) is type_:
             return value.strftime("%Y-%m-%dT%H:%M:%S+09:00")
         else:
-            raise Exception("type_ には \"int\" または \"datetime\" が指定されるべきです")
+            raise TypeError(
+                f"フィールド {field_type.value} には {type_} が指定されるべきです"
+            )
