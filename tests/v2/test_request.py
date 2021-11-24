@@ -95,7 +95,6 @@ class SnapshotSearchAPIV2RequestTestCase(unittest.TestCase):
             "?targets=title&q=%E6%AD%8C%E3%81%A3%E3%81%A6%E3%81%BF%E3%81%9F"
             "+OR+%E8%B8%8A%E3%81%A3%E3%81%A6%E3%81%BF%E3%81%9F&fields=title&"
             "_sort=-viewCounter"
-
         )
 
     @staticmethod
