@@ -129,13 +129,8 @@ class JsonFilterTerm(JsonFilterOperator):
                         from_, int, field_type
                     )
                 if to_ is not None:
-                    json_["to"] = JsonFilterTerm._arrange_value(
-                        to_, int, field_type
-                    )
-            case (
-                FieldType.START_TIME
-                | FieldType.LAST_COMMENT_TIME
-            ):
+                    json_["to"] = JsonFilterTerm._arrange_value(to_, int, field_type)
+            case (FieldType.START_TIME | FieldType.LAST_COMMENT_TIME):
                 if from_ is not None:
                     json_["from"] = JsonFilterTerm._arrange_value(
                         from_, datetime, field_type
@@ -146,9 +141,7 @@ class JsonFilterTerm(JsonFilterOperator):
                         to_, datetime, field_type
                     )
             case _:
-                raise TypeError(
-                    f"{field_type.value}はjson_filterに指定できないフィールドです"
-                )
+                raise TypeError(f"{field_type.value}はjson_filterに指定できないフィールドです")
         if include_lower:
             json_["include_lower"] = include_lower
         if include_upper:
@@ -168,6 +161,4 @@ class JsonFilterTerm(JsonFilterOperator):
             elif type_ is datetime:
                 return value.strftime("%Y-%m-%dT%H:%M:%S+09:00")
         else:
-            raise TypeError(
-                f"フィールド {field_type.value} には {type_} が指定されるべきです"
-            )
+            raise TypeError(f"フィールド {field_type.value} には {type_} が指定されるべきです")
