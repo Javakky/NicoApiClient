@@ -125,11 +125,11 @@ class JsonFilterTerm(JsonFilterOperator):
                 | FieldType.COMMENT_COUNTER
             ):
                 if from_ is not None:
-                    json_["from"] = JsonFilterTerm.__arrange_value(
+                    json_["from"] = JsonFilterTerm._arrange_value(
                         from_, int, field_type
                     )
                 if to_ is not None:
-                    json_["to"] = JsonFilterTerm.__arrange_value(
+                    json_["to"] = JsonFilterTerm._arrange_value(
                         to_, int, field_type
                     )
             case (
@@ -137,12 +137,12 @@ class JsonFilterTerm(JsonFilterOperator):
                 | FieldType.LAST_COMMENT_TIME
             ):
                 if from_ is not None:
-                    json_["from"] = JsonFilterTerm.__arrange_value(
+                    json_["from"] = JsonFilterTerm._arrange_value(
                         from_, datetime, field_type
                     )
 
                 if to_ is not None:
-                    json_["to"] = JsonFilterTerm.__arrange_value(
+                    json_["to"] = JsonFilterTerm._arrange_value(
                         to_, datetime, field_type
                     )
             case _:
@@ -157,15 +157,16 @@ class JsonFilterTerm(JsonFilterOperator):
         return term
 
     @staticmethod
-    def __arrange_value(
+    def _arrange_value(
         value: Union[int, datetime],
-        type_: Type[Union[int, datetime]],
+        type_: Union[Type[int], Type[datetime]],
         field_type: FieldType,
     ):
-        if type_ is int and type(value) is type_:
-            return value
-        elif type_ is datetime and type(value) is type_:
-            return value.strftime("%Y-%m-%dT%H:%M:%S+09:00")
+        if type(value) is type_:
+            if type_ is int:
+                return value
+            elif type_ is datetime:
+                return value.strftime("%Y-%m-%dT%H:%M:%S+09:00")
         else:
             raise TypeError(
                 f"フィールド {field_type.value} には {type_} が指定されるべきです"
