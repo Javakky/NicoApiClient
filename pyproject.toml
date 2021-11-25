@@ -24,7 +24,7 @@ Sphinx = "^4.2.0"
 taskipy = "^1.8.2"
 pyproject-flake8 = "^0.0.1-alpha.2"
 install = "^1.3.4"
-black = "^21.9b0"
+black = "^21.10b0"
 isort = "5.10.1"
 
 [build-system]
@@ -36,7 +36,7 @@ example = "python examples/example.py"
 test = "pytest tests"
 docs = "sh script/make-docs.sh"
 lint = "poetry run pflake8 nicovideo_api_client examples tests"
-format = "poetry run black nicovideo_api_client examples tests"
+format = "poetry run black --target-version py310 nicovideo_api_client examples tests"
 
 [tool.flake8]
 max-line-length = 88
@@ -45,12 +45,6 @@ max-complexity = 15
 
 [tool.black]
 line-length = 88
-exclude = '''
-(
-    tests/v2/mocked_requests_get.py
-    | nicovideo_api_client/api/v2/simple_filter.py
-)
-'''
 
 [tool.isort]
 include_trailing_comma = true
