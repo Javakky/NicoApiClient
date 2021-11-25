@@ -5,16 +5,19 @@ from nicovideo_api_client.constants import FieldType
 
 
 class SnapshotSearchAPIV2FieldsTestCase(unittest.TestCase):
-    def test_field_noting(self):
+    @staticmethod
+    def test_field_noting():
         assert "fields" not in SnapshotSearchAPIV2Fields({}).field(set())._query
 
-    def test_field_once(self):
+    @staticmethod
+    def test_field_once():
         assert (
             SnapshotSearchAPIV2Fields({}).field({FieldType.TITLE})._query["fields"]
             == "title"
         )
 
-    def test_field_multi(self):
+    @staticmethod
+    def test_field_multi():
         assert (
             SnapshotSearchAPIV2Fields({})
             .field({FieldType.TITLE, FieldType.DESCRIPTION})

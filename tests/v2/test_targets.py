@@ -7,12 +7,14 @@ from nicovideo_api_client.constants import FieldType
 
 
 class SnapshotSearchAPIV2TargetsTestCase(unittest.TestCase):
-    def test_init_fail(self):
+    @staticmethod
+    def test_init_fail():
         with pytest.raises(Exception) as e:
             SnapshotSearchAPIV2Targets()
         assert "targets が設定されていません" == str(e.value)
 
-    def test_query(self):
+    @staticmethod
+    def test_query():
         expected = "keyword"
         assert (
             SnapshotSearchAPIV2Targets(FieldType.TITLE).query(expected)._query["q"]

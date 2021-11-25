@@ -7,11 +7,13 @@ from nicovideo_api_client.constants import FieldType, target_types
 
 
 class SnapshotSearchAPIV2TestCase(unittest.TestCase):
-    def test_tags_exact(self):
+    @staticmethod
+    def test_tags_exact():
         instance = SnapshotSearchAPIV2().tags_exact()
         assert instance._query == {"targets": "tagsExact"}
 
-    def test_keywords(self):
+    @staticmethod
+    def test_keywords():
         instance = SnapshotSearchAPIV2().keywords()
         assert instance._query == {"targets": "title,description,tags"}
 
@@ -21,7 +23,8 @@ class SnapshotSearchAPIV2TestCase(unittest.TestCase):
                 instance = SnapshotSearchAPIV2().targets({t})
                 assert instance._query == {"targets": t.value}
 
-    def test_targets_fail_multiple_tags_exact(self):
+    @staticmethod
+    def test_targets_fail_multiple_tags_exact():
         with pytest.raises(Exception) as e:
             SnapshotSearchAPIV2().targets({FieldType.TITLE, FieldType.TAGS_EXACT})
         assert "tagsExact は他のフィールドタイプと併用して指定できません" == str(e.value)
