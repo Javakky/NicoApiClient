@@ -15,10 +15,14 @@ def main():
         .sort(FieldType.VIEW_COUNTER)
         .json_filter(
             JsonFilterOperator.or_(
-                JsonFilterTerm.set_range_time(
-                    from_=datetime(2021, 1, 1, 0, 0, 0), include_lower=True
+                JsonFilterTerm.set_range(
+                    FieldType.START_TIME,
+                    from_=datetime(2021, 1, 1, 0, 0, 0),
+                    include_lower=True,
                 ),
-                JsonFilterTerm.set_range_time(to_=datetime(2010, 1, 1, 0, 0, 0)),
+                JsonFilterTerm.set_range(
+                    FieldType.START_TIME, to_=datetime(2010, 1, 1, 0, 0, 0)
+                ),
             )
         )
         .limit(10)

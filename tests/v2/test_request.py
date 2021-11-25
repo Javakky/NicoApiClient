@@ -222,8 +222,10 @@ class SnapshotSearchAPIV2RequestTestCase(unittest.TestCase):
             .sort(FieldType.VIEW_COUNTER)
             .json_filter(
                 JsonFilterOperator.not_(
-                    JsonFilterTerm.set_range_time(
-                        to_=datetime(2021, 1, 1, 0, 0, 0), include_upper=False
+                    JsonFilterTerm.set_range(
+                        FieldType.START_TIME,
+                        to_=datetime(2021, 1, 1, 0, 0, 0),
+                        include_upper=False,
                     )
                 )
             )
