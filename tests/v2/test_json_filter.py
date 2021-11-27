@@ -2,7 +2,7 @@ import unittest
 from datetime import datetime
 
 from nicovideo_api_client.api.v2.filter import SnapshotSearchAPIV2Filter
-from nicovideo_api_client.api.v2.json_filter import JsonFilterTerm, JsonFilterOperator
+from nicovideo_api_client.api.v2.json_filter import JsonFilterOperator, JsonFilterTerm
 from nicovideo_api_client.constants import FieldType
 
 

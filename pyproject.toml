@@ -36,7 +36,7 @@ example = "python examples/example.py"
 test = "pytest tests"
 docs = "sh script/make-docs.sh"
 lint = "poetry run pflake8 nicovideo_api_client examples tests"
-format = "poetry run black --target-version py310 nicovideo_api_client examples tests"
+format = "poetry run black --target-version py310 nicovideo_api_client examples tests && poetry run isort nicovideo_api_client examples tests"
 
 [tool.flake8]
 max-line-length = 88

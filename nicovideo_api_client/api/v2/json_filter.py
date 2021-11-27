@@ -1,5 +1,6 @@
 from datetime import datetime
-from typing import Dict, List, Optional, Union, Type
+from typing import Dict, List, Optional, Type, Union
+
 from nicovideo_api_client.constants import FieldType
 
 TypeOp = Dict[str, Union[str, bool, int, List["TypeOp"], "TypeOp"]]
