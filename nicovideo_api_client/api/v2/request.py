@@ -1,6 +1,6 @@
 import math
 import time
-from typing import Dict, List, Tuple, Union
+from typing import Dict, List, Tuple
 from urllib.parse import unquote_plus, urlencode
 
 import requests
