@@ -11,6 +11,9 @@ class SnapshotSearchAPIV2Filter:
     def __init__(self, query: Dict[str, str]):
         self._query: Dict[str, str] = query
 
+    def no_filter(self) -> SnapshotSearchAPIV2Limit:
+        return SnapshotSearchAPIV2Limit(self._query)
+
     def simple_filter(self) -> SnapshotSearchAPIV2SimpleFilter:
         """
         絞り込みにシンプルな `filters` を利用することを宣言する。
