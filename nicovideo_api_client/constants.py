@@ -1,6 +1,6 @@
-from enum import Enum
-from typing import List, Dict, Union, Literal, TypeAlias
 from datetime import datetime
+from enum import Enum
+from typing import Dict, List, Literal, TypeAlias, Union
 
 
 class FieldType(Enum):

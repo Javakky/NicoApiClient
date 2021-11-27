@@ -2,7 +2,7 @@ import sys
 
 sys.path.append(".")
 
-from examples import json_filter, version, simple, simple_filter, multiple
+from examples import json_filter, multiple, simple, simple_filter, version
 
 if __name__ == "__main__":
     simple.main()
