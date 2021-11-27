@@ -12,6 +12,10 @@ class SnapshotSearchAPIV2Filter:
         self._query: Dict[str, str] = query
 
     def no_filter(self) -> SnapshotSearchAPIV2Limit:
+        if "q" not in self._query:
+            raise KeyError("キーワードが指定されていません")
+        elif self._query["q"] == "":
+            raise ValueError("キーワード無し検索を行う場合には必ず検索フィルタを指定してください")
         return SnapshotSearchAPIV2Limit(self._query)
 
     def simple_filter(self) -> SnapshotSearchAPIV2SimpleFilter:
