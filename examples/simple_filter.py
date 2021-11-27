@@ -36,6 +36,7 @@ def main():
         .simple_filter()
         .filter(match_filter)
         .limit(100)
+        .user_agent("NicoApiClient", "0.5.0")
     )
 
     print(request.build_url())
@@ -70,6 +71,7 @@ def main():
         .simple_filter()
         .filter(range_filter)
         .limit(100)
+        .user_agent("NicoApiClient", "0.5.0")
     )
 
     print(request.build_url())
@@ -105,6 +107,7 @@ def main():
         .simple_filter()
         .filter(combined_filter, combine)
         .limit(100)
+        .user_agent("NicoApiClient", "0.5.0")
     )
 
     print(request.build_url())
