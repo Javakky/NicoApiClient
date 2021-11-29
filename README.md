@@ -30,7 +30,7 @@ json = SnapshotSearchAPIV2() \
     .query("VOCALOID") \
     .field({FieldType.TITLE, FieldType.CONTENT_ID}) \
     .sort(FieldType.VIEW_COUNTER) \
-    .simple_filter().filter() \
+    .no_filter() \
     .limit(100) \
     .request() \
     .json()

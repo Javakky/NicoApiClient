@@ -10,8 +10,7 @@ def main():
         .query("VOCALOID")
         .field({FieldType.TITLE, FieldType.DESCRIPTION})
         .sort(FieldType.VIEW_COUNTER)
-        .simple_filter()
-        .filter()
+        .no_filter()
         .limit(100)
     )
 
