@@ -1,6 +1,6 @@
 import math
 import time
-from typing import Dict, List, Tuple
+from typing import Dict, List, Tuple, Union
 from urllib.parse import unquote_plus, urlencode
 
 import requests
@@ -10,7 +10,12 @@ from nicovideo_api_client.constants import DEFAULT_RETRY, END_POINT_URL_V2
 
 
 class SnapshotSearchAPIV2Request:
-    def __init__(self, query: Dict[str, str], limit: int, user_agent: tuple):
+    def __init__(
+        self,
+        query: Dict[str, str],
+        limit: int,
+        user_agent: Tuple[str, Union[int, str], str],
+    ):
         self._query: Dict[str, str] = query
         self._limit = limit
         self._user_agent = user_agent
@@ -67,7 +72,7 @@ class SnapshotSearchAPIV2Request:
         url = self.build_url(True if "jsonFilter" in self._query else False)
 
         header = {"User-Agent": self._user_agent[0] + "/" + self._user_agent[1]}
-        if self._user_agent[2] is not None:
+        if self._user_agent[2] != "":
             header["User-Agent"] += " " + self._user_agent[2]
 
         for r in range(DEFAULT_RETRY):

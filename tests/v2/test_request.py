@@ -217,44 +217,6 @@ class SnapshotSearchAPIV2RequestTestCase(unittest.TestCase):
             "filters%5BmylistCounter%5D%5Blte%5D=100"
         )
 
-    def unset_user_agent_product(self):
-        with self.assertRaises(ValueError) as error:
-            SnapshotSearchAPIV2().targets({FieldType.TITLE}).query("テスト").field(
-                {FieldType.TITLE}
-            ).sort(FieldType.VIEW_COUNTER).json_filter(
-                JsonFilterOperator.not_(
-                    JsonFilterTerm.set_range(
-                        FieldType.START_TIME,
-                        to_=datetime(2021, 1, 1, 0, 0, 0),
-                        include_upper=False,
-                    )
-                )
-            ).limit(
-                10
-            ).user_agent(
-                version="0.5.0"
-            )
-        self.assertEqual(error.exception.args[0], "User-Agentのプロダクト名の指定は必須です")
-
-    def unset_user_agent_version(self):
-        with self.assertRaises(ValueError) as error:
-            SnapshotSearchAPIV2().targets({FieldType.TITLE}).query("テスト").field(
-                {FieldType.TITLE}
-            ).sort(FieldType.VIEW_COUNTER).json_filter(
-                JsonFilterOperator.not_(
-                    JsonFilterTerm.set_range(
-                        FieldType.START_TIME,
-                        to_=datetime(2021, 1, 1, 0, 0, 0),
-                        include_upper=False,
-                    )
-                )
-            ).limit(
-                10
-            ).user_agent(
-                product="NicoApiClient"
-            )
-        self.assertEqual(error.exception.args[0], "User-Agentのプロダクトバージョンの指定は必須です")
-
     @staticmethod
     def test_build_url_jsonFilter():
         actual = (
