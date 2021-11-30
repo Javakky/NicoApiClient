@@ -14,7 +14,7 @@ class SnapshotSearchAPIV2Request:
         self,
         query: Dict[str, str],
         limit: int,
-        user_agent: Tuple[str, Union[int, str], str],
+        user_agent: Tuple[str, str, str],
     ):
         self._query: Dict[str, str] = query
         self._limit = limit

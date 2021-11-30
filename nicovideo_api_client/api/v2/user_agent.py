@@ -9,7 +9,7 @@ class SnapshotSearchAPIV2UserAgent:
         self._limit: int = limit
 
     def user_agent(
-        self, product: str = "", version: Union[int, str] = "", comment: str = ""
+        self, product: str, version: Union[int, str], comment: str = ""
     ) -> SnapshotSearchAPIV2Request:
         """
         レスポンスの要素数を指定する。
@@ -21,20 +21,11 @@ class SnapshotSearchAPIV2UserAgent:
         :return: リクエストオブジェクト
         """
 
-        product = product.replace(" ", "")
-        version = version.replace(" ", "")
-        if product == "":
-            raise UndefinedArgError("User-Agentのプロダクト名の指定は必須です")
-        elif version == "":
-            raise UndefinedArgError("User-Agentのプロダクトバージョンの指定は必須です")
-        else:
-            if version is int:
-                version = str(version)
-            user_agent = (product, version, comment)
+        if product.isspace():
+            raise TypeError("User-Agentのプロダクト名に空白文字のみを指定することはできません")
+        if version.isspace():
+            raise TypeError("User-Agentのプロダクトバージョンに空白文字のみを指定することはできません")
+        if version is int:
+            version = str(version)
+        user_agent = (product, version, comment)
         return SnapshotSearchAPIV2Request(self._query, self._limit, user_agent)
-
-
-class UndefinedArgError(Exception):
-    """引数が未定義の場合にエラーを発生させる例外クラス"""
-
-    pass
