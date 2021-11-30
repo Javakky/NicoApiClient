@@ -21,10 +21,12 @@ class SnapshotSearchAPIV2UserAgent:
         :return: リクエストオブジェクト
         """
 
-        if product is None or version is None:
-            raise Exception("プロダクト名およびバージョンの指定は必須です")
+        if product is None or product == "":
+            raise Exception("User-Agentのプロダクト名の指定は必須です")
+        elif version is None or version == "":
+            raise Exception("User-Agentのプロダクトバージョンの指定は必須です")
         else:
             if version is int:
                 version = str(version)
-            user_agent = [product, version, comment]
+            user_agent = (product, version, comment)
         return SnapshotSearchAPIV2Request(self._query, self._limit, user_agent)

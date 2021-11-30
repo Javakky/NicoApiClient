@@ -10,7 +10,7 @@ from nicovideo_api_client.constants import DEFAULT_RETRY, END_POINT_URL_V2
 
 
 class SnapshotSearchAPIV2Request:
-    def __init__(self, query: Dict[str, str], limit: int, user_agent: list):
+    def __init__(self, query: Dict[str, str], limit: int, user_agent: tuple):
         self._query: Dict[str, str] = query
         self._limit = limit
         self._user_agent = user_agent
@@ -38,7 +38,7 @@ class SnapshotSearchAPIV2Request:
 
         total_time = 0.0
 
-        (response, total_time) = self._request(timeout, total_time, self._user_agent)
+        (response, total_time) = self._request(timeout, total_time)
 
         results: List[SnapshotSearchAPIV2Result] = [response]
 
@@ -52,9 +52,7 @@ class SnapshotSearchAPIV2Request:
             if self._limit < (pos + 1) * 100:
                 self._query["_limit"] = str(self._limit % 100)
 
-            (response, total_time) = self._request(
-                timeout, total_time, self._user_agent
-            )
+            (response, total_time) = self._request(timeout, total_time)
 
             results.append(response)
         return SnapshotSearchAPIV2Result(self._query, results)
@@ -63,15 +61,14 @@ class SnapshotSearchAPIV2Request:
         self,
         timeout: float,
         total_time: float,
-        user_agent: list,
     ) -> Tuple[SnapshotSearchAPIV2Result, float]:
         # `'jsonFilter'` の値までまとめてエンコードされてしまっているので、それを避けるため True にしている
         # TODO: `'q'` がエンコードされずよくないので原因調査して修正する。
         url = self.build_url(True if "jsonFilter" in self._query else False)
 
-        header = {"User-Agent": user_agent[0] + "/" + user_agent[1]}
-        if user_agent[2] is not None:
-            header["User-Agent"] += " (" + user_agent[2] + ")"
+        header = {"User-Agent": self._user_agent[0] + "/" + self._user_agent[1]}
+        if self._user_agent[2] is not None:
+            header["User-Agent"] += " " + self._user_agent[2]
 
         for r in range(DEFAULT_RETRY):
             response = requests.get(
