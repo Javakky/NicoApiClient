@@ -22,9 +22,9 @@ class SnapshotSearchAPIV2UserAgent:
         """
 
         if product.isspace():
-            raise TypeError("User-Agentのプロダクト名に空白文字のみを指定することはできません")
+            raise ValueError("User-Agentのプロダクト名に空白文字のみを指定することはできません")
         if version.isspace():
-            raise TypeError("User-Agentのプロダクトバージョンに空白文字のみを指定することはできません")
+            raise ValueError("User-Agentのプロダクトバージョンに空白文字のみを指定することはできません")
         if version is int:
             version = str(version)
         user_agent = (product, version, comment)
