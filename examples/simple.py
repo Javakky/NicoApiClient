@@ -12,6 +12,7 @@ def main():
         .sort(FieldType.VIEW_COUNTER)
         .no_filter()
         .limit(100)
+        .user_agent("NicoApiClient", "0.5.0")
     )
 
     # https://api.search.nicovideo.jp/api/v2/snapshot/video/contents/search?targets=tagsExact&q=VOCALOID&fields=contentId%2Ctitle&_sort=-viewCounter

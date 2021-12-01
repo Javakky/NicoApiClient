@@ -18,6 +18,7 @@ def main():
         .simple_filter()
         .filter()
         .limit(100)
+        .user_agent("NicoApiClient", "0.5.0")
     )
 
     print(request.build_url())

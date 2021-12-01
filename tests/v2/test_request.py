@@ -44,6 +44,7 @@ class SnapshotSearchAPIV2RequestTestCase(unittest.TestCase):
             .simple_filter()
             .filter()
             .limit(10)
+            .user_agent("NicoApiClient", "0.5.0")
         )
         assert (
             actual.build_url(False)
@@ -64,6 +65,7 @@ class SnapshotSearchAPIV2RequestTestCase(unittest.TestCase):
             .simple_filter()
             .filter()
             .limit(10)
+            .user_agent("NicoApiClient", "0.5.0")
         )
 
         assert (
@@ -86,6 +88,7 @@ class SnapshotSearchAPIV2RequestTestCase(unittest.TestCase):
             .simple_filter()
             .filter()
             .limit(10)
+            .user_agent("NicoApiClient", "0.5.0")
         )
 
         assert (
@@ -121,6 +124,7 @@ class SnapshotSearchAPIV2RequestTestCase(unittest.TestCase):
             .simple_filter()
             .filter(match_filter)
             .limit(10)
+            .user_agent("NicoApiClient", "0.5.0")
         )
         assert (
             actual.build_url(False)
@@ -160,6 +164,7 @@ class SnapshotSearchAPIV2RequestTestCase(unittest.TestCase):
             .simple_filter()
             .filter(range_filter)
             .limit(10)
+            .user_agent("NicoApiClient", "0.5.0")
         )
         assert (
             actual.build_url(False)
@@ -199,6 +204,7 @@ class SnapshotSearchAPIV2RequestTestCase(unittest.TestCase):
             .simple_filter()
             .filter(combined_filter, combine)
             .limit(10)
+            .user_agent("NicoApiClient", "0.5.0")
         )
         assert (
             actual.build_url(False)
@@ -229,6 +235,7 @@ class SnapshotSearchAPIV2RequestTestCase(unittest.TestCase):
                 )
             )
             .limit(10)
+            .user_agent("NicoApiClient", "0.5.0")
         )
         assert (
             actual.build_url(True)
@@ -262,6 +269,7 @@ class SnapshotSearchAPIV2RequestTestCase(unittest.TestCase):
             .simple_filter()
             .filter()
             .limit(10)
+            .user_agent("NicoApiClient", "0.5.0")
             .request()
         )
         assert actual.meta_id() == META_DATA["id"]
