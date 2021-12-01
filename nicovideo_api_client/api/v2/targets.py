@@ -23,8 +23,7 @@ class SnapshotSearchAPIV2Targets:
 
         文字列を直接クエリに渡すため、キーワードに半角スペースやORを含めることでAND・OR検索を行うことができる。
 
-        :param
-            keyword: 検索するキーワード(文字列型)
+        :param keyword: 検索するキーワード(文字列型)
         :return: レスポンスフィールドのタイプ指定オブジェクト
         """
         if type(keyword) is not str:
@@ -42,8 +41,7 @@ class SnapshotSearchAPIV2Targets:
         %E3%82%AF%E3%82%A8%E3%83%AA%E6%96%87%E5%AD%97%E5%88%97%E4%BB%95%E6%A7%98>`_
         に沿った値を入力することで AND, OR 検索など複数のキーワードを含めた検索を行うことができる。
 
-        :param
-            keyword: 検索するキーワード。文字列または文字列を要素に持つリスト。
+        :param keyword: 検索するキーワード。文字列または文字列を要素に持つリスト。
         :return: レスポンスアンドのタイプ指定オブジェクト
         """
 
