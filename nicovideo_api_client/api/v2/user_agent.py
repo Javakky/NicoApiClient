@@ -14,10 +14,9 @@ class SnapshotSearchAPIV2UserAgent:
         """
         レスポンスの要素数を指定する。
 
-        :param
-            product: HTTPリクエストヘッダのUser-Agentに指定するプロダクト名
-            version: HTTPリクエストヘッダのUser-Agentに指定するプロダクトバージョン
-            product: HTTPリクエストヘッダのUser-Agentに指定するコメント
+        :param product: HTTPリクエストヘッダのUser-Agentに指定するプロダクト名
+        :param version: HTTPリクエストヘッダのUser-Agentに指定するプロダクトバージョン
+        :param comment: HTTPリクエストヘッダのUser-Agentに指定するコメント
         :return: リクエストオブジェクト
         """
 
