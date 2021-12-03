@@ -33,6 +33,7 @@ json = SnapshotSearchAPIV2() \
     .no_filter() \
     .limit(100) \
     .request() \
+    .user_agent("NicoApiClient", "0.5.0") \
     .json()
 ```
 
