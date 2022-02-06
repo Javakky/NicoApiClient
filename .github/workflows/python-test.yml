@@ -20,9 +20,15 @@ jobs:
         uses: actions/setup-python@v1
         with:
           python-version: 3.10.2
-      - name: Run Tests
+      - name: Install Poetry
         run: |
-          pip install poetry
-          poetry install
+          curl -sSL https://raw.githubusercontent.com/python-poetry/poetry/master/install-poetry.py | python -
+          echo "$HOME/.local/bin" >> $GITHUB_PATH
+      - name: Install Dependencies
+        run: poetry install --no-interaction
+      - name: Check Lint
+        run:
           poetry run task lint
+      - name: Run Test
+        run:
           poetry run task test
