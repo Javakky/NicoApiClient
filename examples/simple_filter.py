@@ -16,7 +16,7 @@ def main():
     request = (
         SnapshotSearchAPIV2()
         .tags_exact()
-        .query("VOCALOID")
+        .single_query("VOCALOID")
         .field(
             {
                 FieldType.TITLE,
@@ -51,7 +51,7 @@ def main():
     request = (
         SnapshotSearchAPIV2()
         .tags_exact()
-        .query("VOCALOID")
+        .single_query("VOCALOID")
         .field(
             {
                 FieldType.TITLE,
@@ -87,7 +87,7 @@ def main():
     request = (
         SnapshotSearchAPIV2()
         .tags_exact()
-        .query("VOCALOID")
+        .single_query("VOCALOID")
         .field(
             {
                 FieldType.TITLE,

@@ -10,7 +10,7 @@ def main():
     request = (
         SnapshotSearchAPIV2()
         .tags_exact()
-        .query("VOCALOID")
+        .single_query("VOCALOID")
         .field({FieldType.TITLE})
         .sort(FieldType.VIEW_COUNTER)
         .json_filter(

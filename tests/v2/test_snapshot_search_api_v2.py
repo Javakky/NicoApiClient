@@ -17,6 +17,17 @@ class SnapshotSearchAPIV2TestCase(unittest.TestCase):
         instance = SnapshotSearchAPIV2().keywords()
         assert instance._query == {"targets": "title,description,tags"}
 
+    @staticmethod
+    def test_sing_voice_synthesis_tags():
+        instance = SnapshotSearchAPIV2().sing_voice_synthesis_tags().field(set())
+        assert instance._query == {
+            "targets": "tagsExact",
+            "q": "UTAU OR VOCALOID OR UTAUオリジナル曲 OR VOCALOIDオリジナル曲 OR VOICEROIDオリジナル曲 OR NEUTRINOオリジナル曲 OR "
+            "CeVIOオリジナル曲 OR vocaloid新曲リンク OR SynthesizerV OR 歌うa.i.voice OR A.I.VOICEオリジナル曲 OR 歌うボイスロイド OR "
+            "VOCALOIDインスト曲 OR ボカロオリジナル曲 OR ソフトウェアシンガー OR UTAU新曲リンク OR cevio新曲リンク OR VOCALOID処女作 OR UTAU処女作 OR "
+            "CeVIO処女作 OR neutrino(歌声合成エンジン) -ボカロオリジナルを歌ってみた",
+        }
+
     def test_targets_success(self):
         for t in target_types:
             with self.subTest(t.value):

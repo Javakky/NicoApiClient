@@ -33,7 +33,7 @@ build-backend = "poetry.core.masonry.api"
 
 [tool.taskipy.tasks]
 example = "python examples/example.py"
-test = "pytest tests"
+test = "pytest tests -vv"
 docs = "sh script/make-docs.sh"
 lint = "poetry run pflake8 nicovideo_api_client examples tests"
 format = "poetry run black --target-version py310 nicovideo_api_client examples tests && poetry run isort nicovideo_api_client examples tests"

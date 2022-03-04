@@ -7,16 +7,16 @@ from nicovideo_api_client.constants import FieldType
 class SnapshotSearchAPIV2UserAgentTestCase(unittest.TestCase):
     def undefined_user_agent_product(self):
         with self.assertRaises(ValueError) as error:
-            SnapshotSearchAPIV2().targets({FieldType.TITLE}).query("テスト").field({FieldType.TITLE}).sort(
+            SnapshotSearchAPIV2().targets({FieldType.TITLE}).single_query("テスト").field({FieldType.TITLE}).sort(
                 FieldType.VIEW_COUNTER
-            ).simple_filter().filter().limit(10).user_agent(version="0.5.0")
+            ).simple_filter().filter().limit(10).user_agent(product="NicoApiClient", version="0.5.0")
         self.assertEqual(error.exception.args[0], "User-Agentのプロダクト名の指定は必須です")
 
     def undefined_user_agent_version(self):
         with self.assertRaises(ValueError) as error:
-            SnapshotSearchAPIV2().targets({FieldType.TITLE}).query("テスト").field({FieldType.TITLE}).sort(
+            SnapshotSearchAPIV2().targets({FieldType.TITLE}).single_query("テスト").field({FieldType.TITLE}).sort(
                 FieldType.VIEW_COUNTER
-            ).simple_filter().filter().limit(10).user_agent(product="NicoApiClient")
+            ).simple_filter().filter().limit(10).user_agent(product="NicoApiClient", version="0.5.0")
         self.assertEqual(error.exception.args[0], "User-Agentのプロダクトバージョンの指定は必須です")
 
 
