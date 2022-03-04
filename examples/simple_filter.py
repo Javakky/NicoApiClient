@@ -1,12 +1,5 @@
 from nicovideo_api_client.api.v2.snapshot_search_api_v2 import SnapshotSearchAPIV2
-from nicovideo_api_client.constants import (
-    CombinedDict,
-    FieldType,
-    MatchDict,
-    MatchValue,
-    RangeDict,
-    RangeValue,
-)
+from nicovideo_api_client.constants import CombinedDict, FieldType, MatchDict, MatchValue, RangeDict, RangeValue
 
 
 def main():

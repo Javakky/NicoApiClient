@@ -26,18 +26,14 @@ class SnapshotSearchAPIV2Filter:
         """
         return SnapshotSearchAPIV2SimpleFilter(self._query)
 
-    def json_filter(
-        self, op: Union[JsonFilterOperator, JsonFilterTerm]
-    ) -> SnapshotSearchAPIV2Limit:
+    def json_filter(self, op: Union[JsonFilterOperator, JsonFilterTerm]) -> SnapshotSearchAPIV2Limit:
         """
         `JsonFilterOperator` を使って表現した条件から、 `jsonFilter` を利用して絞り込む。
 
         :param op: 絞り込み条件
         :return: リクエスト上限設定オブジェクト
         """
-        self._query["jsonFilter"] = urllib.parse.quote_plus(
-            JSONEncoder().encode(op.json)
-        )
+        self._query["jsonFilter"] = urllib.parse.quote_plus(JSONEncoder().encode(op.json))
         if "q" not in self._query:
             raise KeyError("キーワードが指定されていません")
         elif self._query["q"] == "":

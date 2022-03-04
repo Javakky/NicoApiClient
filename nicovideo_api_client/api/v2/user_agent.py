@@ -8,9 +8,7 @@ class SnapshotSearchAPIV2UserAgent:
         self._query: Dict[str, str] = query
         self._limit: int = limit
 
-    def user_agent(
-        self, product: str, version: Union[int, str], comment: str = ""
-    ) -> SnapshotSearchAPIV2Request:
+    def user_agent(self, product: str, version: Union[int, str], comment: str = "") -> SnapshotSearchAPIV2Request:
         """
         レスポンスの要素数を指定する。
 

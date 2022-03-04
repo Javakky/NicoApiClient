@@ -16,10 +16,7 @@ class SnapshotSearchAPIV2TargetsTestCase(unittest.TestCase):
     @staticmethod
     def test_query():
         expected = "keyword"
-        assert (
-            SnapshotSearchAPIV2Targets(FieldType.TITLE).query(expected)._query["q"]
-            == expected
-        )
+        assert SnapshotSearchAPIV2Targets(FieldType.TITLE).query(expected)._query["q"] == expected
 
 
 if __name__ == "__main__":

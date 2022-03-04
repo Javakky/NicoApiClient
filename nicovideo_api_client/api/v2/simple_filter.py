@@ -3,33 +3,18 @@ from datetime import datetime
 from typing import Dict, Optional, Union
 
 from nicovideo_api_client.api.v2.limit import SnapshotSearchAPIV2Limit
-from nicovideo_api_client.constants import (
-    CombinedDict,
-    FieldType,
-    MatchDict,
-    MatchValue,
-    RangeDict,
-    RangeValue,
-)
+from nicovideo_api_client.constants import CombinedDict, FieldType, MatchDict, MatchValue, RangeDict, RangeValue
 
 
 class SnapshotSearchAPIV2SimpleFilter:
     def __init__(self, query: Dict[str, str]):
         self._query: Dict[str, str] = query
 
-    def _cast_value(
-        self, field_type: FieldType, value: Union[int, str, datetime]
-    ) -> str:
+    def _cast_value(self, field_type: FieldType, value: Union[int, str, datetime]) -> str:
         match field_type:
-            case (
-                FieldType.START_TIME
-                | FieldType.LAST_COMMENT_TIME
-                | FieldType.START_TIME
-            ):
+            case (FieldType.START_TIME | FieldType.LAST_COMMENT_TIME | FieldType.START_TIME):
                 if not isinstance(value, datetime):
-                    raise TypeError(
-                        f"FieldType.{field_type.value}を指定した時の型は datetime であるべきです"
-                    )
+                    raise TypeError(f"FieldType.{field_type.value}を指定した時の型は datetime であるべきです")
                 v = value.strftime("%Y-%m-%dT%H:%M:%S+09:00")
             case FieldType.CONTENT_ID:
                 if isinstance(value, int):
@@ -54,9 +39,7 @@ class SnapshotSearchAPIV2SimpleFilter:
                         raise TypeError(f"FieldType.{field_type.value}は整数が指定されるべきです")
                     v = int(value)
                 else:
-                    raise TypeError(
-                        f"FieldType.{field_type.value}を指定した時の型は int または str であるべきです"
-                    )
+                    raise TypeError(f"FieldType.{field_type.value}を指定した時の型は int または str であるべきです")
             case (
                 FieldType.GENRE_KEYWORD
                 | FieldType.GENRE
@@ -65,9 +48,7 @@ class SnapshotSearchAPIV2SimpleFilter:
                 | FieldType.CATEGORY_TAGS
             ):
                 if not isinstance(value, str):
-                    raise TypeError(
-                        f"FieldType.{field_type.value}を指定した時の型は str であるべきです"
-                    )
+                    raise TypeError(f"FieldType.{field_type.value}を指定した時の型は str であるべきです")
                 v = value
             case (
                 FieldType.TITLE
@@ -77,9 +58,7 @@ class SnapshotSearchAPIV2SimpleFilter:
                 | FieldType.THUMBNAIL_URL
                 | FieldType.LAST_RES_BODY
             ):
-                raise TypeError(
-                    f"FieldType.{field_type.value}はfilterに指定できないFieldTypeです"
-                )
+                raise TypeError(f"FieldType.{field_type.value}はfilterに指定できないFieldTypeです")
             case _:
                 raise NotImplementedError("未知のTypeが指定されました")
         return v

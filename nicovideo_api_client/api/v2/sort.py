@@ -8,9 +8,7 @@ class SnapshotSearchAPIV2Sort:
     def __init__(self, query: Dict[str, str]):
         self._query: Dict[str, str] = query
 
-    def sort(
-        self, sort_type: FieldType, reverse: bool = False
-    ) -> SnapshotSearchAPIV2Filter:
+    def sort(self, sort_type: FieldType, reverse: bool = False) -> SnapshotSearchAPIV2Filter:
         """
         ソートタイプを指定する。
 

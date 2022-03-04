@@ -68,9 +68,7 @@ class FieldType(Enum):
 
 DEFAULT_RETRY = 3
 
-END_POINT_URL_V2 = (
-    "https://api.search.nicovideo.jp/api/v2/snapshot/video/contents/search"
-)
+END_POINT_URL_V2 = "https://api.search.nicovideo.jp/api/v2/snapshot/video/contents/search"
 END_POINT_URL_VIDEO = "https://www.nicovideo.jp/watch/"
 END_POINT_URL_V2_VERSION = "https://api.search.nicovideo.jp/api/v2/snapshot/version"
 
@@ -99,9 +97,7 @@ target_types = [
 
 MatchValue: TypeAlias = Union[List[str], List[int], List[datetime]]
 RangeLiteral: TypeAlias = Literal["gt", "gte", "lt", "lte"]
-RangeValue: TypeAlias = Union[
-    Dict[RangeLiteral, str], Dict[RangeLiteral, int], Dict[RangeLiteral, datetime]
-]
+RangeValue: TypeAlias = Union[Dict[RangeLiteral, str], Dict[RangeLiteral, int], Dict[RangeLiteral, datetime]]
 MatchDict: TypeAlias = Dict[FieldType, MatchValue]
 RangeDict: TypeAlias = Dict[FieldType, RangeValue]
 CombinedDict: TypeAlias = Dict[FieldType, Union[MatchValue, RangeValue]]

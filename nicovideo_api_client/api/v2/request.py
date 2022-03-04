@@ -76,9 +76,7 @@ class SnapshotSearchAPIV2Request:
             header["User-Agent"] += " " + self._user_agent[2]
 
         for r in range(DEFAULT_RETRY):
-            response = requests.get(
-                url, timeout=(timeout / 4, timeout * 3 / 4), headers=header
-            )
+            response = requests.get(url, timeout=(timeout / 4, timeout * 3 / 4), headers=header)
             response_time = response.elapsed.total_seconds()
             response_obj = SnapshotSearchAPIV2Result(self._query, response)
             total_time += response_time
