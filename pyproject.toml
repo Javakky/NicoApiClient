@@ -39,14 +39,14 @@ lint = "poetry run pflake8 nicovideo_api_client examples tests"
 format = "poetry run black --target-version py310 nicovideo_api_client examples tests && poetry run isort nicovideo_api_client examples tests"
 
 [tool.flake8]
-max-line-length = 88
+max-line-length = 120
 extend-ignore = "E203,E402,"
 max-complexity = 15
 
 [tool.black]
-line-length = 88
+line-length = 120
 
 [tool.isort]
 include_trailing_comma = true
-line_length = 88
+line_length = 120
 multi_line_output = 3
