@@ -4,11 +4,7 @@ from datetime import datetime
 import requests
 
 from nicovideo_api_client.api.v2.targets import SnapshotSearchAPIV2Targets
-from nicovideo_api_client.constants import (
-    END_POINT_URL_V2_VERSION,
-    FieldType,
-    target_types,
-)
+from nicovideo_api_client.constants import END_POINT_URL_V2_VERSION, FieldType, target_types
 
 
 class SnapshotSearchAPIV2:
@@ -35,9 +31,7 @@ class SnapshotSearchAPIV2:
 
         :return: クエリ(キーワード)入力オブジェクト
         """
-        return SnapshotSearchAPIV2Targets(
-            FieldType.TITLE, FieldType.DESCRIPTION, FieldType.TAGS
-        )
+        return SnapshotSearchAPIV2Targets(FieldType.TITLE, FieldType.DESCRIPTION, FieldType.TAGS)
 
     @staticmethod
     def targets(targets: Set[FieldType]) -> SnapshotSearchAPIV2Targets:

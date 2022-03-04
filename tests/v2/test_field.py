@@ -11,17 +11,12 @@ class SnapshotSearchAPIV2FieldsTestCase(unittest.TestCase):
 
     @staticmethod
     def test_field_once():
-        assert (
-            SnapshotSearchAPIV2Fields({}).field({FieldType.TITLE})._query["fields"]
-            == "title"
-        )
+        assert SnapshotSearchAPIV2Fields({}).field({FieldType.TITLE})._query["fields"] == "title"
 
     @staticmethod
     def test_field_multi():
         assert (
-            SnapshotSearchAPIV2Fields({})
-            .field({FieldType.TITLE, FieldType.DESCRIPTION})
-            ._query["fields"]
+            SnapshotSearchAPIV2Fields({}).field({FieldType.TITLE, FieldType.DESCRIPTION})._query["fields"]
             == "description,title"
         )
 

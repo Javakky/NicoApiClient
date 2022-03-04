@@ -20,9 +20,7 @@ def main():
                     from_=datetime(2021, 1, 1, 0, 0, 0),
                     include_lower=True,
                 ),
-                JsonFilterTerm.set_range(
-                    FieldType.START_TIME, to_=datetime(2010, 1, 1, 0, 0, 0)
-                ),
+                JsonFilterTerm.set_range(FieldType.START_TIME, to_=datetime(2010, 1, 1, 0, 0, 0)),
             )
         )
         .limit(10)

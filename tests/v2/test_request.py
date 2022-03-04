@@ -4,14 +4,7 @@ from unittest import mock
 
 from nicovideo_api_client.api.v2.json_filter import JsonFilterOperator, JsonFilterTerm
 from nicovideo_api_client.api.v2.snapshot_search_api_v2 import SnapshotSearchAPIV2
-from nicovideo_api_client.constants import (
-    CombinedDict,
-    FieldType,
-    MatchDict,
-    MatchValue,
-    RangeDict,
-    RangeValue,
-)
+from nicovideo_api_client.constants import CombinedDict, FieldType, MatchDict, MatchValue, RangeDict, RangeValue
 from tests.mock_response import MockResponse
 
 META_DATA = {
@@ -47,8 +40,7 @@ class SnapshotSearchAPIV2RequestTestCase(unittest.TestCase):
             .user_agent("NicoApiClient", "0.5.0")
         )
         assert (
-            actual.build_url(False)
-            == "https://api.search.nicovideo.jp/api/v2/snapshot/video/contents/search"
+            actual.build_url(False) == "https://api.search.nicovideo.jp/api/v2/snapshot/video/contents/search"
             "?targets=title&q=%E3%83%86%E3%82%B9%E3%83%88&fields"
             "=title&_sort=-viewCounter"
         )
@@ -69,8 +61,7 @@ class SnapshotSearchAPIV2RequestTestCase(unittest.TestCase):
         )
 
         assert (
-            actual.build_url(False)
-            == "https://api.search.nicovideo.jp/api/v2/snapshot/video/contents/search"
+            actual.build_url(False) == "https://api.search.nicovideo.jp/api/v2/snapshot/video/contents/search"
             "?targets=title&q=%E6%AD%8C%E3%81%A3%E3%81%A6%E3%81%BF%E3%81%9F+"
             "%E5%88%9D%E9%9F%B3%E3%83%9F%E3%82%AF+OR+"
             "%E9%8F%A1%E9%9F%B3%E3%83%AA%E3%83%B3&"
@@ -92,8 +83,7 @@ class SnapshotSearchAPIV2RequestTestCase(unittest.TestCase):
         )
 
         assert (
-            actual.build_url(False)
-            == "https://api.search.nicovideo.jp/api/v2/snapshot/video/contents/search"
+            actual.build_url(False) == "https://api.search.nicovideo.jp/api/v2/snapshot/video/contents/search"
             "?targets=title&q=%E6%AD%8C%E3%81%A3%E3%81%A6%E3%81%BF%E3%81%9F"
             "+OR+%E8%B8%8A%E3%81%A3%E3%81%A6%E3%81%BF%E3%81%9F&fields=title&"
             "_sort=-viewCounter"
@@ -127,8 +117,7 @@ class SnapshotSearchAPIV2RequestTestCase(unittest.TestCase):
             .user_agent("NicoApiClient", "0.5.0")
         )
         assert (
-            actual.build_url(False)
-            == "https://api.search.nicovideo.jp/api/v2/snapshot/video/contents/search"
+            actual.build_url(False) == "https://api.search.nicovideo.jp/api/v2/snapshot/video/contents/search"
             "?targets=title&q=%E6%AD%8C%E3%81%A3%E3%81%A6%E3%81%BF%E3%81%9F&"
             "fields=description%2CmylistCounter%2Ctitle%2CviewCounter&"
             "_sort=-viewCounter&filters%5BviewCounter%5D%5B0%5D=100&"
@@ -167,8 +156,7 @@ class SnapshotSearchAPIV2RequestTestCase(unittest.TestCase):
             .user_agent("NicoApiClient", "0.5.0")
         )
         assert (
-            actual.build_url(False)
-            == "https://api.search.nicovideo.jp/api/v2/snapshot/video/contents/search"
+            actual.build_url(False) == "https://api.search.nicovideo.jp/api/v2/snapshot/video/contents/search"
             "?targets=title&q=%E6%AD%8C%E3%81%A3%E3%81%A6%E3%81%BF%E3%81%9F&"
             "fields=description%2CmylistCounter%2Ctitle%2CviewCounter&"
             "_sort=-viewCounter&filters%5BviewCounter%5D%5Bgte%5D=1000&"
@@ -207,8 +195,7 @@ class SnapshotSearchAPIV2RequestTestCase(unittest.TestCase):
             .user_agent("NicoApiClient", "0.5.0")
         )
         assert (
-            actual.build_url(False)
-            == "https://api.search.nicovideo.jp/api/v2/snapshot/video/contents/search"
+            actual.build_url(False) == "https://api.search.nicovideo.jp/api/v2/snapshot/video/contents/search"
             "?targets=title&q=%E6%AD%8C%E3%81%A3%E3%81%A6%E3%81%BF%E3%81%9F&"
             "fields=description%2CmylistCounter%2Ctitle%2CviewCounter&"
             "_sort=-viewCounter&filters%5BviewCounter%5D%5B0%5D=1000&"
@@ -238,8 +225,7 @@ class SnapshotSearchAPIV2RequestTestCase(unittest.TestCase):
             .user_agent("NicoApiClient", "0.5.0")
         )
         assert (
-            actual.build_url(True)
-            == "https://api.search.nicovideo.jp/api/v2/snapshot/video/contents/search"
+            actual.build_url(True) == "https://api.search.nicovideo.jp/api/v2/snapshot/video/contents/search"
             "?targets=title&q=テスト&fields=title&_sort=-viewCounter&jsonFilter=%7B"
             "%22type%22%3A+%22not%22%2C+%22filter%22%3A+%7B%22type%22%3A+%22range%22%2C"
             "+%22field%22%3A+%22startTime%22%2C+%22to%22%3A+%222021-01-01T00%3A00%3A00"

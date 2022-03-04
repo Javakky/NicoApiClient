@@ -10,16 +10,12 @@ class SnapshotSearchAPIV2SortTestCase(unittest.TestCase):
     def test_sort_plus_success(self):
         for t in sort_types:
             with self.subTest(t.value):
-                assert SnapshotSearchAPIV2Sort({}).sort(t, True)._query["_sort"] == (
-                    "+" + t.value
-                )
+                assert SnapshotSearchAPIV2Sort({}).sort(t, True)._query["_sort"] == ("+" + t.value)
 
     def test_sort_minus_success(self):
         for t in sort_types:
             with self.subTest(t.value):
-                assert SnapshotSearchAPIV2Sort({}).sort(t, False)._query["_sort"] == (
-                    "-" + t.value
-                )
+                assert SnapshotSearchAPIV2Sort({}).sort(t, False)._query["_sort"] == ("-" + t.value)
 
     def test_sort_fail_not_available(self):
         for t in set(FieldType).difference(set(sort_types)):

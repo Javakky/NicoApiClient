@@ -19,9 +19,7 @@ class SnapshotSearchAPIV2Result:
         query: Dict[str, str],
         response: Union[requests.Response, List["SnapshotSearchAPIV2Result"]],
     ):
-        self._fields: List[str] = (
-            query["fields"].split(",") if "fields" in query else []
-        )
+        self._fields: List[str] = query["fields"].split(",") if "fields" in query else []
         self._json: Optional[Dict[str, Any]] = None
 
         if isinstance(response, requests.Response):
@@ -96,9 +94,7 @@ class SnapshotSearchAPIV2Result:
         """
         if FieldType.VIEW_COUNTER.value not in self._fields:
             raise Exception("フィールドに viewCounter が指定されていません")
-        return statistics.mean(
-            list(map(lambda x: x[FieldType.VIEW_COUNTER.value], self.data()))
-        )
+        return statistics.mean(list(map(lambda x: x[FieldType.VIEW_COUNTER.value], self.data())))
 
     def center_view_counter(self) -> int:
         """
@@ -106,9 +102,7 @@ class SnapshotSearchAPIV2Result:
         """
         if FieldType.VIEW_COUNTER.value not in self._fields:
             raise Exception("フィールドに viewCounter が指定されていません")
-        return self.data()[math.floor(self.total_count() / 2)][
-            FieldType.VIEW_COUNTER.value
-        ]
+        return self.data()[math.floor(self.total_count() / 2)][FieldType.VIEW_COUNTER.value]
 
     def text(self) -> str:
         """

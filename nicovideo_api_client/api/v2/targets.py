@@ -9,9 +9,7 @@ class SnapshotSearchAPIV2Targets:
         list_targets = list(targets)
         if len(list_targets) == 0:
             raise Exception("targets が設定されていません")
-        self._query: Dict[str, str] = {
-            "targets": ",".join(map(lambda x: x.value, list_targets))
-        }
+        self._query: Dict[str, str] = {"targets": ",".join(map(lambda x: x.value, list_targets))}
 
     def single_query(self, keyword: str) -> SnapshotSearchAPIV2Fields:
         """

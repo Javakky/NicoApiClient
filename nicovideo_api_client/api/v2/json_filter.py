@@ -42,18 +42,14 @@ class JsonFilterOperator:
         return JsonFilterOperator(json_)
 
     @staticmethod
-    def _binary(
-        op_name: str, left: "JsonFilterOperator", right: "JsonFilterOperator"
-    ) -> "JsonFilterOperator":
+    def _binary(op_name: str, left: "JsonFilterOperator", right: "JsonFilterOperator") -> "JsonFilterOperator":
         json_: TypeOp = {"type": op_name, "filters": []}
         json_["filters"].append(left.json)
         json_["filters"].append(right.json)
         return JsonFilterOperator(json_)
 
     @staticmethod
-    def or_(
-        left: "JsonFilterOperator", right: "JsonFilterOperator"
-    ) -> "JsonFilterOperator":
+    def or_(left: "JsonFilterOperator", right: "JsonFilterOperator") -> "JsonFilterOperator":
         """
         2つの絞り込み要素のどちらかが正しいことを表す絞り込み条件。
 
@@ -64,9 +60,7 @@ class JsonFilterOperator:
         return JsonFilterOperator._binary("or", left, right)
 
     @staticmethod
-    def and_(
-        left: "JsonFilterOperator", right: "JsonFilterOperator"
-    ) -> "JsonFilterOperator":
+    def and_(left: "JsonFilterOperator", right: "JsonFilterOperator") -> "JsonFilterOperator":
         """
         2つの絞り込み要素の両方が正しいことを表す絞り込み条件。
 
@@ -126,21 +120,15 @@ class JsonFilterTerm(JsonFilterOperator):
                 | FieldType.COMMENT_COUNTER
             ):
                 if from_ is not None:
-                    json_["from"] = JsonFilterTerm._arrange_value(
-                        from_, int, field_type
-                    )
+                    json_["from"] = JsonFilterTerm._arrange_value(from_, int, field_type)
                 if to_ is not None:
                     json_["to"] = JsonFilterTerm._arrange_value(to_, int, field_type)
             case (FieldType.START_TIME | FieldType.LAST_COMMENT_TIME):
                 if from_ is not None:
-                    json_["from"] = JsonFilterTerm._arrange_value(
-                        from_, datetime, field_type
-                    )
+                    json_["from"] = JsonFilterTerm._arrange_value(from_, datetime, field_type)
 
                 if to_ is not None:
-                    json_["to"] = JsonFilterTerm._arrange_value(
-                        to_, datetime, field_type
-                    )
+                    json_["to"] = JsonFilterTerm._arrange_value(to_, datetime, field_type)
             case _:
                 raise TypeError(f"{field_type.value}はjson_filterに指定できないフィールドです")
         if include_lower:
