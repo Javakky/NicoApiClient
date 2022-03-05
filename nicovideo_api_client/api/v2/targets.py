@@ -41,7 +41,7 @@ class SnapshotSearchAPIV2Targets:
         に沿った値を入力することで AND, OR 検索など複数のキーワードを含めた検索を行うことができる。
 
         :param exclude: NOT 検索で使用するキーワード
-        :param keyword: 検索するキーワード。文字列または文字列を要素に持つリスト。リストにする場合は OR で連結される。
+        :param keyword: 検索するキーワード。文字列を要素に持つリストの形式になっており、複数要素があれば OR で連結される。
         :return: レスポンスアンドのタイプ指定オブジェクト
         """
 
@@ -96,6 +96,11 @@ class SnapshotSearchAPIV2And(SnapshotSearchAPIV2Fields):
             self._query["q"] += " " + keyword
 
     def and_(self, keyword: Union[str, list[str]]) -> "SnapshotSearchAPIV2And":
+        """
+        AND 検索に利用する。
+        NOT 検索に必要なパラメータは `query()` で指定する。
+        :param keyword: 検索するキーワード。文字列または文字列を要素に持つリスト。リストにする場合は OR で連結される。
+        """
         if type(keyword) is str:
             self._arrange_keyword(keyword)
         elif type(keyword) is list:
