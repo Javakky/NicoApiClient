@@ -3,12 +3,8 @@
 
 name: Python Test
 
-on:
-  push:
-  pull_request:
-    branches:
-      - master
-  
+on: [push]
+
 jobs:
   pytest:
     name: Run tests with pytest
