@@ -13,15 +13,19 @@ META_DATA = {
     "id": "594513df-85ea-4122-9859-f4ec2701cacf",
 }
 
-DATA_DATA = [
-    {
-        "contentId": "sm9",
-        "title": "テスト",
-        "description": "テスト",
-        "startTime": "2016-11-03T02:09:11+09:00",
-        "viewCounter": 1,
-    }
-]
+DATA_DATA = {
+    "contentId": "sm9",
+    "title": "テスト",
+    "description": "テスト",
+    "startTime": "2016-11-03T02:09:11+09:00",
+    "viewCounter": 1,
+}
+
+META_DATA_MUL = {
+    "status": 200,
+    "totalCount": 101,
+    "id": "594513df-85ea-4122-9859-f4ec2701cacf",
+}
 
 
 class SnapshotSearchAPIV2RequestTestCase(unittest.TestCase):
@@ -233,11 +237,11 @@ class SnapshotSearchAPIV2RequestTestCase(unittest.TestCase):
         )
 
     @staticmethod
-    def mocked_requests_get_success_single_result(*args, **kwargs):
+    def mocked_requests_get_success_single_result(*_, **__):
         return MockResponse(
             {
                 "meta": META_DATA,
-                "data": DATA_DATA,
+                "data": [DATA_DATA],
             },
             200,
             timedelta(milliseconds=300),
@@ -245,7 +249,7 @@ class SnapshotSearchAPIV2RequestTestCase(unittest.TestCase):
 
     @staticmethod
     @mock.patch("requests.get", side_effect=mocked_requests_get_success_single_result)
-    def test_request(mock_get):
+    def test_request(_):
         actual = (
             SnapshotSearchAPIV2()
             .targets({FieldType.TITLE})
@@ -258,15 +262,59 @@ class SnapshotSearchAPIV2RequestTestCase(unittest.TestCase):
             .user_agent("NicoApiClient", "0.5.0")
             .request()
         )
-        assert actual.meta_id() == META_DATA["id"]
-        assert actual.status() == META_DATA["status"]
+        assert actual.meta_id() == [META_DATA["id"]]
+        assert actual.status() == [META_DATA["status"]]
         assert actual.total_count() == META_DATA["totalCount"]
         assert len(actual.data()) == 1
-        assert actual.data()[0]["contentId"] == DATA_DATA[0]["contentId"]
-        assert actual.data()[0]["title"] == DATA_DATA[0]["title"]
-        assert actual.data()[0]["description"] == DATA_DATA[0]["description"]
-        assert actual.data()[0]["startTime"] == DATA_DATA[0]["startTime"]
-        assert actual.data()[0]["viewCounter"] == DATA_DATA[0]["viewCounter"]
+
+        assert actual.data()[0]["contentId"] == DATA_DATA["contentId"]
+        assert actual.data()[0]["title"] == DATA_DATA["title"]
+        assert actual.data()[0]["description"] == DATA_DATA["description"]
+        assert actual.data()[0]["startTime"] == DATA_DATA["startTime"]
+        assert actual.data()[0]["viewCounter"] == DATA_DATA["viewCounter"]
+
+    @staticmethod
+    def mocked_requests_get_success_multiple_result(*args, **__):
+        return MockResponse(
+            {
+                "meta": META_DATA_MUL,
+                "data": [DATA_DATA for _ in range(100 if "_offset" in args[0] else 1)],
+            },
+            200,
+            timedelta(milliseconds=300),
+        )
+
+    @staticmethod
+    @mock.patch("requests.get", side_effect=mocked_requests_get_success_multiple_result)
+    def test_multiple_request(_):
+        actual = (
+            SnapshotSearchAPIV2()
+            .targets({FieldType.TITLE})
+            .query("テスト")
+            .field({FieldType.TITLE})
+            .sort(FieldType.VIEW_COUNTER)
+            .simple_filter()
+            .filter()
+            .limit(200)
+            .user_agent("NicoApiClient", "0.5.0")
+            .request()
+        )
+        assert actual.meta_id() == [META_DATA_MUL["id"], META_DATA_MUL["id"]]
+        assert actual.status() == [META_DATA_MUL["status"], META_DATA_MUL["status"]]
+        assert actual.total_count() == META_DATA_MUL["totalCount"]
+        assert len(actual.data()) == 101
+
+        assert actual.data()[0]["contentId"] == DATA_DATA["contentId"]
+        assert actual.data()[0]["title"] == DATA_DATA["title"]
+        assert actual.data()[0]["description"] == DATA_DATA["description"]
+        assert actual.data()[0]["startTime"] == DATA_DATA["startTime"]
+        assert actual.data()[0]["viewCounter"] == DATA_DATA["viewCounter"]
+
+        assert actual.data()[100]["contentId"] == DATA_DATA["contentId"]
+        assert actual.data()[100]["title"] == DATA_DATA["title"]
+        assert actual.data()[100]["description"] == DATA_DATA["description"]
+        assert actual.data()[100]["startTime"] == DATA_DATA["startTime"]
+        assert actual.data()[100]["viewCounter"] == DATA_DATA["viewCounter"]
 
 
 if __name__ == "__main__":

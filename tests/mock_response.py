@@ -1,3 +1,4 @@
+import copy
 import datetime
 
 import requests
@@ -13,4 +14,4 @@ class MockResponse(requests.Response):
         self.elapsed = time
 
     def json(self):
-        return self.json_data
+        return copy.deepcopy(self.json_data)

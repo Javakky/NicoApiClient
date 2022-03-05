@@ -11,7 +11,7 @@ def main():
         .field({FieldType.TITLE, FieldType.DESCRIPTION})
         .sort(FieldType.VIEW_COUNTER)
         .no_filter()
-        .limit(100)
+        .limit(1)
         .user_agent("NicoApiClient", "0.5.0")
     )
 

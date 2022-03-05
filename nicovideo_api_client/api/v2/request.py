@@ -83,7 +83,7 @@ class SnapshotSearchAPIV2Request:
 
             if total_time > timeout:
                 raise TimeoutError("通信がタイムアウトしました")
-            elif "meta" in response_obj.json() and response_obj.status() == 200:
+            elif "meta" in response_obj.json() and response_obj.status()[0] == 200:
                 break
             time.sleep(response_time)
         else:
