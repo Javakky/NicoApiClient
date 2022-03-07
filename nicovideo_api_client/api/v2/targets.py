@@ -47,7 +47,7 @@ class SnapshotSearchAPIV2Targets:
 
         if exclude is None:
             exclude = []
-        if keyword == "":
+        if type(keyword) is not list or len(keyword) < 1:
             raise Exception("キーワードなし検索を行うにはno_keywordメソッドを指定する必要があります")
         return SnapshotSearchAPIV2And(self._query, exclude).and_(keyword)
 

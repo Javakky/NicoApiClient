@@ -35,7 +35,7 @@ class SnapshotSearchAPIV2RequestTestCase(unittest.TestCase):
         actual = (
             SnapshotSearchAPIV2()
             .targets({FieldType.TITLE})
-            .query("テスト")
+            .single_query("テスト")
             .field({FieldType.TITLE})
             .sort(FieldType.VIEW_COUNTER)
             .simple_filter()
@@ -54,7 +54,7 @@ class SnapshotSearchAPIV2RequestTestCase(unittest.TestCase):
         actual = (
             SnapshotSearchAPIV2()
             .targets({FieldType.TITLE})
-            .query("歌ってみた")
+            .query(["歌ってみた"])
             .and_(["初音ミク", "鏡音リン"])
             .field({FieldType.TITLE})
             .sort(FieldType.VIEW_COUNTER)
@@ -105,7 +105,7 @@ class SnapshotSearchAPIV2RequestTestCase(unittest.TestCase):
         actual = (
             SnapshotSearchAPIV2()
             .targets({FieldType.TITLE})
-            .query("歌ってみた")
+            .single_query("歌ってみた")
             .field(
                 {
                     FieldType.TITLE,
@@ -144,7 +144,7 @@ class SnapshotSearchAPIV2RequestTestCase(unittest.TestCase):
         actual = (
             SnapshotSearchAPIV2()
             .targets({FieldType.TITLE})
-            .query("歌ってみた")
+            .single_query("歌ってみた")
             .field(
                 {
                     FieldType.TITLE,
@@ -183,7 +183,7 @@ class SnapshotSearchAPIV2RequestTestCase(unittest.TestCase):
         actual = (
             SnapshotSearchAPIV2()
             .targets({FieldType.TITLE})
-            .query("歌ってみた")
+            .single_query("歌ってみた")
             .field(
                 {
                     FieldType.TITLE,
@@ -213,7 +213,7 @@ class SnapshotSearchAPIV2RequestTestCase(unittest.TestCase):
         actual = (
             SnapshotSearchAPIV2()
             .targets({FieldType.TITLE})
-            .query("テスト")
+            .single_query("テスト")
             .field({FieldType.TITLE})
             .sort(FieldType.VIEW_COUNTER)
             .json_filter(
@@ -253,7 +253,7 @@ class SnapshotSearchAPIV2RequestTestCase(unittest.TestCase):
         actual = (
             SnapshotSearchAPIV2()
             .targets({FieldType.TITLE})
-            .query("テスト")
+            .single_query("テスト")
             .field({FieldType.TITLE})
             .sort(FieldType.VIEW_COUNTER)
             .simple_filter()
