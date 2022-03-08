@@ -24,6 +24,8 @@ class SnapshotSearchAPIV2Result:
 
         if isinstance(response, requests.Response):
             self._json: Optional[Dict[str, Any]] = response.json()
+            self._json["meta"]["id"] = [self._json["meta"]["id"]]
+            self._json["meta"]["status"] = [self._json["meta"]["status"]]
             return
 
         results: List["SnapshotSearchAPIV2Result"] = response
@@ -31,9 +33,11 @@ class SnapshotSearchAPIV2Result:
         if len(results) < 1:
             raise Exception("空のリストが渡されました")
         data = []
-        meta = results[0].json()["meta"]
+        meta = {"id": [], "status": [], "totalCount": results[0].total_count()}
         for result in results:
-            data.extend(result.json()["data"])
+            data.extend(result.data())
+            meta["id"].append(result.meta_id()[0])
+            meta["status"].append(result.status()[0])
         self._json: Optional[Dict[str, Any]] = {"meta": meta, "data": data}
 
     def json(self) -> Dict[str, Any]:
@@ -50,7 +54,7 @@ class SnapshotSearchAPIV2Result:
             return {}
         return self.json()["meta"]
 
-    def status(self) -> int:
+    def status(self) -> list[int]:
         """
         HTTP レスポンスのStatus を返す。
 
@@ -60,7 +64,7 @@ class SnapshotSearchAPIV2Result:
         """
         return self.meta()["status"]
 
-    def meta_id(self) -> str:
+    def meta_id(self) -> list[str]:
         """
         リクエストID
         """
