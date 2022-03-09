@@ -84,8 +84,13 @@ class SnapshotSearchAPIV2And(SnapshotSearchAPIV2Fields):
         :param keyword: クエリのqキーに指定するための文字列
         """
         # フレーズ検索かどうかの判定(" "は" OR "も含んでいる)
-        if ((keyword[0] != '"' and keyword[-1] != '"') and " " in keyword) or keyword[0] == "-":
-            keyword = '"' + keyword + '"'
+        if (
+            ((keyword[0] != '"' and keyword[-1] != '"') and " " in keyword)
+            or keyword[0] == "-"
+            or '"' in keyword
+            or "\\" in keyword
+        ):
+            keyword = '"' + keyword.replace("\\", "\\\\").replace('"', '\\"') + '"'
         elif keyword == "OR":
             keyword = '"OR"'
         if exclude:

@@ -24,6 +24,26 @@ class SnapshotSearchAPIV2TargetsTestCase(unittest.TestCase):
         assert SnapshotSearchAPIV2Targets(FieldType.TITLE).query([expected])._query["q"] == expected
 
     @staticmethod
+    def test_query_escape_space():
+        expected = '"1 2"'
+        assert SnapshotSearchAPIV2Targets(FieldType.TITLE).query(["1 2"])._query["q"] == expected
+
+    @staticmethod
+    def test_query_escape_or():
+        expected = '"OR"'
+        assert SnapshotSearchAPIV2Targets(FieldType.TITLE).query(["OR"])._query["q"] == expected
+
+    @staticmethod
+    def test_query_escape_double_quote():
+        expected = '"\\"keyword\\""'
+        assert SnapshotSearchAPIV2Targets(FieldType.TITLE).query(['"keyword"'])._query["q"] == expected
+
+    @staticmethod
+    def test_query_escape_double_backslash():
+        expected = '"keyword\\\\"'
+        assert SnapshotSearchAPIV2Targets(FieldType.TITLE).query(["keyword\\"])._query["q"] == expected
+
+    @staticmethod
     def test_query_and():
         expected = "VOCALOID UTAU"
         assert SnapshotSearchAPIV2Targets(FieldType.TITLE).query(["VOCALOID"]).and_("UTAU")._query["q"] == expected
