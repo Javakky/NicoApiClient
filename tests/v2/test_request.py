@@ -290,7 +290,7 @@ class SnapshotSearchAPIV2RequestTestCase(unittest.TestCase):
         actual = (
             SnapshotSearchAPIV2()
             .targets({FieldType.TITLE})
-            .query("テスト")
+            .single_query("テスト")
             .field({FieldType.TITLE})
             .sort(FieldType.VIEW_COUNTER)
             .simple_filter()
