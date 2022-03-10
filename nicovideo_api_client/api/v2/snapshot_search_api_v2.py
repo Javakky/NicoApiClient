@@ -3,6 +3,7 @@ from datetime import datetime
 
 import requests
 
+from nicovideo_api_client.api.v2.field import SnapshotSearchAPIV2Fields
 from nicovideo_api_client.api.v2.targets import SnapshotSearchAPIV2Targets
 from nicovideo_api_client.constants import END_POINT_URL_V2_VERSION, FieldType, target_types
 
@@ -32,6 +33,39 @@ class SnapshotSearchAPIV2:
         :return: クエリ(キーワード)入力オブジェクト
         """
         return SnapshotSearchAPIV2Targets(FieldType.TITLE, FieldType.DESCRIPTION, FieldType.TAGS)
+
+    @staticmethod
+    def sing_voice_synthesis_tags() -> SnapshotSearchAPIV2Fields:
+        """
+        VOCALOID・UTAUなどの歌声合成ソフトを利用した動画を検索するタグを用いて検索する。
+        タグの一覧は https://lit.link/avogado6 を参照。
+        :return: レスポンスフィールドのタイプ指定オブジェクト
+        """
+        sing_voice_synthesis_tag = [
+            "UTAU",
+            "VOCALOID",
+            "UTAUオリジナル曲",
+            "VOCALOIDオリジナル曲",
+            "VOICEROIDオリジナル曲",
+            "NEUTRINOオリジナル曲",
+            "CeVIOオリジナル曲",
+            "vocaloid新曲リンク",
+            "SynthesizerV",
+            "歌うa.i.voice",
+            "A.I.VOICEオリジナル曲",
+            "歌うボイスロイド",
+            "VOCALOIDインスト曲",
+            "ボカロオリジナル曲",
+            "ソフトウェアシンガー",
+            "UTAU新曲リンク",
+            "cevio新曲リンク",
+            "VOCALOID処女作",
+            "UTAU処女作",
+            "CeVIO処女作",
+            "neutrino(歌声合成エンジン)",
+        ]
+        exclude = ["ボカロオリジナルを歌ってみた"]
+        return SnapshotSearchAPIV2Targets(FieldType.TAGS_EXACT).query(sing_voice_synthesis_tag, exclude)
 
     @staticmethod
     def targets(targets: Set[FieldType]) -> SnapshotSearchAPIV2Targets:

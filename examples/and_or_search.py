@@ -10,7 +10,7 @@ def main():
     request = (
         SnapshotSearchAPIV2()
         .tags_exact()
-        .query("VOCALOID")
+        .query(["VOCALOID"])
         .and_(["初音ミク", "鏡音リン"])
         .and_(["MMD"])
         .field({FieldType.TITLE})

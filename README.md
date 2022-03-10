@@ -27,13 +27,13 @@ from nicovideo_api_client.constants import FieldType
 
 json = SnapshotSearchAPIV2() \
     .tags_exact() \
-    .query("VOCALOID") \
+    .single_query("VOCALOID") \
     .field({FieldType.TITLE, FieldType.CONTENT_ID}) \
     .sort(FieldType.VIEW_COUNTER) \
     .no_filter() \
     .limit(100) \
-    .request() \
     .user_agent("NicoApiClient", "0.5.0") \
+    .request() \
     .json()
 ```
 

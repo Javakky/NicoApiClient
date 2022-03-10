@@ -6,20 +6,14 @@ def main():
     # URL生成
     request = (
         SnapshotSearchAPIV2()
-        .tags_exact()
-        .single_query("VOCALOID")
-        .field({FieldType.TITLE, FieldType.DESCRIPTION})
+        .sing_voice_synthesis_tags()
+        .field({FieldType.TITLE})
         .sort(FieldType.VIEW_COUNTER)
         .no_filter()
-        .limit(1)
+        .limit(10)
         .user_agent("NicoApiClient", "0.5.0")
     )
 
-    # https://api.search.nicovideo.jp/api/v2/snapshot/video/contents/search?targets=tagsExact&q=VOCALOID&fields=contentId%2Ctitle&_sort=-viewCounter
-    print(request.build_url())
-
-    # 実行
-    # API のレスポンスが表示される
     print(request.request().json())
 
 
