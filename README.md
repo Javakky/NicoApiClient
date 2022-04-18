@@ -15,6 +15,10 @@ pip install nicovideo-api-client
 
 [![Downloads](https://pepy.tech/badge/nicovideo-api-client)](https://pepy.tech/project/nicovideo-api-client) [![Downloads](https://pepy.tech/badge/nicovideo-api-client/month)](https://pepy.tech/project/nicovideo-api-client) [![Downloads](https://pepy.tech/badge/nicovideo-api-client/week)](https://pepy.tech/project/nicovideo-api-client)
 
+## Code Climate
+
+[![Maintainability](https://api.codeclimate.com/v1/badges/9d090928fdb99bf5fa06/maintainability)](https://codeclimate.com/github/Javakky/NicoApiClient/maintainability)
+
 ### documentation
 
 [NicoApiClient コードドキュメント](https://javakky.github.io/NicoApiClientDocs/)
