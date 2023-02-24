@@ -19,7 +19,7 @@ urllib3 = "^1.26.6"
 
 [tool.poetry.dev-dependencies]
 sphinx-rtd-theme = "^1.0.0"
-pytest = "^6.2.5"
+pytest = "^7.2.1"
 Sphinx = "^4.2.0"
 taskipy = "^1.10.3"
 pyproject-flake8 = "^0.0.1-alpha.2"
