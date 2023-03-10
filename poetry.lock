@@ -230,14 +230,14 @@ files = [
 
 [[package]]
 name = "install"
-version = "1.3.4"
+version = "1.3.5"
 description = "Install packages from within code"
 category = "dev"
 optional = false
 python-versions = ">=2.7, >=3.5"
 files = [
-    {file = "install-1.3.4-py3-none-any.whl", hash = "sha256:dfec614e0cc90f00659067a078bc2ec032d9f0758f3df230c073eeaffd0cefa1"},
-    {file = "install-1.3.4.tar.gz", hash = "sha256:1455304a2475b6753a9b0c28243ca7d8b7d71aeea1a88e6de94034fc57d765a0"},
+    {file = "install-1.3.5-py3-none-any.whl", hash = "sha256:0d3fadf4aa62c95efe8d34757c8507eb46177f86c016c21c6551eafc6a53d5a9"},
+    {file = "install-1.3.5.tar.gz", hash = "sha256:e67c8a0be5ccf8cb4ffa17d090f3a61b6e820e6a7e21cd1d2c0f7bc59b18e647"},
 ]
 
 [[package]]
@@ -827,4 +827,4 @@ socks = ["PySocks (>=1.5.6,!=1.5.7,<2.0)"]
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.10.2"
-content-hash = "d7dfd26e128c7e9cb1226149696fc0611f19a760dced9bfae809ce2c59fcbe87"
+content-hash = "b8a7bef166f9eff7b84c6595d92058c2f4d1eb0e1b9a31bd4d687e2f411815ac"
