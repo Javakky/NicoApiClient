@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "nicovideo_api_client"
-version = "2.0.2"
+version = "0.0.0"
 description = "ニコニコ動画 スナップショット検索APIv2の Python クライアント"
 authors = ["Javakky <iemura.java@gmail.com>"]
 homepage = "https://github.com/Javakky/NicoApiClient"
@@ -50,3 +50,7 @@ line-length = 120
 include_trailing_comma = true
 line_length = 120
 multi_line_output = 3
+
+[tool.poetry-dynamic-versioning]
+enable = true
+style = "pep440"
