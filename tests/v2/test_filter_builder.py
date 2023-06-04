@@ -6,7 +6,7 @@ from nicovideo_api_client.constants import FieldType
 
 class FilterBuilderTestCase(unittest.TestCase):
     @staticmethod
-    def test_field_nothing():
+    def test_filter_nothing():
         assert FilterBuilder().match_filter().range_filter() == {}
 
     @staticmethod
@@ -19,11 +19,16 @@ class FilterBuilderTestCase(unittest.TestCase):
 
     @staticmethod
     def test_range_filter_set():
-        assert FilterBuilder().range_filter(FieldType.VIEW_COUNTER, "gt", 1000, "lte", 5000) == {"viewCounter": {"gt": 1000, "lte": 5000}}
+        assert FilterBuilder().range_filter(FieldType.VIEW_COUNTER, "gt", 1000, "lte", 5000) == {
+            "viewCounter": {"gt": 1000, "lte": 5000}
+        }
 
     @staticmethod
     def test_range_filter_sign():
-        assert FilterBuilder().range_filter(FieldType.VIEW_COUNTER, ">", 1000, "<=", 5000) == {"viewCounter": {"gt", 1000, "lte", 5000}}
+        assert FilterBuilder().range_filter(FieldType.VIEW_COUNTER, ">", 1000, "<=", 5000) == {
+            "viewCounter": {"gt", 1000, "lte", 5000}
+        }
+
 
 if __name__ == "__main__":
     unittest.main()
