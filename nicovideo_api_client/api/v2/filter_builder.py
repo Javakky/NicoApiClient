@@ -27,9 +27,9 @@ class FilterBuilder:
 
     def range_filter(
             self, 
-            field_type: FieldType, 
-            literal1: str, 
-            value1: Union[str, int, datetime], 
+            field_type: FieldType = None,
+            literal1: str = None,
+            value1: Union[str, int, datetime] = None,
             literal2: str = None, 
             value2: Union[str, int, datetime] = None
     ) -> "FilterBuilder":
@@ -51,20 +51,19 @@ class FilterBuilder:
         Returns:
             フィルター辞書組み立てオブジェクト
         """
-        if literal2 is not None:
-            if value2 is None:
-                raise ValueError("値が指定されていません")
-            self.filter[field_type] = {self._cast_literal(literal1): value1, self._cast_literal(literal2): value2}
-        else:
-            self.filter[field_type] = {self._cast_literal(literal1): value1}        
+        if field_type is not None and literal1 is not None and value1 is not None:
+            if literal2 is not None and value2 is None:
+                self.filter[field_type] = {self._cast_literal(literal1): value1, self._cast_literal(literal2): value2}
+            else:
+                self.filter[field_type] = {self._cast_literal(literal1): value1}        
         
         return self
 
 
     def match_filter(
             self, 
-            field_type: FieldType, 
-            value: Union[str, int, datetime]
+            field_type: FieldType = None,
+            value: Union[str, int, datetime] = None
     ) -> "FilterBuilder":
         """
         一致検索用の辞書を組み立てる
@@ -78,6 +77,7 @@ class FilterBuilder:
         Returns:
             フィルター辞書組み立てオブジェクト
         """
-        self.filter[field_type] = value
+        if field_type is not None and value is not None:
+            self.filter[field_type] = value
 
         return self
