@@ -29,6 +29,12 @@ class FilterBuilderTestCase(unittest.TestCase):
             "viewCounter": {"gt", 1000, "lte", 5000}
         }
 
+    @staticmethod
+    def test_combine_filter():
+        assert FilterBuilder().match_filter(FieldType.TITLE, "初音ミク").range_filter(
+            FieldType.VIEW_COUNTER, "gt", 1000
+        ) == {"title": "初音ミク", "viewCounter": {"gt": 1000}}
+
 
 if __name__ == "__main__":
     unittest.main()
