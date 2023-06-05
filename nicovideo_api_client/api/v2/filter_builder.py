@@ -1,14 +1,14 @@
 from datetime import datetime
-from typing import Dict, Union
+from typing import List, Dict, Union
 
 from nicovideo_api_client.constants import FieldType
 
 
 class FilterBuilder:
-    def __init__(self, filter: Dict[str, str] = {}):
-        self.filter: Dict[str, str] = filter
+    def __init__(self, filter: Dict[str, Union[Dict[str, Union[str, int, datetime]], Union[List[str], List[int], List[datetime]]]] = {}):
+        self.filter: Dict[str, Union[Dict[str, Union[str, int, datetime]], Union[List[str], List[int], List[datetime]]]] = filter
 
-    def _cast_literal(self, literal: str) -> str:
+    def __cast_literal(self, literal: str) -> str:
         if literal != "gt" and literal != "gte" and literal != "lt" and literal != "lte":
             match literal:
                 case ">":
@@ -50,27 +50,27 @@ class FilterBuilder:
             フィルター辞書組み立てオブジェクト
         """
         if field_type is not None and literal1 is not None and value1 is not None:
-            if literal2 is not None and value2 is None:
-                self.filter[field_type] = {self._cast_literal(literal1): value1, self._cast_literal(literal2): value2}
+            if literal2 is not None and value2 is not None:
+                self.filter[field_type.value] = {self.__cast_literal(literal1): value1, self.__cast_literal(literal2): value2}
             else:
-                self.filter[field_type] = {self._cast_literal(literal1): value1}
+                self.filter[field_type.value] = {self.__cast_literal(literal1): value1}
 
         return self
 
-    def match_filter(self, field_type: FieldType = None, value: Union[str, int, datetime] = None) -> "FilterBuilder":
+    def match_filter(self, field_type: FieldType = None, value: Union[List[str], List[int], List[datetime]] = None) -> "FilterBuilder":
         """
         一致検索用の辞書を組み立てる
 
         Args:
             field_type(FieldType):
                 フィルターを指定したいフィールド
-            value(Union[str, int, datetime]):
-                フィルターの値
+            value(Union[List[str], List[int], List[datetime]]):
+                フィルターに指定するの値のリスト
 
         Returns:
             フィルター辞書組み立てオブジェクト
         """
         if field_type is not None and value is not None:
-            self.filter[field_type] = value
+            self.filter[field_type.value] = value
 
         return self

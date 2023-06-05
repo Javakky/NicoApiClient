@@ -7,33 +7,34 @@ from nicovideo_api_client.constants import FieldType
 class FilterBuilderTestCase(unittest.TestCase):
     @staticmethod
     def test_filter_nothing():
-        assert FilterBuilder().match_filter().range_filter() == {}
+        actual = FilterBuilder({}).match_filter().range_filter()
+        print(actual.filter)
+        assert actual.filter == {}
 
     @staticmethod
     def test_match_filter():
-        assert FilterBuilder().match_filter(FieldType.TITLE, "初音ミク") == {"title": "初音ミク"}
+        actual = FilterBuilder({}).match_filter(FieldType.TITLE, ["初音ミク"])
+        assert actual.filter == {"title": ["初音ミク"]}
 
     @staticmethod
     def test_range_filter():
-        assert FilterBuilder().range_filter(FieldType.VIEW_COUNTER, "gt", 1000) == {"viewCounter": {"gt": 1000}}
+        actual = FilterBuilder({}).range_filter(FieldType.VIEW_COUNTER, "gt", 1000)
+        assert actual.filter == {"viewCounter": {"gt": 1000}}
 
     @staticmethod
     def test_range_filter_set():
-        assert FilterBuilder().range_filter(FieldType.VIEW_COUNTER, "gt", 1000, "lte", 5000) == {
-            "viewCounter": {"gt": 1000, "lte": 5000}
-        }
+        actual = FilterBuilder({}).range_filter(FieldType.VIEW_COUNTER, "gt", 1000, "lte", 5000)
+        assert actual.filter == {"viewCounter": {"gt": 1000, "lte": 5000}}
 
     @staticmethod
     def test_range_filter_sign():
-        assert FilterBuilder().range_filter(FieldType.VIEW_COUNTER, ">", 1000, "<=", 5000) == {
-            "viewCounter": {"gt", 1000, "lte", 5000}
-        }
+        actual = FilterBuilder({}).range_filter(FieldType.VIEW_COUNTER, ">", 1000, "<=", 5000)
+        assert (actual.filter == {"viewCounter": {"gt": 1000, "lte": 5000}})
 
     @staticmethod
     def test_combine_filter():
-        assert FilterBuilder().match_filter(FieldType.TITLE, "初音ミク").range_filter(
-            FieldType.VIEW_COUNTER, "gt", 1000
-        ) == {"title": "初音ミク", "viewCounter": {"gt": 1000}}
+        actual = FilterBuilder({}).match_filter(FieldType.TITLE, ["初音ミク"]).range_filter(FieldType.VIEW_COUNTER, "gt", 1000)
+        assert (actual.filter == {"title": ["初音ミク"], "viewCounter": {"gt": 1000}})
 
 
 if __name__ == "__main__":
