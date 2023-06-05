@@ -9,29 +9,27 @@ class FilterBuilder:
         self.filter: Dict[str, str] = filter
 
     def _cast_literal(self, literal: str) -> str:
-        if literal == "gt" or literal == "gte" or literal == "lt" or literal == "lte":
-            l = literal
-        else:
+        if literal != "gt" and literal != "gte" and literal != "lt" and literal != "lte":
             match literal:
                 case ">":
-                    l = "gt"
+                    literal = "gt"
                 case ">=":
-                    l = "gte"
+                    literal = "gte"
                 case "<":
-                    l = "lt"
+                    literal = "lt"
                 case "<=":
-                    l = "lte"
+                    literal = "lte"
                 case _:
                     raise ValueError("未知のリテラルが指定されました")
-        return l
+        return literal
 
     def range_filter(
-            self, 
-            field_type: FieldType = None,
-            literal1: str = None,
-            value1: Union[str, int, datetime] = None,
-            literal2: str = None, 
-            value2: Union[str, int, datetime] = None
+        self,
+        field_type: FieldType = None,
+        literal1: str = None,
+        value1: Union[str, int, datetime] = None,
+        literal2: str = None,
+        value2: Union[str, int, datetime] = None,
     ) -> "FilterBuilder":
         """
         範囲検索用の辞書を組み立てる
@@ -55,16 +53,11 @@ class FilterBuilder:
             if literal2 is not None and value2 is None:
                 self.filter[field_type] = {self._cast_literal(literal1): value1, self._cast_literal(literal2): value2}
             else:
-                self.filter[field_type] = {self._cast_literal(literal1): value1}        
-        
+                self.filter[field_type] = {self._cast_literal(literal1): value1}
+
         return self
 
-
-    def match_filter(
-            self, 
-            field_type: FieldType = None,
-            value: Union[str, int, datetime] = None
-    ) -> "FilterBuilder":
+    def match_filter(self, field_type: FieldType = None, value: Union[str, int, datetime] = None) -> "FilterBuilder":
         """
         一致検索用の辞書を組み立てる
 
@@ -73,7 +66,7 @@ class FilterBuilder:
                 フィルターを指定したいフィールド
             value(Union[str, int, datetime]):
                 フィルターの値
-        
+
         Returns:
             フィルター辞書組み立てオブジェクト
         """
