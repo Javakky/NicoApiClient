@@ -29,12 +29,14 @@ class FilterBuilderTestCase(unittest.TestCase):
     @staticmethod
     def test_range_filter_sign():
         actual = FilterBuilder({}).range_filter(FieldType.VIEW_COUNTER, ">", 1000, "<=", 5000)
-        assert (actual.filter == {"viewCounter": {"gt": 1000, "lte": 5000}})
+        assert actual.filter == {"viewCounter": {"gt": 1000, "lte": 5000}}
 
     @staticmethod
     def test_combine_filter():
-        actual = FilterBuilder({}).match_filter(FieldType.TITLE, ["初音ミク"]).range_filter(FieldType.VIEW_COUNTER, "gt", 1000)
-        assert (actual.filter == {"title": ["初音ミク"], "viewCounter": {"gt": 1000}})
+        actual = (
+            FilterBuilder({}).match_filter(FieldType.TITLE, ["初音ミク"]).range_filter(FieldType.VIEW_COUNTER, "gt", 1000)
+        )
+        assert actual.filter == {"title": ["初音ミク"], "viewCounter": {"gt": 1000}}
 
 
 if __name__ == "__main__":
