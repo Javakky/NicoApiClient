@@ -15,7 +15,7 @@ classifiers = [
 [tool.poetry.dependencies]
 python = "^3.10.2"
 requests = "^2.26.0"
-urllib3 = "^1.26.6"
+urllib3 = ">=1.26.6,<3.0.0"
 
 [tool.poetry.dev-dependencies]
 sphinx-rtd-theme = "^1.2.1"
