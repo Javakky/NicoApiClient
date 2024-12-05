@@ -27,7 +27,7 @@ def main():
         .user_agent("NicoApiClient", "0.5.0")
     )
 
-    # https://api.search.nicovideo.jp/api/v2/snapshot/video/contents/search?targets=tagsExact&q=VOCALOID&fields=title&_sort=-viewCounter&jsonFilter=%7B%22type%22%3A+%22or%22%2C+%22filters%22%3A+%5B%7B%22type%22%3A+%22range%22%2C+%22field%22%3A+%22startTime%22%2C+%22from%22%3A+%222021-01-01T00%3A00%3A00%2B09%3A00%22%2C+%22include_lower%22%3A+true%2C+%22include_upper%22%3A+true%7D%2C+%7B%22type%22%3A+%22range%22%2C+%22field%22%3A+%22startTime%22%2C+%22to%22%3A+%222010-01-01T00%3A00%3A00%2B09%3A00%22%2C+%22include_lower%22%3A+true%2C+%22include_upper%22%3A+true%7D%5D%7D
+    # https://snapshot.search.nicovideo.jp/api/v2/snapshot/video/contents/search?targets=tagsExact&q=VOCALOID&fields=title&_sort=-viewCounter&jsonFilter=%7B%22type%22%3A+%22or%22%2C+%22filters%22%3A+%5B%7B%22type%22%3A+%22range%22%2C+%22field%22%3A+%22startTime%22%2C+%22from%22%3A+%222021-01-01T00%3A00%3A00%2B09%3A00%22%2C+%22include_lower%22%3A+true%2C+%22include_upper%22%3A+true%7D%2C+%7B%22type%22%3A+%22range%22%2C+%22field%22%3A+%22startTime%22%2C+%22to%22%3A+%222010-01-01T00%3A00%3A00%2B09%3A00%22%2C+%22include_lower%22%3A+true%2C+%22include_upper%22%3A+true%7D%5D%7D
     print(request.build_url())
     print(request.request().json())
 
