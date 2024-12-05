@@ -15,7 +15,7 @@ def main():
         .user_agent("NicoApiClient", "0.5.0")
     )
 
-    # https://api.search.nicovideo.jp/api/v2/snapshot/video/contents/search?targets=tagsExact&q=VOCALOID&fields=contentId%2Ctitle&_sort=-viewCounter
+    # https://snapshot.search.nicovideo.jp/api/v2/snapshot/video/contents/search?targets=tagsExact&q=VOCALOID&fields=contentId%2Ctitle&_sort=-viewCounter
     print(request.build_url())
 
     # 実行
