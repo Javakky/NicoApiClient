@@ -20,7 +20,7 @@ urllib3 = ">=1.26.6,<3.0.0"
 [tool.poetry.dev-dependencies]
 sphinx-rtd-theme = "^3.0.2"
 pytest = "^7.3.2"
-Sphinx = "^6.1.3"
+Sphinx = "^8.1.3"
 taskipy = "^1.11.0"
 pyproject-flake8 = "^6.0.0.post1"
 black = "^24.10"
